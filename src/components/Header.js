@@ -4,41 +4,104 @@ import instagramLogo from '../images/instagram.png';
 import githubLogo from '../images/github.png';
 import dankookLogo from '../images/dankook.png';
 import dkuacLogo from '../images/dkuac.png';
+import loginLogo from '../images/login.png'; // login.png 이미지 import
 
-function Header() {
+const Header = () => {
+  const styles = {
+    header: {
+      backgroundColor: '#3a5ba0',
+      color: 'white',
+      padding: '20px',
+    },
+    navList: {
+      listStyle: 'none',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      margin: 0,
+      padding: 0,
+    },
+    leftContainer: {
+      display: 'flex',
+      alignItems: 'center',
+    },
+    logoContainer: {
+      marginRight: '20px', // 왼쪽 메뉴들 사이의 간격
+      display: 'flex',
+      alignItems: 'center',
+      textDecoration: 'none',
+    },
+    logo: {
+      maxWidth: '40px',
+      height: 'auto',
+      marginRight: '10px',
+    },
+    logoText: {
+      fontSize: '1.5rem',
+      fontWeight: 'bold',
+      color: 'white',
+      textDecoration: 'none',
+      lineHeight: '1.2', // DKUAC 글자와 로고의 높이를 맞추기 위해 조정
+      marginTop: '4px', // 로고 텍스트의 상단 여백 조정
+    },
+    navLink: {
+      textDecoration: 'none',
+      color: 'white',
+      fontSize: '1rem',
+      marginRight: '20px', // 왼쪽 메뉴들 사이의 간격
+    },
+    rightContainer: {
+      display: 'flex',
+      alignItems: 'center',
+    },
+    icon: {
+      maxWidth: '30px',
+      height: 'auto',
+      marginLeft: '10px', // 오른쪽 아이콘들 사이의 간격
+    },
+  };
+
   return (
-    <header className="header">
+    <header style={styles.header}>
       <nav>
-        <ul className="nav-list">
-          <li className="logo-container">
-            <Link to="/">
-              <img src={dkuacLogo} alt="DKUAC" className="logo" />
-              <span className="logo-text">DKUAC</span>
-            </Link>
-          </li>
-          <li><Link to="/activities" className="nav-link">Activities</Link></li>
-          <li><Link to="/people" className="nav-link">People</Link></li>
-          <li><Link to="/contact" className="nav-link">Contact</Link></li>
-          <div className="spacer"></div>
-          <li>
-            <a href="https://www.instagram.com/dku_ac" target="_blank" rel="noopener noreferrer">
-              <img src={instagramLogo} alt="Instagram" className="icon" />
-            </a>
-          </li>
-          <li>
-            <a href="https://github.com/DKUAC" target="_blank" rel="noopener noreferrer">
-              <img src={githubLogo} alt="GitHub" className="icon" />
-            </a>
-          </li>
-          <li>
-            <a href="https://www.dankook.ac.kr" target="_blank" rel="noopener noreferrer">
-              <img src={dankookLogo} alt="Dankook University" className="icon" />
-            </a>
-          </li>
+        <ul style={styles.navList}>
+          <div style={styles.leftContainer}>
+            <li>
+              <Link to="/" style={styles.logoContainer}>
+                <img src={dkuacLogo} alt="DKUAC" style={styles.logo} />
+                <span style={styles.logoText}>DKUAC</span>
+              </Link>
+            </li>
+            <li><Link to="/activities" style={styles.navLink}>Activities</Link></li>
+            <li><Link to="/people" style={styles.navLink}>People</Link></li>
+            <li><Link to="/contact" style={styles.navLink}>Contact</Link></li>
+          </div>
+          <div style={styles.rightContainer}>
+            <li>
+              <a href="https://www.instagram.com/dku_ac" target="_blank" rel="noopener noreferrer" style={styles.icon}>
+                <img src={instagramLogo} alt="Instagram" style={styles.icon} />
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/DKUAC" target="_blank" rel="noopener noreferrer" style={styles.icon}>
+                <img src={githubLogo} alt="GitHub" style={styles.icon} />
+              </a>
+            </li>
+            <li>
+              <a href="https://www.dankook.ac.kr" target="_blank" rel="noopener noreferrer" style={styles.icon}>
+                <img src={dankookLogo} alt="Dankook University" style={styles.icon} />
+              </a>
+            </li>
+            <li>
+              <Link to="/login" style={styles.icon}>
+                <img src={loginLogo} alt="Login" style={styles.icon} />
+              </Link>
+            </li>
+          </div>
         </ul>
       </nav>
     </header>
   );
-}
+};
 
 export default Header;
