@@ -1,0 +1,52 @@
+.home {
+  text-align: center;
+  background-color: #3a5ba0;
+  color: white;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.teddy-bear {
+  max-width: 40%;
+  height: auto;
+}
+
+.text-container {
+  margin-left: 20px;
+  text-align: center;
+}
+
+h1, h2 {
+  margin: 0;
+}
+
+h1 {
+  font-size: 4em;
+}
+
+h2 {
+  font-size: 4em;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+}
+
+.since {
+  font-size: 0.75em;
+  margin-left: 10px;
+}
+
+button {
+  background-color: white;
+  color: #3a5ba0;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  margin-top: 20px;
+  border-radius: 20px;
+}
