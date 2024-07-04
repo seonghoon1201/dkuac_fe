@@ -13,7 +13,7 @@ function Header() {
           <li className="logo-container">
             <Link to="/">
               <img src={dkuacLogo} alt="DKUAC" className="logo" />
-              <span className="logo-text">DKUC</span>
+              <span className="logo-text">DKUAC</span>
             </Link>
           </li>
           <li><Link to="/activities" className="nav-link">Activities</Link></li>
