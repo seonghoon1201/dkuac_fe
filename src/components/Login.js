@@ -60,7 +60,7 @@ function Login() {
           </button>
           <Link to="/signup" style={{ width: '100%' }}>
             <button type="button" style={styles.button}>
-              회원가입
+              회원가입 
             </button>
           </Link>
         </div>
