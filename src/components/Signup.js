@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import userInfoStore from "../stores/userInfoStore";
 
 function Signup() {
   const [name, setName] = useState("");
@@ -12,6 +13,7 @@ function Signup() {
   const [verificationSent, setVerificationSent] = useState(false);
   const [verificationError, setVerificationError] = useState("");
   const [isSignupComplete, setIsSignupComplete] = useState(false);
+  const { isLoggedIn } = userInfoStore();
 
   const navigate = useNavigate();
 
@@ -76,7 +78,7 @@ function Signup() {
     console.log("이메일 인증 클릭됨");
     axios
       .post(
-        "http://localhost:3000/auth/create-verification-code",
+        `${process.env.REACT_APP_BACKEND_API_URL}/auth/create-verification-code`,
         {
           studentNumber: studentNumber,
         },
@@ -98,7 +100,7 @@ function Signup() {
   const handleVerificationSubmit = () => {
     axios
       .post(
-        "http://localhost:3000/auth/is-verified",
+        `${process.env.REACT_APP_BACKEND_API_URL}/auth/is-verified`,
         {
           studentNumber: studentNumber,
           codeFromUser: verificationCode,
@@ -130,7 +132,7 @@ function Signup() {
 
     axios
       .post(
-        "http://localhost:3000/auth/signup",
+        `${process.env.REACT_APP_BACKEND_API_URL}/auth/signup`,
         {
           name: name,
           major: major,
@@ -152,6 +154,12 @@ function Signup() {
         alert(`${error.errorMessage}`);
       });
   };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div style={styles.container}>
