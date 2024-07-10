@@ -11,7 +11,7 @@ const Header = () => {
     header: {
       backgroundColor: '#3a5ba0',
       color: 'white',
-      padding: '20px',
+      padding: '2.5vw',
     },
     navList: {
       listStyle: 'none',
@@ -26,29 +26,31 @@ const Header = () => {
       alignItems: 'center',
     },
     logoContainer: {
-      marginRight: '20px', // 왼쪽 메뉴들 사이의 간격
+      marginRight: '2vw', // 왼쪽 메뉴들 사이의 간격
       display: 'flex',
       alignItems: 'center',
       textDecoration: 'none',
     },
     logo: {
-      maxWidth: '40px',
+      maxWidth: '6vw',
       height: 'auto',
-      marginRight: '10px',
+      marginRight: '1vw',
     },
     logoText: {
-      fontSize: '1.5rem',
+      fontSize: '2rem',
       fontWeight: 'bold',
       color: 'white',
       textDecoration: 'none',
       lineHeight: '1.2', // DKUAC 글자와 로고의 높이를 맞추기 위해 조정
-      marginTop: '4px', // 로고 텍스트의 상단 여백 조정
+      marginTop: '0.5vw', // 로고 텍스트의 상단 여백 조정
+      marginBottom: '1vw',
+      marginRight: '2vw',
     },
     navLink: {
       textDecoration: 'none',
       color: 'white',
       fontSize: '1rem',
-      marginRight: '20px', // 왼쪽 메뉴들 사이의 간격
+      marginRight: '3vw', // 왼쪽 메뉴들 사이의 간격
     },
     rightContainer: {
       display: 'flex',
