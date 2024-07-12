@@ -4,7 +4,8 @@ import instagramLogo from "../images/instagram.png";
 import githubLogo from "../images/github.png";
 import dankookLogo from "../images/dankook.png";
 import dkuacLogo from "../images/dkuac.png";
-import loginLogo from "../images/login.png"; // login.png 이미지 import
+import loginLogo from "../images/login.png";
+import logoutIcon from "../images/logout.png"; // logout.png 이미지 import
 import userInfoStore from "../stores/userInfoStore";
 
 const Header = () => {
@@ -27,7 +28,7 @@ const Header = () => {
       alignItems: "center",
     },
     logoContainer: {
-      marginRight: "2vw", // 왼쪽 메뉴들 사이의 간격
+      marginRight: "2vw",
       display: "flex",
       alignItems: "center",
       textDecoration: "none",
@@ -42,8 +43,8 @@ const Header = () => {
       fontWeight: "bold",
       color: "white",
       textDecoration: "none",
-      lineHeight: "1.2", // DKUAC 글자와 로고의 높이를 맞추기 위해 조정
-      marginTop: "0.5vw", // 로고 텍스트의 상단 여백 조정
+      lineHeight: "1.2",
+      marginTop: "0.5vw",
       marginBottom: "1vw",
       marginRight: "2vw",
     },
@@ -51,7 +52,7 @@ const Header = () => {
       textDecoration: "none",
       color: "white",
       fontSize: "1rem",
-      marginRight: "3vw", // 왼쪽 메뉴들 사이의 간격
+      marginRight: "3vw",
     },
     rightContainer: {
       display: "flex",
@@ -60,7 +61,14 @@ const Header = () => {
     icon: {
       maxWidth: "30px",
       height: "auto",
-      marginLeft: "10px", // 오른쪽 아이콘들 사이의 간격
+      marginLeft: "10px",
+      cursor: "pointer",
+    },
+    logoutButton: {
+      border: "none",
+      background: "none",
+      cursor: "pointer",
+      marginLeft: "10px",
     },
   };
 
@@ -74,6 +82,7 @@ const Header = () => {
     clearUserInfoStorage();
     window.location.href = "/";
   };
+
   return (
     <header style={styles.header}>
       <nav>
@@ -138,7 +147,13 @@ const Header = () => {
             </li>
             <li>
               {isLoggedIn ? (
-                <button onClick={handleLogout}>Logout</button>
+                <img
+                  src={logoutIcon}
+                  alt="Logout"
+                  style={styles.icon}
+                  onClick={handleLogout}
+                  className="logout-button"
+                />
               ) : (
                 <Link to="/login" style={styles.icon}>
                   <img src={loginLogo} alt="Login" style={styles.icon} />
