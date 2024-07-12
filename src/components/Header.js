@@ -12,7 +12,7 @@ const Header = () => {
     header: {
       backgroundColor: "#3a5ba0",
       color: "white",
-      padding: "2.5vw",
+      padding: "1vw",
     },
     navList: {
       listStyle: "none",
@@ -33,12 +33,12 @@ const Header = () => {
       textDecoration: "none",
     },
     logo: {
-      maxWidth: "6vw",
+      maxWidth: "40px",
       height: "auto",
       marginRight: "1vw",
     },
     logoText: {
-      fontSize: "2rem",
+      fontSize: "30px",
       fontWeight: "bold",
       color: "white",
       textDecoration: "none",
