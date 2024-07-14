@@ -106,7 +106,7 @@ function Login() {
         />
         <input
           type="password"
-          placeholder="초기 비밀번호는 010을 제외한 전화번호 8자리입니다."
+          placeholder="첫 비번은 010을 제외한 전화번호 8자리입니다."
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           style={styles.inputField}
