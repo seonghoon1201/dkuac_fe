@@ -2,7 +2,10 @@ import React from "react";
 import teddyBear from "../images/teddy_bear.png";
 import explain1 from "../images/explain_1.png";
 import explain2 from "../images/explain_2.png";
-import quotation from "../images/quotation.png";
+import quotation from "../images/quotation.png"; // 큰따옴표 이미지 추가
+import activity1 from "../images/activity1.png";
+import activity2 from "../images/activity2.png";
+import activity3 from "../images/activity3.png";
 import userInfoStore from "../stores/userInfoStore";
 
 function Home() {
@@ -114,7 +117,7 @@ function Home() {
       justifyContent: "center",
       alignItems: "center",
       gap: "2vw",
-      paddingBottom: "5vw",
+      paddingBottom: "5vw", // 하단에 여백 추가
     },
     reviewBox: {
       backgroundColor: "white",
@@ -145,6 +148,60 @@ function Home() {
       fontSize: "1vw", // 글씨 크기 조정
       marginTop: "0.5vw",
     },
+    activitiesSection: {
+      backgroundColor: "white",
+      color: "#3a5ba0",
+      padding: "2vw",
+      textAlign: "left",
+      minHeight: "50vh",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+    },
+    activitiesHeader: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: "2vw",
+      padding: "0 2vw",
+    },
+    activitiesTitle: {
+      fontSize: "4vw",
+      color: "#3a5ba0",
+    },
+    moreButton: {
+      backgroundColor: "white",
+      color: "#3a5ba0",
+      border: "2px solid #3a5ba0",
+      padding: "0.5vw 1.5vw",
+      fontSize: "1.5vw",
+      fontWeight: "600",
+      cursor: "pointer",
+      borderRadius: "25px",
+    },
+    activityContainer: {
+      display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: "2vw",
+    },
+    activityBox: {
+      textAlign: "center",
+      width: "calc(33.33% - 2vw)",
+      boxSizing: "border-box",
+      marginBottom: "2vw",
+    },
+    activityImage: {
+      width: "100%",
+      height: "auto",
+      borderRadius: "1vw",
+    },
+    activityName: {
+      fontSize: "1.5vw",
+      fontWeight: "600",
+      marginTop: "1vw",
+    },
   };
 
   const reviews = [
@@ -167,6 +224,21 @@ function Home() {
       text: "See you at the top",
       author: "박영진",
       department: "산업보안학과 19",
+    },
+  ];
+
+  const activities = [
+    {
+      image: activity1,
+      name: "외벽",
+    },
+    {
+      image: activity2,
+      name: "등산",
+    },
+    {
+      image: activity3,
+      name: "MT",
     },
   ];
 
@@ -217,8 +289,27 @@ function Home() {
           ))}
         </div>
       </div>
+      <div style={styles.activitiesSection}>
+        <div style={styles.activitiesHeader}>
+          <div style={styles.activitiesTitle}>활동</div>
+          <button style={styles.moreButton}>+ 더보기</button>
+        </div>
+        <div style={styles.activityContainer}>
+          {activities.map((activity, index) => (
+            <div key={index} style={styles.activityBox}>
+              <img
+                src={activity.image}
+                alt={activity.name}
+                style={styles.activityImage}
+              />
+              <div style={styles.activityName}>{activity.name}</div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
 
 export default Home;
+
