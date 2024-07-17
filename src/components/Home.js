@@ -106,10 +106,11 @@ function Home() {
       justifyContent: "center",
     },
     reviewsTitle: {
-      fontSize: "4vw",
+      fontSize: "3vw",
       color: "white",
       marginBottom: "2vw",
       marginLeft: "2vw", // 왼쪽에 위치하도록 마진 추가
+      fontWeight: "600",
     },
     reviewContainer: {
       display: "flex",
@@ -166,13 +167,16 @@ function Home() {
       padding: "0 2vw",
     },
     activitiesTitle: {
-      fontSize: "4vw",
+      fontSize: "3vw",
       color: "#3a5ba0",
+      margin: "2vw 0",
+      alignSelf: "flex-start",
+      fontWeight: "600",
     },
     moreButton: {
       backgroundColor: "white",
       color: "#3a5ba0",
-      border: "2px solid #3a5ba0",
+      border: "4px solid #3a5ba0",
       padding: "0.5vw 1.5vw",
       fontSize: "1.5vw",
       fontWeight: "600",
@@ -193,13 +197,14 @@ function Home() {
       marginBottom: "2vw",
     },
     activityImage: {
-      width: "100%",
-      height: "auto",
+      width: "30vw",
+      height: "30vw",
+      objectFit: "cover",
       borderRadius: "1vw",
     },
     activityName: {
-      fontSize: "1.5vw",
-      fontWeight: "600",
+      fontSize: "2vw",
+      fontWeight: "800",
       marginTop: "1vw",
     },
   };
@@ -312,4 +317,3 @@ function Home() {
 }
 
 export default Home;
-
