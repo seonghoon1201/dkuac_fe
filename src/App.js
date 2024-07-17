@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
 import Activities from "./components/Activities";
 import Login from "./components/Login";
-import Signup from "./components/Signup";
+import SignUp from "./pages/SignUp";
 import People from "./components/People";
 import Contact from "./components/Contact";
 import Header from "./components/Header";
@@ -22,7 +22,7 @@ function App() {
           <Route path="/people" element={<People />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/signup" element={<SignUp />} />
         </Routes>
       </div>
     </Router>

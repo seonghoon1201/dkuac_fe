@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import userInfoStore from "../stores/userInfoStore";
+import styles from "./styles";
+import userInfoStore from "../../stores/userInfoStore";
 
-function Signup() {
+function SignUp() {
   const [name, setName] = useState("");
   const [studentNumber, setStudentNumber] = useState("");
   const [major, setmajor] = useState("");
@@ -16,64 +17,6 @@ function Signup() {
   const { isLoggedIn } = userInfoStore();
 
   const navigate = useNavigate();
-
-  const styles = {
-    container: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      height: "100vh",
-      backgroundColor: "#3a5ba0",
-      color: "white",
-    },
-    form: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      width: "300px",
-    },
-    inputField: {
-      width: "100%",
-      padding: "10px",
-      margin: "10px 0",
-      border: "1px solid #ccc",
-      borderRadius: "5px",
-      fontSize: "16px",
-    },
-    button: {
-      width: "100%",
-      padding: "10px",
-      margin: "10px 0",
-      border: "none",
-      borderRadius: "20px",
-      fontSize: "16px",
-      cursor: "pointer",
-      backgroundColor: "#fff",
-      color: "#3a5ba0",
-      fontWeight: "bold",
-    },
-    emailButtonContainer: {
-      display: "flex",
-      justifyContent: "flex-end",
-      width: "100%",
-      marginBottom: "10px",
-    },
-    errorMessage: {
-      color: "red",
-      fontSize: "14px",
-    },
-    link: {
-      textDecoration: "none",
-      color: "#3a5ba0",
-      fontWeight: "bold",
-      backgroundColor: "#fff",
-      padding: "10px 20px",
-      borderRadius: "20px",
-      marginTop: "10px",
-    },
-  };
-
   const handleEmailVerification = () => {
     console.log("이메일 인증 클릭됨");
     axios
@@ -259,4 +202,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default SignUp;
