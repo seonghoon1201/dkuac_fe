@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import instagramLogo from "../../images/instagram.png";
 import githubLogo from "../../images/github.png";
@@ -8,15 +8,17 @@ import loginLogo from "../../images/login.png";
 import logoutIcon from "../../images/logout.png"; // logout.png 이미지 import
 import styles from "./styles";
 import userInfoStore from "../../stores/userInfoStore";
+import { useCookies } from "react-cookie";
 
 const Header = () => {
   const { isLoggedIn } = userInfoStore();
   const clearUserInfoStorage = userInfoStore.persist.clearStorage;
+  const [cookies, setCookie, removeCookie] = useCookies(["refreshToken"]);
 
   const handleLogout = (e) => {
     e.preventDefault();
     localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
+    removeCookie("refreshToken");
     clearUserInfoStorage();
     window.location.href = "/";
   };
