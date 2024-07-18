@@ -28,6 +28,8 @@ function App() {
             clearUserInfoStorage();
           }
           console.error(error);
+          alert("다시 로그인해주세요.");
+          window.location.href = "/login";
         });
     }
   }, []);
