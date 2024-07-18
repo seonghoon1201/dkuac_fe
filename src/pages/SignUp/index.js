@@ -18,7 +18,6 @@ function SignUp() {
 
   const navigate = useNavigate();
   const handleEmailVerification = () => {
-    console.log("이메일 인증 클릭됨");
     axios
       .post(
         `${process.env.REACT_APP_BACKEND_API_URL}/auth/create-verification-code`,
@@ -30,7 +29,6 @@ function SignUp() {
         }
       )
       .then((response) => {
-        console.log("인증 코드 전송 성공:", response.data);
         setVerificationSent(true);
         setVerificationError(""); // 이메일 인증 코드가 성공적으로 전송됨을 설정합니다.
       })

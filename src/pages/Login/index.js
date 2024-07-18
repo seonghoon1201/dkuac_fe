@@ -73,11 +73,10 @@ function Login() {
         const {
           user: { id },
           accessToken,
-          refreshToken,
+          expiredTime,
         } = res.data;
         localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem("refreshToken", refreshToken);
-        setUserInfo({ id, isLoggedIn: true });
+        setUserInfo({ id, isLoggedIn: true, expiredTime });
         navigate("/");
       })
       .catch((err) => {
@@ -87,11 +86,11 @@ function Login() {
       });
   };
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      navigate("/");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     navigate("/");
+  //   }
+  // }, []);
 
   return (
     <div style={styles.container}>
