@@ -167,6 +167,11 @@ const styles = {
     fontWeight: "600",
     cursor: "pointer",
     borderRadius: "25px",
+    textDecoration: "none", // 밑줄 제거
+    display: "inline-block", // 인라인 블록 요소로 설정
+    position: "relative", // 상대적 위치 설정
+    overflow: "hidden", // 오버플로우 숨기기
+    transition: "color 0.3s, background-color 0.3s", // 트랜지션 추가
   },
   activityContainer: {
     display: "flex",
