@@ -7,6 +7,7 @@ import activity1 from "../../images/activity1.png";
 import activity2 from "../../images/activity2.png";
 import activity3 from "../../images/activity3.png";
 import styles from "./styles";
+import { Link } from 'react-router-dom';
 
 function Home() {
   const handleButtonClick = () => {
@@ -102,7 +103,9 @@ function Home() {
       <div style={styles.activitiesSection}>
         <div style={styles.activitiesHeader}>
           <div style={styles.activitiesTitle}>활동</div>
-          <button style={styles.moreButton}>+ 더보기</button>
+          <Link to="/activities" style={styles.moreButton}>
+            + 더보기
+          </Link>
         </div>
         <div style={styles.activityContainer}>
           {activities.map((activity, index) => (
