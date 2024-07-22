@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
 import instagramLogo from "../../images/instagram.png";
 import githubLogo from "../../images/github.png";
 import dankookLogo from "../../images/dankook.png";
@@ -13,6 +13,8 @@ import { basicAxios } from "../../api/axios";
 const Header = () => {
   const { isLoggedIn } = userInfoStore();
   const clearUserInfoStorage = userInfoStore.persist.clearStorage;
+  const [cookies, setCookie, removeCookie] = useCookies(["refreshToken"]);
+  const location = useLocation();
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -44,17 +46,35 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              <Link to="/activities" style={styles.navLink}>
+              <Link 
+                to="/activities" 
+                style={{
+                  ...styles.navLink, 
+                  color: location.pathname === "/activities" ? "black" : "white"
+                }}
+              >
                 Activities
               </Link>
             </li>
             <li>
-              <Link to="/people" style={styles.navLink}>
+              <Link 
+                to="/people" 
+                style={{
+                  ...styles.navLink, 
+                  color: location.pathname === "/people" ? "black" : "white"
+                }}
+              >
                 People
               </Link>
             </li>
             <li>
-              <Link to="/contact" style={styles.navLink}>
+              <Link 
+                to="/contact" 
+                style={{
+                  ...styles.navLink, 
+                  color: location.pathname === "/contact" ? "black" : "white"
+                }}
+              >
                 Contact
               </Link>
             </li>

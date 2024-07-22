@@ -51,6 +51,7 @@ function Activities() {
 
   const handleTermChange = (term) => {
     setSelectedTerm(term);
+    setShowCalendar(false); // 캘린더 닫기
     if (activityRef.current) {
       activityRef.current.scrollIntoView({ behavior: 'smooth' });
     }
@@ -161,6 +162,7 @@ function Activities() {
           </div>
         ) : (
           <div style={styles.calendarContainer} ref={calendarRef}>
+          <div style={styles.calendarWrapper}>
             <Calendar
               onChange={handleDateChange}
               value={selectedDate}
@@ -171,24 +173,26 @@ function Activities() {
               }
               tileClassName={styles.calendarTile}
               showWeekDayNames={true} // 요일 표시 설정
+              style={styles.calendar} // 추가된 부분
             />
-            <div style={styles.selectedDateContainer}>
-              <div style={styles.selectedDate}>
-                {selectedDate.toDateString()} <FaPlus style={styles.addIcon} onClick={handleAddEvent} />
-              </div>
-              <div style={styles.eventList}>
-                {events
-                  .filter((event) => event.date === selectedDate.toISOString().split('T')[0])
-                  .map((event, index) => (
-                    <div key={index} style={styles.eventItem}>
-                      <div>{event.title}</div>
-                      <div>{event.content}</div>
-                      <FaTrash style={styles.deleteIcon} onClick={() => handleDeleteEvent(event.id)} />
-                    </div>
-                  ))}
-              </div>
+          </div>
+          <div style={styles.selectedDateContainer}>
+            <div style={styles.selectedDate}>
+              {selectedDate.toDateString()} <FaPlus style={styles.addIcon} onClick={handleAddEvent} />
+            </div>
+            <div style={styles.eventList}>
+              {events
+                .filter((event) => event.date === selectedDate.toISOString().split('T')[0])
+                .map((event, index) => (
+                  <div key={index} style={styles.eventItem}>
+                    <div>{event.title}</div>
+                    <div>{event.content}</div>
+                    <FaTrash style={styles.deleteIcon} onClick={() => handleDeleteEvent(event.id)} />
+                  </div>
+                ))}
             </div>
           </div>
+        </div>
         )}
       </div>
       {isPopupOpen && (
