@@ -9,6 +9,7 @@ import logoutIcon from "../../images/logout.png";
 import styles from "./styles";
 import userInfoStore from "../../stores/userInfoStore";
 import { basicAxios } from "../../api/axios";
+import { useCookies } from "react-cookie";
 
 const Header = () => {
   const { isLoggedIn } = userInfoStore();
@@ -46,44 +47,45 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              <Link 
-                to="/activities" 
+              <Link
+                to="/activities"
                 style={{
-                  ...styles.navLink, 
-                  color: location.pathname === "/activities" ? "black" : "white"
+                  ...styles.navLink,
+                  color:
+                    location.pathname === "/activities" ? "black" : "white",
                 }}
               >
                 Activities
               </Link>
             </li>
             <li>
-              <Link 
-                to="/equipment" 
+              <Link
+                to="/equipment"
                 style={{
-                  ...styles.navLink, 
-                  color: location.pathname === "/equipment" ? "black" : "white"
+                  ...styles.navLink,
+                  color: location.pathname === "/equipment" ? "black" : "white",
                 }}
               >
                 Equipment
               </Link>
             </li>
             <li>
-              <Link 
-                to="/people" 
+              <Link
+                to="/people"
                 style={{
-                  ...styles.navLink, 
-                  color: location.pathname === "/people" ? "black" : "white"
+                  ...styles.navLink,
+                  color: location.pathname === "/people" ? "black" : "white",
                 }}
               >
                 People
               </Link>
             </li>
             <li>
-              <Link 
-                to="/contact" 
+              <Link
+                to="/contact"
                 style={{
-                  ...styles.navLink, 
-                  color: location.pathname === "/contact" ? "black" : "white"
+                  ...styles.navLink,
+                  color: location.pathname === "/contact" ? "black" : "white",
                 }}
               >
                 Contact
