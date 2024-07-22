@@ -123,3 +123,7 @@ button {
   margin-top: 20px;
   border-radius: 20px;
 }
+
+div{
+  white-space: pre-wrap;
+}

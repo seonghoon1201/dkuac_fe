@@ -20,7 +20,7 @@ function SignUp() {
   const handleEmailVerification = () => {
     axios
       .post(
-        `${process.env.REACT_APP_BACKEND_API_URL}/auth/create-verification-code`,
+        `http://localhost:3000/auth/create-verification-code`,
         {
           studentNumber: studentNumber,
         },
@@ -73,7 +73,7 @@ function SignUp() {
 
     axios
       .post(
-        `${process.env.REACT_APP_BACKEND_API_URL}/auth/signup`,
+        `http://localhost:3000/auth/signup`,
         {
           name: name,
           major: major,

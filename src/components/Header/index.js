@@ -5,7 +5,7 @@ import githubLogo from "../../images/github.png";
 import dankookLogo from "../../images/dankook.png";
 import dkuacLogo from "../../images/dkuac.png";
 import loginLogo from "../../images/login.png";
-import logoutIcon from "../../images/logout.png"; // logout.png 이미지 import
+import logoutIcon from "../../images/logout.png";
 import styles from "./styles";
 import userInfoStore from "../../stores/userInfoStore";
 import { basicAxios } from "../../api/axios";
@@ -54,6 +54,17 @@ const Header = () => {
                 }}
               >
                 Activities
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/equipment" 
+                style={{
+                  ...styles.navLink, 
+                  color: location.pathname === "/equipment" ? "black" : "white"
+                }}
+              >
+                Equipment
               </Link>
             </li>
             <li>

@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Activities from "./pages/Activities";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import Activities from "./pages/Activities";
+import Equipment from "./pages/Equipment";
 import People from "./pages/People";
 import Contact from "./pages/Contact";
 import Header from "./components/Header";
@@ -14,6 +15,7 @@ import "./App.css";
 function App() {
   const { isLoggedIn, expiredTime } = userInfoStore();
   const clearUserInfoStorage = userInfoStore.persist.clearStorage;
+
   useEffect(() => {
     let now = new Date().toUTCString();
     if (expiredTime && expiredTime < now) {
@@ -23,7 +25,7 @@ function App() {
           localStorage.setItem("accessToken", res.data.accessToken);
         })
         .catch((error) => {
-          if (error.response.status === 401) {
+          if (error.response && error.response.status === 401) {
             localStorage.removeItem("accessToken");
             clearUserInfoStorage();
           }
@@ -32,7 +34,7 @@ function App() {
           window.location.href = "/login";
         });
     }
-  }, []);
+  }, [expiredTime]); // 종속성 배열에 expiredTime 추가
 
   return (
     <Router>
@@ -41,6 +43,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route path="/activities" element={<Activities />} />
+          <Route path="/equipment" element={<Equipment />} />
           <Route path="/people" element={<People />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={isLoggedIn ? <Home /> : <Login />} />
