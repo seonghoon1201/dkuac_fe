@@ -93,6 +93,16 @@ const styles = {
     cursor: "pointer",
     marginRight: "10px",
   },
+  returnButton: {
+    padding: "10px 20px",
+    fontSize: "16px",
+    backgroundColor: "red",
+    color: "white",
+    border: "none",
+    borderRadius: "4px",
+    cursor: "pointer",
+    marginRight: "10px",
+  },
   buttonContainer: {
     display: "flex",
     justifyContent: "center",
@@ -115,6 +125,10 @@ const styles = {
     fontSize: "14px",
     color: "#3a5ba0",
     marginBottom: "10px",
+  },
+  returnMessage: {
+    fontSize: "16px",
+    color: "#3a5ba0",
   },
 };
 
