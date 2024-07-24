@@ -8,7 +8,7 @@ import activity2 from '../../images/activity2.png';
 import activity3 from '../../images/activity3.png';
 import { FaCaretDown, FaCaretRight, FaPlus, FaTrash } from 'react-icons/fa'; // 아이콘 추가
 import styles from './styles';
-import { basicAxios } from "../../api/axios"; // authAxios 필요 없음
+import { authAxios } from "../../api/axios"; // authAxios 필요 없음
 
 function Activities() {
   const [selectedTerm, setSelectedTerm] = useState('2024-1');
@@ -65,9 +65,17 @@ function Activities() {
     };
 
     try {
-      const createdEvent = await createSchedule(newEvent);
+      // API 요청을 보내고 응답을 받음
+      const response = await authAxios.post('/schedule', newEvent);
+      const createdEvent = response.data;
+
+      // 이벤트 리스트에 추가
       setEvents([...events, createdEvent]);
-      handlePopupClose();
+
+      // 팝업을 닫고 입력 필드를 초기화
+      setIsPopupOpen(false);
+      setNewEventTitle('');
+      setNewEventContent('');
     } catch (error) {
       console.error('Error creating event:', error);
     }
@@ -75,30 +83,10 @@ function Activities() {
 
   const handleDeleteEvent = async (eventId) => {
     try {
-      await deleteSchedule(eventId);
+      await authAxios.delete(`/schedule/${eventId}`);
       setEvents(events.filter((event) => event.id !== eventId));
     } catch (error) {
       console.error('Error deleting event:', error);
-    }
-  };
-
-  const createSchedule = async (schedule) => {
-    try {
-      const response = await basicAxios.post(`/schedule`, schedule); // 엔드포인트 수정
-      return response.data;
-    } catch (error) {
-      console.error('Error creating schedule:', error);
-      throw error;
-    }
-  };
-  
-  const deleteSchedule = async (id) => {
-    try {
-      const response = await basicAxios.delete(`/schedule/${id}`);
-      return response.data;
-    } catch (error) {
-      console.error('Error deleting schedule:', error);
-      throw error;
     }
   };
 
