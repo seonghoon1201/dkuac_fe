@@ -1,36 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import axios from 'axios';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css'; // 캘린더 기본 스타일 가져오기
+import { format, getDay } from 'date-fns';
+import { ko } from 'date-fns/locale'; // locale 임포트
 import activity1 from '../../images/activity1.png';
 import activity2 from '../../images/activity2.png';
 import activity3 from '../../images/activity3.png';
 import { FaCaretDown, FaCaretRight, FaPlus, FaTrash } from 'react-icons/fa'; // 아이콘 추가
 import styles from './styles';
-import { basicAxios, authAxios } from "../../api/axios";
-
-// API 요청 함수
-const API_BASE_URL = 'http://localhost:3000/api';
-
-const createSchedule = async (schedule) => {
-  try {
-    const response = await basicAxios.post(`/schedule`, schedule); // 엔드포인트 수정
-    return response.data;
-  } catch (error) {
-    console.error('Error creating schedule:', error);
-    throw error;
-  }
-};
-
-const deleteSchedule = async (id) => {
-  try {
-    const response = await axios.delete(`${API_BASE_URL}/schedule/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error('Error deleting schedule:', error);
-    throw error;
-  }
-};
+import { basicAxios } from "../../api/axios"; // authAxios 필요 없음
 
 function Activities() {
   const [selectedTerm, setSelectedTerm] = useState('2024-1');
@@ -104,6 +82,26 @@ function Activities() {
     }
   };
 
+  const createSchedule = async (schedule) => {
+    try {
+      const response = await basicAxios.post(`/schedule`, schedule); // 엔드포인트 수정
+      return response.data;
+    } catch (error) {
+      console.error('Error creating schedule:', error);
+      throw error;
+    }
+  };
+  
+  const deleteSchedule = async (id) => {
+    try {
+      const response = await basicAxios.delete(`/schedule/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error deleting schedule:', error);
+      throw error;
+    }
+  };
+
   const terms = ['2023-1', '2023-2', '2024-1'];
 
   const activities = {
@@ -122,6 +120,12 @@ function Activities() {
       { image: activity1, name: '외벽' },
       { image: activity2, name: '등산' },
     ],
+  };
+
+  const customWeekDays = ['일', '월', '화', '수', '목', '금', '토'];
+
+  const formatShortWeekday = (locale, date) => {
+    return customWeekDays[getDay(date)];
   };
 
   return (
@@ -173,7 +177,9 @@ function Activities() {
                   ) : null
                 }
                 tileClassName={styles.calendarTile}
-                showWeekDayNames={true} // 요일 표시 설정
+                showWeekDayNames={true}
+                locale="ko-KR"
+                formatShortWeekday={(locale, date) => formatShortWeekday(locale, date)} // 요일 형식 설정
                 style={styles.calendar} // 추가된 부분
               />
             </div>
@@ -213,8 +219,10 @@ function Activities() {
               onChange={(e) => setNewEventContent(e.target.value)}
               style={styles.textarea}
             />
-            <button onClick={handleEventSubmit} style={styles.submitButton}>등록하기</button>
-            <button onClick={handlePopupClose} style={styles.cancelButton}>취소하기</button>
+            <div style={styles.popupButtonsContainer}>
+              <button onClick={handleEventSubmit} style={styles.submitButton}>등록하기</button>
+              <button onClick={handlePopupClose} style={styles.cancelButton}>취소하기</button>
+            </div>
           </div>
         </div>
       )}
