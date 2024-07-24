@@ -5,7 +5,9 @@ const userInfoStore = create(
   persist(
     (set) => ({
       id: 0,
+      isStaff: false,
       isLoggedIn: false,
+      expiredTime: "",
       setUserInfo: (userInfo) =>
         set((state) => ({
           ...state,

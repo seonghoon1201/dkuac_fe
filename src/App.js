@@ -13,7 +13,7 @@ import { authAxios, basicAxios } from "./api/axios";
 import "./App.css";
 
 function App() {
-  const { isLoggedIn, expiredTime } = userInfoStore();
+  const { isLoggedIn, expiredTime, isStaff } = userInfoStore();
   const clearUserInfoStorage = userInfoStore.persist.clearStorage;
 
   useEffect(() => {
