@@ -7,13 +7,14 @@ import activity2 from '../../images/activity2.png';
 import activity3 from '../../images/activity3.png';
 import { FaCaretDown, FaCaretRight, FaPlus, FaTrash } from 'react-icons/fa'; // 아이콘 추가
 import styles from './styles';
+import { basicAxios, authAxios } from "../../api/axios";
 
 // API 요청 함수
 const API_BASE_URL = 'http://localhost:3000/api';
 
 const createSchedule = async (schedule) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/schedule/ScheduleController_createSchedule`, schedule);
+    const response = await basicAxios.post(`/schedule`, schedule); // 엔드포인트 수정
     return response.data;
   } catch (error) {
     console.error('Error creating schedule:', error);
@@ -162,37 +163,37 @@ function Activities() {
           </div>
         ) : (
           <div style={styles.calendarContainer} ref={calendarRef}>
-          <div style={styles.calendarWrapper}>
-            <Calendar
-              onChange={handleDateChange}
-              value={selectedDate}
-              tileContent={({ date, view }) =>
-                view === 'month' && events.some((event) => event.date === date.toISOString().split('T')[0]) ? (
-                  <p>일정 있음</p>
-                ) : null
-              }
-              tileClassName={styles.calendarTile}
-              showWeekDayNames={true} // 요일 표시 설정
-              style={styles.calendar} // 추가된 부분
-            />
-          </div>
-          <div style={styles.selectedDateContainer}>
-            <div style={styles.selectedDate}>
-              {selectedDate.toDateString()} <FaPlus style={styles.addIcon} onClick={handleAddEvent} />
+            <div style={styles.calendarWrapper}>
+              <Calendar
+                onChange={handleDateChange}
+                value={selectedDate}
+                tileContent={({ date, view }) =>
+                  view === 'month' && events.some((event) => event.date === date.toISOString().split('T')[0]) ? (
+                    <p>일정 있음</p>
+                  ) : null
+                }
+                tileClassName={styles.calendarTile}
+                showWeekDayNames={true} // 요일 표시 설정
+                style={styles.calendar} // 추가된 부분
+              />
             </div>
-            <div style={styles.eventList}>
-              {events
-                .filter((event) => event.date === selectedDate.toISOString().split('T')[0])
-                .map((event, index) => (
-                  <div key={index} style={styles.eventItem}>
-                    <div>{event.title}</div>
-                    <div>{event.content}</div>
-                    <FaTrash style={styles.deleteIcon} onClick={() => handleDeleteEvent(event.id)} />
-                  </div>
-                ))}
+            <div style={styles.selectedDateContainer}>
+              <div style={styles.selectedDate}>
+                {selectedDate.toDateString()} <FaPlus style={styles.addIcon} onClick={handleAddEvent} />
+              </div>
+              <div style={styles.eventList}>
+                {events
+                  .filter((event) => event.date === selectedDate.toISOString().split('T')[0])
+                  .map((event, index) => (
+                    <div key={index} style={styles.eventItem}>
+                      <div>{event.title}</div>
+                      <div>{event.content}</div>
+                      <FaTrash style={styles.deleteIcon} onClick={() => handleDeleteEvent(event.id)} />
+                    </div>
+                  ))}
+              </div>
             </div>
           </div>
-        </div>
         )}
       </div>
       {isPopupOpen && (
