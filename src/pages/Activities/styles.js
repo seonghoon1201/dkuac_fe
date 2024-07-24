@@ -102,6 +102,9 @@ const styles = {
     flex: 3, // 더 많은 공간을 차지하도록 설정
     padding: '1vw',
     boxSizing: 'border-box',
+    width: '100%',
+    height: 'auto',
+    color: 'black',
   },
   calendar: {
     width: '100%', // 캘린더가 컨테이너 너비에 맞춰서 커지도록 설정
@@ -183,6 +186,11 @@ const styles = {
     borderRadius: '0.5vw',
     border: '1px solid #ccc',
   },
+  popupButtonsContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
   submitButton: {
     padding: '1vw 2vw',
     fontSize: '1vw',
@@ -193,6 +201,7 @@ const styles = {
     borderRadius: '0.5vw',
     cursor: 'pointer',
     marginBottom: '1vw',
+    marginRight: '1vw', // 버튼 사이에 여백 추가
   },
   cancelButton: {
     padding: '1vw 2vw',
