@@ -65,7 +65,6 @@ function Activities() {
     };
 
     try {
-      // API 요청을 보내고 응답을 받음
       const response = await authAxios.post('/schedule', newEvent);
       const createdEvent = response.data;
 
