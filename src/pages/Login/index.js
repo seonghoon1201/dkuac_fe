@@ -27,12 +27,12 @@ function Login() {
       })
       .then((res) => {
         const {
-          user: { id },
+          user: { id, isStaff },
           accessToken,
           expiredTime,
         } = res.data;
         localStorage.setItem("accessToken", accessToken);
-        setUserInfo({ id, isLoggedIn: true, expiredTime });
+        setUserInfo({ id, isStaff, isLoggedIn: true, expiredTime });
         navigate("/");
       })
       .catch((err) => {
