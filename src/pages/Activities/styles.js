@@ -56,9 +56,11 @@ const styles = {
     borderRadius: '1vw',
     padding: '2vw',
     boxShadow: '0 0.5vw 1vw rgba(0, 0, 0, 0.1)',
+    color: '#3a5ba0',
   },
   bannerItem: {
     marginBottom: '2vw',
+    color: '#3a5ba0',
   },
   bannerTitle: {
     fontSize: '2vw',
