@@ -131,3 +131,8 @@ div{
 .react-calendar__month-view__weekdays__weekday abbr {
   text-decoration: none; /* 밑줄 제거 */
 }
+
+.react-calendar{
+  width: 100%;
+  height: 300px;
+}

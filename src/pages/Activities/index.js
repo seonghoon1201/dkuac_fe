@@ -8,13 +8,14 @@ import activity2 from '../../images/activity2.png';
 import activity3 from '../../images/activity3.png';
 import { FaCaretDown, FaCaretRight, FaPlus, FaTrash } from 'react-icons/fa'; // 아이콘 추가
 import styles from './styles';
-import { authAxios } from "../../api/axios"; // authAxios 필요 없음
+import { basicAxios, authAxios } from "../../api/axios";
 
 function Activities() {
   const [selectedTerm, setSelectedTerm] = useState('2024-1');
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showCalendar, setShowCalendar] = useState(false);
-  const [events, setEvents] = useState([]); // 일정 상태 추가
+  const [events, setEvents] = useState([]); // 전체 일정 상태
+  const [dayEvents, setDayEvents] = useState([]); // 선택된 날짜의 일정 상태
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [newEventTitle, setNewEventTitle] = useState('');
   const [newEventContent, setNewEventContent] = useState('');
@@ -22,11 +23,23 @@ function Activities() {
   const calendarRef = useRef(null);
 
   useEffect(() => {
-    // componentDidMount 와 동일한 역할을 수행
+    fetchEvents();
+  }, [selectedDate]);
+
+  useEffect(() => {
     if (calendarRef.current) {
       calendarRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [showCalendar]); // showCalendar가 변할 때마다 useEffect가 실행
+
+  const fetchEvents = async () => {
+    try {
+      const response = await basicAxios.get('/schedule/day', { params: { date: selectedDate.toISOString().split('T')[0] } });
+      setDayEvents(response.data);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  };
 
   const handleTermChange = (term) => {
     setSelectedTerm(term);
@@ -38,6 +51,7 @@ function Activities() {
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
+    fetchEvents(); // 날짜를 변경할 때마다 이벤트를 새로 가져옴
     if (activityRef.current) {
       activityRef.current.scrollIntoView({ behavior: 'smooth' });
     }
@@ -69,7 +83,7 @@ function Activities() {
       const createdEvent = response.data;
 
       // 이벤트 리스트에 추가
-      setEvents([...events, createdEvent]);
+      setDayEvents([...dayEvents, createdEvent]);
 
       // 팝업을 닫고 입력 필드를 초기화
       setIsPopupOpen(false);
@@ -83,7 +97,7 @@ function Activities() {
   const handleDeleteEvent = async (eventId) => {
     try {
       await authAxios.delete(`/schedule/${eventId}`);
-      setEvents(events.filter((event) => event.id !== eventId));
+      setDayEvents(dayEvents.filter((event) => event.id !== eventId));
     } catch (error) {
       console.error('Error deleting event:', error);
     }
@@ -153,37 +167,41 @@ function Activities() {
             </div>
           </div>
         ) : (
-          <div style={styles.calendarContainer} ref={calendarRef}>
-            <div style={styles.calendarWrapper}>
-              <Calendar
-                onChange={handleDateChange}
-                value={selectedDate}
-                tileContent={({ date, view }) =>
-                  view === 'month' && events.some((event) => event.date === date.toISOString().split('T')[0]) ? (
-                    <p>일정 있음</p>
-                  ) : null
-                }
-                tileClassName={styles.calendarTile}
-                showWeekDayNames={true}
-                locale="ko-KR"
-                formatShortWeekday={(locale, date) => formatShortWeekday(locale, date)} // 요일 형식 설정
-                style={styles.calendar} // 추가된 부분
-              />
+          <div style={styles.calendarAndEventContainer}>
+            <div style={styles.calendarContainer} ref={calendarRef}>
+              <div style={styles.calendarWrapper}>
+                <Calendar
+                  onChange={handleDateChange}
+                  value={selectedDate}
+                  tileContent={({ date, view }) =>
+                    view === 'month' && events.some((event) => event.date === date.toISOString().split('T')[0]) ? (
+                      <div style={{ backgroundColor: 'blue', borderRadius: '50%', width: '8px', height: '8px', margin: 'auto' }}></div>
+                    ) : null
+                  }
+                  tileClassName={styles.calendarTile}
+                  showWeekDayNames={true}
+                  locale="ko-KR"
+                  formatShortWeekday={(locale, date) => formatShortWeekday(locale, date)}
+                  style={styles.calendar}
+                />
+              </div>
             </div>
-            <div style={styles.selectedDateContainer}>
+            <div style={styles.eventContainer}>
               <div style={styles.selectedDate}>
-                {selectedDate.toDateString()} <FaPlus style={styles.addIcon} onClick={handleAddEvent} />
+                {format(selectedDate, 'PPP', { locale: ko })} <FaPlus style={styles.addIcon} onClick={handleAddEvent} />
               </div>
               <div style={styles.eventList}>
-                {events
-                  .filter((event) => event.date === selectedDate.toISOString().split('T')[0])
-                  .map((event, index) => (
+                {dayEvents.length > 0 ? (
+                  dayEvents.map((event, index) => (
                     <div key={index} style={styles.eventItem}>
                       <div>{event.title}</div>
                       <div>{event.content}</div>
                       <FaTrash style={styles.deleteIcon} onClick={() => handleDeleteEvent(event.id)} />
                     </div>
-                  ))}
+                  ))
+                ) : (
+                  <div style={styles.noEvent}>일정이 없습니다.</div>
+                )}
               </div>
             </div>
           </div>
@@ -200,14 +218,14 @@ function Activities() {
               onChange={(e) => setNewEventTitle(e.target.value)}
               style={styles.input}
             />
-            <textarea
+                        <textarea
               placeholder="일정 내용"
               value={newEventContent}
               onChange={(e) => setNewEventContent(e.target.value)}
               style={styles.textarea}
             />
             <div style={styles.popupButtonsContainer}>
-              <button onClick={handleEventSubmit} style={styles.submitButton}>등록하기</button>
+              <button onClick={handleEventSubmit} style={styles.submitButton}>등록</button>
               <button onClick={handlePopupClose} style={styles.cancelButton}>취소하기</button>
             </div>
           </div>
