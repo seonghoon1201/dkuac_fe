@@ -145,6 +145,7 @@ const styles = {
     borderRadius: '0.5vw',
     boxShadow: '0 0.5vw 1vw rgba(0, 0, 0, 0.1)',
     marginBottom: '1vw',
+    color: '#3a5ba0', // Change event text color to blue
   },
   deleteIcon: {
     cursor: 'pointer',

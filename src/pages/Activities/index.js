@@ -14,7 +14,6 @@ function Activities() {
   const [selectedTerm, setSelectedTerm] = useState('2024-1');
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showCalendar, setShowCalendar] = useState(false);
-  const [events, setEvents] = useState([]); // 전체 일정 상태
   const [dayEvents, setDayEvents] = useState([]); // 선택된 날짜의 일정 상태
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [newEventTitle, setNewEventTitle] = useState('');
@@ -34,10 +33,12 @@ function Activities() {
 
   const fetchEvents = async () => {
     try {
-      const response = await basicAxios.get('/schedule/day', { params: { date: selectedDate.toISOString().split('T')[0] } });
+      const response = await basicAxios.get('/schedule/day', { date: selectedDate.toISOString().split('T')[0] });
+      console.log(response.data);
       setDayEvents(response.data);
     } catch (error) {
       console.error('Error fetching events:', error);
+      setDayEvents([]); // 일정이 없는 경우 dayEvents를 빈 배열로 설정
     }
   };
 
@@ -51,7 +52,7 @@ function Activities() {
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
-    fetchEvents(); // 날짜를 변경할 때마다 이벤트를 새로 가져옴
+    fetchEvents(); // 날짜 변경 시 해당 날짜의 이벤트를 가져옴
     if (activityRef.current) {
       activityRef.current.scrollIntoView({ behavior: 'smooth' });
     }
@@ -174,7 +175,7 @@ function Activities() {
                   onChange={handleDateChange}
                   value={selectedDate}
                   tileContent={({ date, view }) =>
-                    view === 'month' && events.some((event) => event.date === date.toISOString().split('T')[0]) ? (
+                    view === 'month' && dayEvents.some((event) => event.date === date.toISOString().split('T')[0]) ? (
                       <div style={{ backgroundColor: 'blue', borderRadius: '50%', width: '8px', height: '8px', margin: 'auto' }}></div>
                     ) : null
                   }
@@ -186,7 +187,7 @@ function Activities() {
                 />
               </div>
             </div>
-            <div style={styles.eventContainer}>
+            <div style={styles.selectedDateContainer}>
               <div style={styles.selectedDate}>
                 {format(selectedDate, 'PPP', { locale: ko })} <FaPlus style={styles.addIcon} onClick={handleAddEvent} />
               </div>
@@ -194,13 +195,13 @@ function Activities() {
                 {dayEvents.length > 0 ? (
                   dayEvents.map((event, index) => (
                     <div key={index} style={styles.eventItem}>
-                      <div>{event.title}</div>
-                      <div>{event.content}</div>
+                      <div style={styles.eventTitle}>{event.title}</div>
+                      <div style={styles.eventContent}>{event.content}</div>
                       <FaTrash style={styles.deleteIcon} onClick={() => handleDeleteEvent(event.id)} />
                     </div>
                   ))
                 ) : (
-                  <div style={styles.noEvent}>일정이 없습니다.</div>
+                  <div style={styles.noEventsMessage}>일정이 없습니다.</div>
                 )}
               </div>
             </div>
@@ -218,20 +219,20 @@ function Activities() {
               onChange={(e) => setNewEventTitle(e.target.value)}
               style={styles.input}
             />
-                        <textarea
+            <textarea
               placeholder="일정 내용"
               value={newEventContent}
               onChange={(e) => setNewEventContent(e.target.value)}
               style={styles.textarea}
             />
             <div style={styles.popupButtonsContainer}>
-              <button onClick={handleEventSubmit} style={styles.submitButton}>등록</button>
-              <button onClick={handlePopupClose} style={styles.cancelButton}>취소하기</button>
-            </div>
+            <button onClick={handleEventSubmit} style={styles.submitButton}>등록</button>
+            <button onClick={handlePopupClose} style={styles.cancelButton}>취소</button>
           </div>
         </div>
-      )}
-    </div>
+      </div>
+    )}
+  </div>
   );
 }
 
