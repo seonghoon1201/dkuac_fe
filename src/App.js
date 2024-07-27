@@ -11,6 +11,7 @@ import Header from "./components/Header";
 import userInfoStore from "./stores/userInfoStore";
 import { authAxios, basicAxios } from "./api/axios";
 import "./App.css";
+import Schedules from "./pages/Schedules";
 
 function App() {
   const { isLoggedIn, expiredTime, isStaff } = userInfoStore();
@@ -43,6 +44,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route path="/activities" element={<Activities />} />
+          <Route path="/schedules" element={<Schedules />} />
           <Route path="/equipment" element={<Equipment />} />
           <Route path="/people" element={<People />} />
           <Route path="/contact" element={<Contact />} />
