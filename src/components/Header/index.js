@@ -24,9 +24,7 @@ const Header = () => {
     // 백엔드에 요청 보내기
     basicAxios
       .post("/auth/logout")
-      .then((res) => {
-        console.log(res);
-      })
+      .then((res) => {})
       .catch((e) => {
         console.error(e);
         alert("로그아웃 과정에서 에러가 발생했습니다.");

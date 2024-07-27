@@ -37,6 +37,11 @@ const styles = {
     alignItems: "center",
     padding: "0.5vw 0",
   },
+  selectedTerm: {
+    color: "#3a5ba0",
+    fontSize: "12px", // 고정 글씨 크기
+    fontWeight: "bold",
+  },
 };
 
 export default styles;
