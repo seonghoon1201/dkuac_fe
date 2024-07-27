@@ -5,14 +5,13 @@ import styles from "./styles";
 
 function Sidebar() {
   const [selectedTerm, setSelectedTerm] = useState("2024-1");
-  const [selectedDate, setSelectedDate] = useState(new Date());
   const [showCalendar, setShowCalendar] = useState(false);
   const activityRef = useRef(null);
   const calendarRef = useRef(null);
   const navigate = useNavigate();
   const handleTermChange = (term) => {
     setSelectedTerm(term);
-    setShowCalendar(false); // 캘린더 닫기
+    console.log(term);
     if (activityRef.current) {
       activityRef.current.scrollIntoView({ behavior: "smooth" });
     }

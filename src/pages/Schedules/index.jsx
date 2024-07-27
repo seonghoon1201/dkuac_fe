@@ -1,19 +1,16 @@
 import React, { useState, useRef, useEffect } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css"; // 캘린더 기본 스타일 가져오기
-import { constructNow, format, getDay } from "date-fns";
+import { format, getDay } from "date-fns";
 import { ko } from "date-fns/locale"; // locale 임포트
-import activity1 from "../../images/activity1.png";
-import activity2 from "../../images/activity2.png";
-import activity3 from "../../images/activity3.png";
-import { FaCaretDown, FaCaretRight, FaPlus, FaTrash } from "react-icons/fa"; // 아이콘 추가
+import { FaPlus, FaTrash } from "react-icons/fa"; // 아이콘 추가
 import styles from "./styles";
 import { basicAxios, authAxios } from "../../api/axios";
-import { useNavigate } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
 
+const customWeekDays = ["일", "월", "화", "수", "목", "금", "토"];
+
 function Schedules() {
-  const [selectedTerm, setSelectedTerm] = useState("2024-1");
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showCalendar, setShowCalendar] = useState(false);
   const [dayEvents, setDayEvents] = useState([]); // 선택된 날짜의 일정 상태
@@ -23,16 +20,20 @@ function Schedules() {
   const activityRef = useRef(null);
   const calendarRef = useRef(null);
 
+  const formmatingDate = (selectedDate) => {
+    return selectedDate
+      .toLocaleString()
+      .split(" 오")[0]
+      .replaceAll(". ", "-")
+      .replaceAll(".", "");
+  };
+
+  let formattedDate = formmatingDate(selectedDate);
+
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await basicAxios.get(
-          `/schedule/day/${selectedDate
-            .toLocaleString()
-            .split(" 오")[0]
-            .replaceAll(". ", "-")
-            .replaceAll(".", "")}`
-        );
+        const response = await basicAxios.get(`/schedule/day/${formattedDate}`);
         if (typeof response.data === "string") {
           setDayEvents([]);
           return;
@@ -54,9 +55,6 @@ function Schedules() {
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
-    // fetchEvents(); // 날짜 변경 시 해당 날짜의 이벤트를 가져옴
-    // console.log(date);
-    // console.log(selectedDate);
     if (activityRef.current) {
       activityRef.current.scrollIntoView({ behavior: "smooth" });
     }
@@ -76,7 +74,7 @@ function Schedules() {
     const newEvent = {
       title: newEventTitle,
       content: newEventContent,
-      date: selectedDate.toISOString().split("T")[0], // 날짜를 "YYYY-MM-DD" 형식으로 변환
+      date: formattedDate, // 날짜를 "YYYY-MM-DD" 형식으로 변환
     };
 
     try {
@@ -97,16 +95,20 @@ function Schedules() {
 
   const handleDeleteEvent = async (eventId) => {
     try {
-      await authAxios.delete(`/schedule/${eventId}`);
+      console.log(eventId);
+      const result = await authAxios.delete(`/schedule`, {
+        data: {
+          scheduleId: parseInt(eventId),
+        },
+      });
       setDayEvents(dayEvents.filter((event) => event.id !== eventId));
     } catch (error) {
       console.error("Error deleting event:", error);
+      alert("일정 삭제에 실패했습니다. 다시 시도하거나 관리자에게 문의하세요.");
     }
   };
 
-  const customWeekDays = ["일", "월", "화", "수", "목", "금", "토"];
-
-  const formatShortWeekday = (locale, date) => {
+  const formatShortWeekday = (_, date) => {
     return customWeekDays[getDay(date)];
   };
 
