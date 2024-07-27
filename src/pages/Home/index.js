@@ -7,50 +7,51 @@ import activity1 from "../../images/activity1.png";
 import activity2 from "../../images/activity2.png";
 import activity3 from "../../images/activity3.png";
 import styles from "./styles";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import ReviewBox from "../../components/ReviewBox";
+
+const reviews = [
+  {
+    text: "See you at the top",
+    author: "박영진",
+    department: "산업보안학과 19",
+  },
+  {
+    text: "See you at the top",
+    author: "박영진",
+    department: "산업보안학과 19",
+  },
+  {
+    text: "See you at the top",
+    author: "박영진",
+    department: "산업보안학과 19",
+  },
+  {
+    text: "See you at the top",
+    author: "박영진",
+    department: "산업보안학과 19",
+  },
+];
+
+const activities = [
+  {
+    image: activity1,
+    name: "외벽",
+  },
+  {
+    image: activity2,
+    name: "등산",
+  },
+  {
+    image: activity3,
+    name: "MT",
+  },
+];
 
 function Home() {
   const handleButtonClick = () => {
     window.location.href = "https://naver.me/5ch4sm44";
   };
-
-  const reviews = [
-    {
-      text: "See you at the top",
-      author: "박영진",
-      department: "산업보안학과 19",
-    },
-    {
-      text: "See you at the top",
-      author: "박영진",
-      department: "산업보안학과 19",
-    },
-    {
-      text: "See you at the top",
-      author: "박영진",
-      department: "산업보안학과 19",
-    },
-    {
-      text: "See you at the top",
-      author: "박영진",
-      department: "산업보안학과 19",
-    },
-  ];
-
-  const activities = [
-    {
-      image: activity1,
-      name: "외벽",
-    },
-    {
-      image: activity2,
-      name: "등산",
-    },
-    {
-      image: activity3,
-      name: "MT",
-    },
-  ];
 
   return (
     <div style={{ overflowX: "hidden" }}>
@@ -76,27 +77,13 @@ function Home() {
           <img src={explain2} alt="Explain 2" style={styles.explainImage} />
         </div>
       </div>
-      <div style={styles.reviewsSection}>
-        <div style={styles.reviewsTitle}>후기</div>
-        <div style={styles.reviewContainer}>
-          {reviews.map((review, index) => (
-            <div
-              key={index}
-              style={{
-                ...styles.reviewBox,
-                transform:
-                  index % 2 === 0 ? "translateY(0)" : "translateY(2vw)",
-              }}
-            >
-              <img
-                src={quotation}
-                alt="Quotation"
-                style={styles.quotationIcon}
-              />
-              <div style={styles.reviewText}>{review.text}</div>
-              <div style={styles.reviewAuthor}>{review.author}</div>
-              <div style={styles.reviewDepartment}>{review.department}</div>
-            </div>
+      <div className="reviewsSection" style={styles.reviewsSection}>
+        <div className="reviewsTitle" style={styles.reviewsTitle}>
+          후기
+        </div>
+        <div className="reviewContainer" style={styles.reviewContainer}>
+          {reviews.map((r, index) => (
+            <ReviewBox key={index} r={r} index={index} />
           ))}
         </div>
       </div>
