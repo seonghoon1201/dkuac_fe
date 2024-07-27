@@ -3,7 +3,6 @@ import styles from "./styles";
 
 function ReviewBox(props) {
   const { r, index } = props;
-  console.log(r);
   return (
     <div
       className="reviewBox"
