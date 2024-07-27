@@ -1,17 +1,17 @@
-import React, { useState, useRef, useEffect } from "react";
-import { FaCaretDown, FaCaretRight, FaPlus, FaTrash } from "react-icons/fa"; // 아이콘 추가
+import React, { useRef } from "react";
+import { FaCaretDown, FaCaretRight } from "react-icons/fa"; // 아이콘 추가
 import { useNavigate } from "react-router-dom";
+import useActivitySemesterStore from "../../stores/useActivitySemesterStore";
 import styles from "./styles";
 
+const terms = ["2023-1", "2023-2", "2024-1"];
+
 function Sidebar() {
-  const [selectedTerm, setSelectedTerm] = useState("2024-1");
-  const [showCalendar, setShowCalendar] = useState(false);
+  const { setActivitySemester } = useActivitySemesterStore();
   const activityRef = useRef(null);
-  const calendarRef = useRef(null);
   const navigate = useNavigate();
   const handleTermChange = (term) => {
-    setSelectedTerm(term);
-    console.log(term);
+    setActivitySemester(term);
     if (activityRef.current) {
       activityRef.current.scrollIntoView({ behavior: "smooth" });
     }
@@ -25,7 +25,6 @@ function Sidebar() {
     navigate("/activities");
   };
 
-  const terms = ["2023-1", "2023-2", "2024-1"];
   return (
     <div style={styles.sidebar}>
       <div style={styles.sidebarLink} onClick={handleActivityToggle}>

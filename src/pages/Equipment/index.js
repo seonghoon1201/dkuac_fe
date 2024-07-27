@@ -31,7 +31,7 @@ const Equipment = () => {
   const handlePopupOpen = async (type) => {
     if (isLoggedIn) {
       setShowPopup(true);
-      if (type === 'rent') {
+      if (type === "rent") {
         setShowRentPopup(true);
         setShowReturnPopup(false);
       } else {
@@ -91,7 +91,9 @@ const Equipment = () => {
   const handleReturn = async () => {
     if (myRentSize) {
       try {
-        const response = await authAxios.post(`/rent/return`, { size: myRentSize });
+        const response = await authAxios.post(`/rent/return`, {
+          size: myRentSize,
+        });
         console.log(response.data);
         alert("반납이 완료되었습니다!");
         handlePopupClose();
@@ -109,8 +111,12 @@ const Equipment = () => {
     <div style={styles.container}>
       <h1 style={styles.title}>암벽화 보유 현황</h1>
       <p style={styles.description}>
-        암벽화는 정사이즈로 신으셔야 편합니다. <br/>암벽화 착화 시 발가락이 조금 구부려져야 맞는 사이즈를 착화하신 것이니 참고 부탁드립니다.<br/>
-        암벽화가 너무 작으면 발이 많이 아프고 암벽화가 크면 발로 홀드를 잡을 수 없기 때문에 본인에게 맞는 사이즈로 대여 부탁드립니다.
+        암벽화는 정사이즈로 신으셔야 편합니다. <br />
+        암벽화 착화 시 발가락이 조금 구부려져야 맞는 사이즈를 착화하신 것이니
+        참고 부탁드립니다.
+        <br />
+        암벽화가 너무 작으면 발이 많이 아프고 암벽화가 크면 발로 홀드를 잡을 수
+        없기 때문에 본인에게 맞는 사이즈로 대여 부탁드립니다.
       </p>
       <table style={styles.table}>
         <thead>
@@ -133,10 +139,13 @@ const Equipment = () => {
         </tbody>
       </table>
       <div style={styles.buttonContainer}>
-        <button style={styles.button} onClick={() => handlePopupOpen('rent')}>
+        <button style={styles.button} onClick={() => handlePopupOpen("rent")}>
           암벽화 대여하기
         </button>
-        <button style={{ ...styles.button, backgroundColor: 'red'}} onClick={() => handlePopupOpen('return')}>
+        <button
+          style={{ ...styles.button, backgroundColor: "red" }}
+          onClick={() => handlePopupOpen("return")}
+        >
           암벽화 반납하기
         </button>
       </div>
@@ -147,7 +156,8 @@ const Equipment = () => {
               <>
                 <h2 style={styles.popupTitle}>사이즈 선택</h2>
                 <p style={styles.noticeText}>
-                  암벽화 대여하신 분들은 모두 이번 주 금요일까지 암벽화 반납 부탁드립니다.
+                  암벽화 대여하신 분들은 모두 이번 주 금요일까지 암벽화 반납
+                  부탁드립니다.
                 </p>
                 <div style={styles.popupContent}>
                   {sizes.map((item) => (
@@ -155,9 +165,19 @@ const Equipment = () => {
                       key={item.size}
                       style={{
                         ...styles.sizeButton,
-                        backgroundColor: selectedSize === item.size ? 'blue' : item.rentable <= 0 ? 'gray' : 'initial',
-                        color: selectedSize === item.size ? 'white' : item.rentable <= 0 ? 'lightgray' : 'initial',
-                        cursor: item.rentable <= 0 ? 'not-allowed' : 'pointer'
+                        backgroundColor:
+                          selectedSize === item.size
+                            ? "blue"
+                            : item.rentable <= 0
+                            ? "gray"
+                            : "initial",
+                        color:
+                          selectedSize === item.size
+                            ? "white"
+                            : item.rentable <= 0
+                            ? "lightgray"
+                            : "initial",
+                        cursor: item.rentable <= 0 ? "not-allowed" : "pointer",
                       }}
                       onClick={() => handleSizeSelect(item.size)}
                       disabled={item.rentable <= 0} // 대여할 수 있는 암벽화가 없을 때 버튼 비활성화
@@ -180,7 +200,9 @@ const Equipment = () => {
               <>
                 {myRentSize ? (
                   <p style={styles.returnMessage}>
-                    반납할 암벽화 사이즈: {myRentSize}<br/><br/>
+                    반납할 암벽화 사이즈: {myRentSize}
+                    <br />
+                    <br />
                     암벽화를 반납하시겠습니까?
                   </p>
                 ) : (

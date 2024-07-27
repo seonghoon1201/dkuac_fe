@@ -95,8 +95,7 @@ function Schedules() {
 
   const handleDeleteEvent = async (eventId) => {
     try {
-      console.log(eventId);
-      const result = await authAxios.delete(`/schedule`, {
+      await authAxios.delete(`/schedule`, {
         data: {
           scheduleId: parseInt(eventId),
         },
