@@ -7,10 +7,12 @@ import { FaPlus, FaTrash } from "react-icons/fa"; // 아이콘 추가
 import styles from "./styles";
 import { basicAxios, authAxios } from "../../api/axios";
 import Sidebar from "../../components/Sidebar";
+import userInfoStore from "../../stores/userInfoStore";
 
 const customWeekDays = ["일", "월", "화", "수", "목", "금", "토"];
 
 function Schedules() {
+  const { isStaff } = userInfoStore();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showCalendar, setShowCalendar] = useState(false);
   const [dayEvents, setDayEvents] = useState([]); // 선택된 날짜의 일정 상태
@@ -150,7 +152,9 @@ function Schedules() {
           <div style={styles.selectedDateContainer}>
             <div style={styles.selectedDate}>
               {format(selectedDate, "PPP", { locale: ko })}{" "}
-              <FaPlus style={styles.addIcon} onClick={handleAddEvent} />
+              {isStaff && (
+                <FaPlus style={styles.addIcon} onClick={handleAddEvent} />
+              )}
             </div>
             <div style={styles.eventList}>
               {dayEvents.length > 0 ? (
@@ -158,10 +162,9 @@ function Schedules() {
                   <div key={index} style={styles.eventItem}>
                     <div style={styles.eventTitle}>{event.title}</div>
                     <div style={styles.eventContent}>{event.content}</div>
-                    <FaTrash
-                      style={styles.deleteIcon}
-                      onClick={() => handleDeleteEvent(event.id)}
-                    />
+                    {isStaff && (
+                      <FaPlus style={styles.addIcon} onClick={handleAddEvent} />
+                    )}
                   </div>
                 ))
               ) : (
