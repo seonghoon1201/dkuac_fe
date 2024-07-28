@@ -36,7 +36,7 @@ function Login() {
         navigate("/");
       })
       .catch((err) => {
-        alert(err.errorMessage);
+        alert(err.response.data.message);
         setStudentNumber("");
         setPassword("");
       });
@@ -58,6 +58,7 @@ function Login() {
           value={studentNumber}
           onChange={(e) => setStudentNumber(e.target.value)}
           style={styles.inputField}
+          required
         />
         <input
           type="password"
@@ -65,6 +66,7 @@ function Login() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           style={styles.inputField}
+          required
         />
         <div style={styles.buttonContainer}>
           <button type="submit" onClick={handleClick} style={styles.button}>
