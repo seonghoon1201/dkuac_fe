@@ -163,7 +163,10 @@ function Schedules() {
                     <div style={styles.eventTitle}>{event.title}</div>
                     <div style={styles.eventContent}>{event.content}</div>
                     {isStaff && (
-                      <FaPlus style={styles.addIcon} onClick={handleAddEvent} />
+                      <FaTrash
+                        style={styles.deleteIcon}
+                        onClick={handleDeleteEvent}
+                      />
                     )}
                   </div>
                 ))
