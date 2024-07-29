@@ -1,33 +1,41 @@
-import React, { useRef } from "react";
-import "react-calendar/dist/Calendar.css"; // 캘린더 기본 스타일 가져오기
+import React, { useEffect, useState, useRef } from "react";
 import activity1 from "../../images/activity1.png";
 import activity2 from "../../images/activity2.png";
 import activity3 from "../../images/activity3.png";
 import styles from "./styles";
 import Sidebar from "../../components/Sidebar";
 import useActivitySemesterStore from "../../stores/useActivitySemesterStore";
+import { authAxios } from "../../api/axios";
 
-const activities = {
-  "2023-1": [
-    { image: activity1, name: "외벽" },
-    { image: activity2, name: "등산" },
-    { image: activity3, name: "MT" },
-  ],
-  "2023-2": [
-    { image: activity2, name: "등산" },
-    { image: activity3, name: "MT" },
-    { image: activity1, name: "외벽" },
-  ],
-  "2024-1": [
-    { image: activity3, name: "MT" },
-    { image: activity1, name: "외벽" },
-    { image: activity2, name: "등산" },
-  ],
-};
+const defaultActivities = [
+  { image: activity1, name: "아직 없음" },
+  { image: activity2, name: "아직 없음" },
+  { image: activity3, name: "아직 없음" },
+];
 
 function Activities() {
   const { activitySemester } = useActivitySemesterStore();
+  const [activities, setActivities] = useState(defaultActivities);
   const activityRef = useRef(null);
+
+  useEffect(() => {
+    const fetchActivities = async () => {
+      const [year, semester] = activitySemester.split("-");
+      try {
+        const response = await authAxios.get(`/activity/${year}/${semester}`);
+        if (response.data.length > 0) {
+          setActivities(response.data);
+        } else {
+          setActivities(defaultActivities);
+        }
+      } catch (error) {
+        console.error("Failed to fetch activities:", error);
+        setActivities(defaultActivities);
+      }
+    };
+
+    fetchActivities();
+  }, [activitySemester]);
 
   return (
     <div style={{ ...styles.home, overflowX: "hidden" }}>
@@ -37,10 +45,10 @@ function Activities() {
           <div style={styles.bannerItem} ref={activityRef}>
             <div style={styles.bannerTitle}>{activitySemester} 활동</div>
             <div style={styles.activityContainer}>
-              {activities[activitySemester].map((activity, index) => (
+              {activities.map((activity, index) => (
                 <div key={index} style={styles.activityBox}>
                   <img
-                    src={activity.image}
+                    src={activity.image || defaultActivities[index].image}
                     alt={activity.name}
                     style={styles.activityImage}
                   />
