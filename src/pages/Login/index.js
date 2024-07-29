@@ -21,8 +21,7 @@ function Login() {
       password,
     };
 
-    axios
-      .post(`http://localhost:3000/auth/login`, input, {
+    axios.post(`http://localhost:3000/auth/login`, input, {
         withCredentials: true,
       })
       .then((res) => {
