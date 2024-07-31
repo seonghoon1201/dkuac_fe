@@ -82,6 +82,7 @@ const styles = {
     fontFamily: "'Poppins', sans-serif",
     fontSize: "1.5rem",
     position: "relative",
+    border: "none",
   },
 
   button: {
@@ -96,6 +97,7 @@ const styles = {
     backgroundColor: "#486BAD",
     color: "white",
     cursor: "pointer",
+    border: "none",
   },
 };
 
