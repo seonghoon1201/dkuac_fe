@@ -23,11 +23,7 @@ function Schedules() {
   const calendarRef = useRef(null);
 
   const formattingDate = (date) => {
-    return date
-      .toLocaleString()
-      .split(" 오")[0]
-      .replaceAll(". ", "-")
-      .replaceAll(".", "");
+    return format(date, 'yyyy-MM-dd');
   };
 
   const formattedDate = formattingDate(selectedDate);
@@ -53,7 +49,6 @@ function Schedules() {
     const fetchAllEvents = async () => {
       try {
         const response = await basicAxios.get("/schedule");
-        // Ensure allEvents is always an array
         setAllEvents(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         console.error("Error fetching all events:", error);
@@ -97,6 +92,7 @@ function Schedules() {
       const response = await authAxios.post("/schedule", newEvent);
       const createdEvent = response.data;
       setDayEvents([...dayEvents, createdEvent]);
+      setAllEvents([...allEvents, createdEvent]);
       setIsPopupOpen(false);
       setNewEventTitle("");
       setNewEventContent("");
@@ -113,6 +109,7 @@ function Schedules() {
         },
       });
       setDayEvents(dayEvents.filter((event) => event.id !== eventId));
+      setAllEvents(allEvents.filter((event) => event.id !== eventId));
     } catch (error) {
       console.error("Error deleting event:", error);
       alert("일정 삭제에 실패했습니다. 다시 시도하거나 관리자에게 문의하세요.");
@@ -131,14 +128,14 @@ function Schedules() {
           <div style={styles.calendarContainer} ref={calendarRef}>
             <div style={styles.calendarWrapper}>
               <Calendar
-                sytle={styles.calendar}
+                style={styles.calendar}
                 onChange={handleDateChange}
                 value={selectedDate}
                 tileContent={({ date }) => {
                   const formattedDate = format(date, "yyyy-MM-dd");
                   const hasEvent = Array.isArray(allEvents) &&
                                     allEvents.some(event => event.date === formattedDate);
-                  return hasEvent ? <div style={{ color: "#ff0000", textAlign: "center", marginTop: "0.5rem" }}>•</div> : null;
+                  return hasEvent ? <div style={styles.eventDot}>•</div> : null;
                 }}
                 formatShortWeekday={formatShortWeekday}
                 showNeighboringMonth={false}
@@ -203,7 +200,7 @@ function Schedules() {
                   취소
                 </button>
               </div>
-            </div>
+            </div> 
           </div>
         )}
       </div>
