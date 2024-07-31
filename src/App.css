@@ -4,7 +4,7 @@
 
 body {
   margin: 0;
-  font-family: 'Nunito', sans-serif;
+  font-family: "Nunito", sans-serif;
   background-color: #3a5ba0;
   color: white;
 }
@@ -89,7 +89,9 @@ body {
   text-align: center;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   margin: 0;
 }
 
@@ -124,7 +126,7 @@ button {
   border-radius: 20px;
 }
 
-div{
+div {
   white-space: pre-wrap;
 }
 
@@ -132,7 +134,7 @@ div{
   text-decoration: none; /* 밑줄 제거 */
 }
 
-.react-calendar{
+.react-calendar {
   width: 100%;
   height: 300px;
 }
