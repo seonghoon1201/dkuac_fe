@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import teddyBear from "../../images/teddy_bear.png";
 import explain1 from "../../images/explain_1.png";
 import explain2 from "../../images/explain_2.png";
-import quotation from "../../images/quotation.png"; // 큰따옴표 이미지 추가
 import activity1 from "../../images/activity1.png";
 import activity2 from "../../images/activity2.png";
 import activity3 from "../../images/activity3.png";
+import faqImage from "../../images/faq.png";
 import styles from "./styles";
 import { Link } from "react-router-dom";
 import ReviewBox from "../../components/ReviewBox";
@@ -47,6 +47,33 @@ const activities = [
     name: "MT",
   },
 ];
+
+const faqs = [
+  { question: "현재 모집 중인가요?", answer: "네 2학기 부원은 9월 30일까지 모집 예정입니다!" },
+  { question: "죽전 캠퍼스 학생만 가입 가능한가요?", answer: "천안 캠퍼스 학생도 가입 가능합니다!" },
+  { question: "DKUAC 동아리는 어떤 활동을 하는 동아리인가요?", answer: "저희 DKUAC는 클라이밍과 등산 활동을 하는 운동 동아리입니다. 클라이밍은 외벽과 볼더링 활동을 진행하며 등산 활동은 학교를 기준으로 멀지 않은 산들을 골라 활동을 진행합니다. 활동은 클라이밍과 등산 활동을 매주 번갈아가며 진행하고 있으며, 볼더링 활동은 클라이밍 활동 주간 중 평일에 최대 2번 진행하고, 외벽 활동은 클라이밍 활동 주간 중 주말 중에 하루 진행합니다. 또한 등산 활동은 등산 활동 주간 중 주말에 하루 진행하고 있습니다:)" },
+  { question: "클라이밍을 잘해야 하나요?", answer: "클라이밍을 한 번도 해보지 않으셨어도 들어오셔도 됩니다! 실제로 클라이밍 경험이 없으신 분들이 대부분이니 부담갖지 마시고 지원해 주세요! 오시면 잘 알려드립니다:)" },
+  { question: "고학년도 가입 가능한가요?", answer: "고학년 분들도 가입 가능합니다!" },
+  { question: "회비가 어떻게 되나요?", answer: "회비는 학기 당 10,000원입니다!" }
+];
+
+function FAQItem({ faq }) {
+  const [isOpen, setIsOpen] = useState(false);
+  
+  const toggleFAQ = () => {
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <div style={styles.faqItem} onClick={toggleFAQ}>
+      <img src={faqImage} alt="FAQ" style={styles.faqImage} />
+      <div style={styles.faqQuestion}>
+        {faq.question}
+      </div>
+      {isOpen && <div style={styles.faqAnswer}>{faq.answer}</div>}
+    </div>
+  );
+}
 
 function Home() {
   const handleButtonClick = () => {
@@ -104,6 +131,19 @@ function Home() {
               />
               <div style={styles.activityName}>{activity.name}</div>
             </div>
+          ))}
+        </div>
+      </div>
+      <div style={styles.faqSection}>
+        <div style={styles.faqHeader}>
+          <div style={styles.faqTitle}>FAQ</div>
+          <Link to="/contact" style={styles.faq_moreButton}>
+            + 문의하기
+          </Link>
+        </div>
+        <div style={styles.faqContainer}>
+          {faqs.map((faq, index) => (
+            <FAQItem key={index} faq={faq} />
           ))}
         </div>
       </div>

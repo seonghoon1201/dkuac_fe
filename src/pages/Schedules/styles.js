@@ -32,6 +32,11 @@ const styles = {
   calendar: {
     width: "800px",
   },
+  eventDot: {
+    color: "#ff0000",
+    textAlign: "center",
+    marginTop: "0.5rem",
+  },
   selectedDateContainer: {
     width: "100%",
     maxWidth: "600px",
