@@ -265,7 +265,7 @@ const styles = {
     padding: "0.5vw 1.5vw",
     display: "inline-block",
     transition: "background-color 0.3s, color 0.3s",
-  }
+  },
 };
 
 export default styles;
