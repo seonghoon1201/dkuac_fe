@@ -37,7 +37,7 @@ function Contact() {
         <div style={styles.upperBox}>
           <div style={styles.leftHalfBox}>
             <h4 style={styles.h4}>
-              동아리 발전을 위해 건의할 것이 있다면 말해주세요!
+              동아리 발전을 위해 <br/>건의할 내용이나 <br/>문의할 내용이 있으시다면 <br/>말씀해 주세요!
             </h4>
             <h4 style={styles.h4}>24시간 건의 받습니다.</h4>
           </div>
