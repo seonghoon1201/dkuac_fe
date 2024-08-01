@@ -38,7 +38,7 @@ const styles = {
     margin: "0",
     padding: "0",
     fontFamily: "'Poppins', sans-serif",
-    fontSize: "2rem",
+    fontSize: "1.7rem",
     textAlign: "left",
   },
 
@@ -50,7 +50,6 @@ const styles = {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    border: "1px solid red",
     fontFamily: "'Poppins', sans-serif",
   },
   lowerBox: {
