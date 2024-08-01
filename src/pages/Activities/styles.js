@@ -7,45 +7,15 @@ const styles = {
     color: 'white',
   },
   sidebar: {
-    width: '150px', // 고정 너비로 설정
+    width: '150px',
     backgroundColor: '#ffffff',
     padding: '2vw 1vw',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
   },
-  sidebarLink: {
-    color: '#3a5ba0',
-    fontSize: '14px', // 고정 글씨 크기
-    fontWeight: 'bold',
-    cursor: 'pointer',
-    marginBottom: '2vw',
-    position: 'relative',
-  },
-  sidebarLinkText: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  caretIcon: {
-    marginRight: '0.5vw',
-  },
-  rightCaret: {
-    marginRight: '0.5vw',
-  },
-  termList: {
-    marginTop: '1vw',
-    paddingLeft: '1.8vw', // Ensure the terms are aligned under the "활동" text
-  },
-  termItem: {
-    color: '#3a5ba0',
-    fontSize: '12px', // 고정 글씨 크기
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    padding: '0.5vw 0',
-  },
   content: {
-    flex: 1, // 컨텐츠가 남은 공간을 차지하도록 설정
+    flex: 1,
     padding: '2vw',
     display: 'flex',
     flexDirection: 'column',
@@ -57,6 +27,7 @@ const styles = {
     padding: '2vw',
     boxShadow: '0 0.5vw 1vw rgba(0, 0, 0, 0.1)',
     color: '#3a5ba0',
+    width: '100%',
   },
   bannerItem: {
     marginBottom: '2vw',
@@ -67,10 +38,24 @@ const styles = {
     fontWeight: 'bold',
     color: '#3a5ba0',
     marginBottom: '1vw',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  addActivityButton: {
+    fontSize: '2vw',
+    padding: '0.5vw 1vw',
+    backgroundColor: '#3a5ba0',
+    color: 'white',
+    border: 'none',
+    borderRadius: '0.5vw',
+    cursor: 'pointer',
+    marginLeft: '1vw',
   },
   activityContainer: {
     display: 'flex',
     justifyContent: 'space-between',
+    gap: '1vw',
   },
   activityBox: {
     width: '30%',
@@ -92,64 +77,6 @@ const styles = {
     fontWeight: 'bold',
     color: '#3a5ba0',
     marginTop: '0.5vw',
-  },
-  calendarContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    width: '100%',
-    padding: '3vw',
-  },
-  calendarWrapper: {
-    flex: 3, // 더 많은 공간을 차지하도록 설정
-    padding: '1vw',
-    boxSizing: 'border-box',
-    width: '100%',
-    height: 'auto',
-    color: 'black',
-  },
-  calendar: {
-    width: '100%', // 캘린더가 컨테이너 너비에 맞춰서 커지도록 설정
-    height: 'auto', // 자동 높이 설정
-  },
-  selectedDateContainer: {
-    flex: 1, // 남은 공간을 차지하도록 설정
-    padding: '1vw',
-    boxSizing: 'border-box',
-  },
-  selectedDate: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    fontSize: '1.5vw',
-    fontWeight: 'bold',
-    color: '#3a5ba0',
-    padding: '1vw',
-    backgroundColor: '#ffffff',
-    borderRadius: '0.5vw',
-    boxShadow: '0 0.5vw 1vw rgba(0, 0, 0, 0.1)',
-  },
-  addIcon: {
-    cursor: 'pointer',
-    color: '#3a5ba0',
-  },
-  eventList: {
-    marginTop: '1vw',
-  },
-  eventItem: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#ffffff',
-    padding: '1vw',
-    borderRadius: '0.5vw',
-    boxShadow: '0 0.5vw 1vw rgba(0, 0, 0, 0.1)',
-    marginBottom: '1vw',
-    color: '#3a5ba0', // Change event text color to blue
-  },
-  deleteIcon: {
-    cursor: 'pointer',
-    color: '#ff6347',
   },
   popupOverlay: {
     position: 'fixed',
@@ -188,33 +115,104 @@ const styles = {
     marginBottom: '1vw',
     borderRadius: '0.5vw',
     border: '1px solid #ccc',
+    minHeight: '8vw',
   },
   popupButtonsContainer: {
     display: 'flex',
     justifyContent: 'space-between',
     width: '100%',
+    marginTop: '1vw',
   },
   submitButton: {
-    padding: '1vw 2vw',
-    fontSize: '1vw',
-    fontWeight: 'bold',
-    color: '#ffffff',
+    padding: '0.5vw 2vw',
     backgroundColor: '#3a5ba0',
+    color: 'white',
     border: 'none',
     borderRadius: '0.5vw',
     cursor: 'pointer',
-    marginBottom: '1vw',
-    marginRight: '1vw', // 버튼 사이에 여백 추가
+    fontSize: '1vw',
   },
   cancelButton: {
-    padding: '1vw 2vw',
-    fontSize: '1vw',
-    fontWeight: 'bold',
-    color: '#ffffff',
-    backgroundColor: '#ff6347',
+    padding: '0.5vw 2vw',
+    backgroundColor: '#ccc',
+    color: '#333',
     border: 'none',
     borderRadius: '0.5vw',
     cursor: 'pointer',
+    fontSize: '1vw',
+  },
+  activityPopup: {
+    display: 'flex',
+    width: '70vw',
+    height: '70vh',
+    backgroundColor: '#ffffff',
+    borderRadius: '1vw',
+    boxShadow: '0 1vw 2vw rgba(0, 0, 0, 0.2)',
+    overflow: 'hidden',
+  },
+  activityPopupImage: {
+    width: '50%',
+    height: '100%',
+  },
+  activityPopupImageStyle: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    borderRadius: '1vw 0 0 1vw',
+  },
+  activityPopupContent: {
+    width: '50%',
+    padding: '2vw',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+  commentsContainer: {
+    flexGrow: 1,
+    overflowY: 'auto',
+    marginTop: '1vw',
+    marginBottom: '1vw',
+  },
+  comment: {
+    backgroundColor: '#f1f1f1',
+    padding: '1vw',
+    borderRadius: '0.5vw',
+    marginBottom: '0.5vw',
+    fontSize: '1vw',
+    color: '#3a5ba0',
+  },
+  commentInputContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: '1vw',
+  },
+  commentInput: {
+    flexGrow: 1,
+    padding: '1vw',
+    fontSize: '1vw',
+    borderRadius: '0.5vw',
+    border: '1px solid #ccc',
+    marginRight: '1vw',
+  },
+  commentButton: {
+    padding: '0.5vw 2vw',
+    backgroundColor: '#3a5ba0',
+    color: 'white',
+    border: 'none',
+    borderRadius: '0.5vw',
+    cursor: 'pointer',
+    fontSize: '1vw',
+  },
+  cancelButton: {
+    padding: '0.5vw 2vw',
+    backgroundColor: '#ccc',
+    color: '#333',
+    border: 'none',
+    borderRadius: '0.5vw',
+    cursor: 'pointer',
+    fontSize: '1vw',
+    alignSelf: 'flex-end',
+    marginTop: '1vw',
   },
 };
 
