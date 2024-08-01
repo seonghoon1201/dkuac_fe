@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import userInfoStore from "../../stores/userInfoStore";
 import styles from "./styles";
 import { authAxios } from "../../api/axios";
+import contactBear from "../../images/contact_bear.png"; // 곰돌이 이미지 추가
 
 function Contact() {
   const { isLoggedIn, userId } = userInfoStore();
@@ -40,7 +41,14 @@ function Contact() {
             </h4>
             <h4 style={styles.h4}>24시간 건의 받습니다.</h4>
           </div>
-          <div style={styles.rightHalfBox}>곰돌이 사진 넣을 예정</div>
+          <div style={styles.rightHalfBox}>
+            {/* 곰돌이 이미지 추가 */}
+            <img
+              src={contactBear}
+              alt="곰돌이"
+              style={{ width: "80%", height: "auto"}}
+            />
+          </div>
         </div>
         <div className="lowerBox" style={styles.lowerBox}>
           <div className="formContainer" style={styles.formContainer}>
