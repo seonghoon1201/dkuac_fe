@@ -161,7 +161,7 @@ const styles = {
   moreButton: {
     backgroundColor: "white",
     color: "#3a5ba0",
-    border: "4px solid #3a5ba0",
+    border: "3.5px solid #3a5ba0",
     padding: "0.5vw 1.5vw",
     fontSize: "1.5vw",
     fontWeight: "600",
