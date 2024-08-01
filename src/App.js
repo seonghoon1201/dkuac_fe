@@ -8,6 +8,7 @@ import Equipment from "./pages/Equipment";
 import People from "./pages/People";
 import Contact from "./pages/Contact";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 import userInfoStore from "./stores/userInfoStore";
 import { authAxios, basicAxios } from "./api/axios";
 import "./App.css";
@@ -51,6 +52,7 @@ function App() {
           <Route path="/login" element={isLoggedIn ? <Home /> : <Login />} />
           <Route path="/signup" element={isLoggedIn ? <Home /> : <SignUp />} />
         </Routes>
+        <Footer/>
       </div>
     </Router>
   );

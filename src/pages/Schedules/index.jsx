@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css"; // 캘린더 기본 스타일 가져오기
+import "react-calendar/dist/Calendar.css";
 import { format, getDay } from "date-fns";
-import { ko } from "date-fns/locale"; // locale 임포트
-import { FaPlus, FaTrash } from "react-icons/fa"; // 아이콘 추가
+import { ko } from "date-fns/locale";
+import { FaPlus, FaTrash } from "react-icons/fa";
 import styles from "./styles";
 import { basicAxios, authAxios } from "../../api/axios";
 import Sidebar from "../../components/Sidebar";
@@ -14,23 +14,19 @@ const customWeekDays = ["일", "월", "화", "수", "목", "금", "토"];
 function Schedules() {
   const { isStaff } = userInfoStore();
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [showCalendar, setShowCalendar] = useState(false);
-  const [dayEvents, setDayEvents] = useState([]); // 선택된 날짜의 일정 상태
+  const [dayEvents, setDayEvents] = useState([]);
+  const [allEvents, setAllEvents] = useState([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [newEventTitle, setNewEventTitle] = useState("");
   const [newEventContent, setNewEventContent] = useState("");
   const activityRef = useRef(null);
   const calendarRef = useRef(null);
 
-  const formmatingDate = (selectedDate) => {
-    return selectedDate
-      .toLocaleString()
-      .split(" 오")[0]
-      .replaceAll(". ", "-")
-      .replaceAll(".", "");
+  const formattingDate = (date) => {
+    return format(date, 'yyyy-MM-dd');
   };
 
-  let formattedDate = formmatingDate(selectedDate);
+  const formattedDate = formattingDate(selectedDate);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -43,17 +39,30 @@ function Schedules() {
         setDayEvents(response.data);
       } catch (error) {
         console.error("Error fetching events:", error);
-        setDayEvents([]); // 일정이 없는 경우 dayEvents를 빈 배열로 설정
+        setDayEvents([]);
       }
     };
     fetchEvents();
-  }, [selectedDate]);
+  }, [formattedDate]);
+
+  useEffect(() => {
+    const fetchAllEvents = async () => {
+      try {
+        const response = await basicAxios.get("/schedule");
+        setAllEvents(Array.isArray(response.data) ? response.data : []);
+      } catch (error) {
+        console.error("Error fetching all events:", error);
+        setAllEvents([]);
+      }
+    };
+    fetchAllEvents();
+  }, []);
 
   useEffect(() => {
     if (calendarRef.current) {
       calendarRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [showCalendar]); // showCalendar가 변할 때마다 useEffect가 실행
+  }, [calendarRef.current]);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -76,17 +85,14 @@ function Schedules() {
     const newEvent = {
       title: newEventTitle,
       content: newEventContent,
-      date: formattedDate, // 날짜를 "YYYY-MM-DD" 형식으로 변환
+      date: formattedDate,
     };
 
     try {
       const response = await authAxios.post("/schedule", newEvent);
       const createdEvent = response.data;
-
-      // 이벤트 리스트에 추가
       setDayEvents([...dayEvents, createdEvent]);
-
-      // 팝업을 닫고 입력 필드를 초기화
+      setAllEvents([...allEvents, createdEvent]);
       setIsPopupOpen(false);
       setNewEventTitle("");
       setNewEventContent("");
@@ -103,6 +109,7 @@ function Schedules() {
         },
       });
       setDayEvents(dayEvents.filter((event) => event.id !== eventId));
+      setAllEvents(allEvents.filter((event) => event.id !== eventId));
     } catch (error) {
       console.error("Error deleting event:", error);
       alert("일정 삭제에 실패했습니다. 다시 시도하거나 관리자에게 문의하세요.");
@@ -114,97 +121,89 @@ function Schedules() {
   };
 
   return (
-    <div style={{ ...styles.home, overflowX: "hidden" }}>
+    <div style={styles.home}>
       <Sidebar />
       <div style={styles.content}>
         <div style={styles.calendarAndEventContainer}>
           <div style={styles.calendarContainer} ref={calendarRef}>
             <div style={styles.calendarWrapper}>
               <Calendar
+                style={styles.calendar}
                 onChange={handleDateChange}
                 value={selectedDate}
-                tileContent={({ date, view }) =>
-                  view === "month" &&
-                  dayEvents.some(
-                    (event) => event.date === date.toISOString().split("T")[0]
-                  ) ? (
-                    <div
-                      style={{
-                        backgroundColor: "blue",
-                        borderRadius: "50%",
-                        width: "8px",
-                        height: "8px",
-                        margin: "auto",
-                      }}
-                    ></div>
-                  ) : null
-                }
-                tileClassName={styles.calendarTile}
-                showWeekDayNames={true}
-                locale="ko-KR"
-                formatShortWeekday={(locale, date) =>
-                  formatShortWeekday(locale, date)
-                }
-                style={styles.calendar}
+                tileContent={({ date }) => {
+                  const formattedDate = format(date, "yyyy-MM-dd");
+                  const hasEvent = Array.isArray(allEvents) &&
+                                    allEvents.some(event => event.date === formattedDate);
+                  return hasEvent ? <div style={styles.eventDot}>•</div> : null;
+                }}
+                formatShortWeekday={formatShortWeekday}
+                showNeighboringMonth={false}
+                locale={ko}
               />
             </div>
           </div>
-          <div style={styles.selectedDateContainer}>
+
+          <div style={styles.selectedDateContainer} ref={activityRef}>
             <div style={styles.selectedDate}>
-              {format(selectedDate, "PPP", { locale: ko })}{" "}
+              {format(selectedDate, "yyyy-MM-dd")}
               {isStaff && (
-                <FaPlus style={styles.addIcon} onClick={handleAddEvent} />
+                <FaPlus
+                  style={styles.addIcon}
+                  onClick={handleAddEvent}
+                />
               )}
             </div>
-            <div style={styles.eventList}>
-              {dayEvents.length > 0 ? (
-                dayEvents.map((event, index) => (
-                  <div key={index} style={styles.eventItem}>
-                    <div style={styles.eventTitle}>{event.title}</div>
-                    <div style={styles.eventContent}>{event.content}</div>
+            {dayEvents.length === 0 ? (
+              <div style={styles.noEventsMessage}>해당일에는 아무 활동이 없습니다.</div>
+            ) : (
+              <div style={styles.eventList}>
+                {dayEvents.map(event => (
+                  <div key={event.id} style={styles.eventItem}>
+                    <div style={styles.eventContent}>
+                      <div style={styles.eventTitle}>{event.title}</div>
+                      <div>{event.content}</div>
+                    </div>
                     {isStaff && (
                       <FaTrash
                         style={styles.deleteIcon}
-                        onClick={handleDeleteEvent}
+                        onClick={() => handleDeleteEvent(event.id)}
                       />
                     )}
                   </div>
-                ))
-              ) : (
-                <div style={styles.noEventsMessage}>일정이 없습니다.</div>
-              )}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
+        {isPopupOpen && (
+          <div style={styles.popupOverlay}>
+            <div style={styles.popup}>
+              <input
+                style={styles.input}
+                type="text"
+                placeholder="제목"
+                value={newEventTitle}
+                onChange={(e) => setNewEventTitle(e.target.value)}
+              />
+              <textarea
+                style={styles.textarea}
+                placeholder="내용"
+                value={newEventContent}
+                onChange={(e) => setNewEventContent(e.target.value)}
+              />
+              <div style={styles.popupButtonsContainer}>
+                <button style={styles.submitButton} onClick={handleEventSubmit}>
+                  제출
+                </button>
+                <button style={styles.cancelButton} onClick={handlePopupClose}>
+                  취소
+                </button>
+              </div>
+            </div> 
+          </div>
+        )}
       </div>
-      {isPopupOpen && (
-        <div style={styles.popupOverlay}>
-          <div style={styles.popup}>
-            <h2>일정 등록</h2>
-            <input
-              type="text"
-              placeholder="일정 제목"
-              value={newEventTitle}
-              onChange={(e) => setNewEventTitle(e.target.value)}
-              style={styles.input}
-            />
-            <textarea
-              placeholder="일정 내용"
-              value={newEventContent}
-              onChange={(e) => setNewEventContent(e.target.value)}
-              style={styles.textarea}
-            />
-            <div style={styles.popupButtonsContainer}>
-              <button onClick={handleEventSubmit} style={styles.submitButton}>
-                등록
-              </button>
-              <button onClick={handlePopupClose} style={styles.cancelButton}>
-                취소
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
