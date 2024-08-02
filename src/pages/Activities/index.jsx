@@ -43,7 +43,7 @@ function Activities() {
       setActivities(defaultActivities);
     }
   };
-  
+
   useEffect(() => {
     fetchActivities();
   }, [activitySemester]);
@@ -63,11 +63,11 @@ function Activities() {
     const formData = new FormData();
     formData.append("title", newActivity.title);
     formData.append("content", newActivity.content);
-    formData.append("image", newActivity.image);
+    formData.append("images", newActivity.image);
 
-    const currentDate = new Date().toISOString().split('T')[0];
+    const currentDate = new Date().toISOString().split("T")[0];
     formData.append("date", currentDate);
-    
+
     try {
       const response = await authAxios.post("/activity", formData, {
         headers: {
@@ -182,10 +182,7 @@ function Activities() {
                 style={styles.input}
               />
               <div style={styles.popupButtonsContainer}>
-                <button
-                  style={styles.submitButton}
-                  onClick={handleSubmit}
-                >
+                <button style={styles.submitButton} onClick={handleSubmit}>
                   작성하기
                 </button>
                 <button
