@@ -9,9 +9,9 @@ import userInfoStore from "../../stores/userInfoStore"; // userInfoStore 가져�
 import { authAxios } from "../../api/axios";
 
 const defaultActivities = [
-  { image: activity1, name: "아직 없음" },
-  { image: activity2, name: "아직 없음" },
-  { image: activity3, name: "아직 없음" },
+  { images: activity1, name: "아직 없음" },
+  { images: activity2, name: "아직 없음" },
+  { images: activity3, name: "아직 없음" },
 ];
 
 function Activities() {
@@ -34,6 +34,18 @@ function Activities() {
     try {
       const response = await authAxios.get(`/activity/${year}/${semester}`);
       if (response.data.length > 0) {
+        response.data.forEach((activity) => {
+          // 아래 부분은 실제 데이터를 삽입하면 달라져야함.
+          // 수정 필요.
+          if (activity.images[0].includes("https")) {
+            activity.images[0] = `${activity.images[0]}`.replace(
+              "/public/activity/",
+              ""
+            );
+          } else {
+            activity.images[0] = `${process.env.REACT_APP_BACKEND_API_URL}${activity.images[0]}`;
+          }
+        });
         setActivities(response.data);
       } else {
         setActivities(defaultActivities);
@@ -144,7 +156,7 @@ function Activities() {
                   onClick={() => handleActivityClick(activity)}
                 >
                   <img
-                    src={activity.image || defaultActivities[index].image}
+                    src={activity.images || defaultActivities[index].images}
                     alt={activity.name}
                     style={styles.activityImage}
                   />
@@ -202,7 +214,7 @@ function Activities() {
             <div style={styles.activityPopup}>
               <div style={styles.activityPopupImage}>
                 <img
-                  src={selectedActivity.image}
+                  src={selectedActivity.images}
                   alt={selectedActivity.name}
                   style={styles.activityPopupImageStyle}
                 />
