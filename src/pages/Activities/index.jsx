@@ -5,38 +5,43 @@ import activity3 from "../../images/activity3.png";
 import styles from "./styles";
 import Sidebar from "../../components/Sidebar";
 import useActivitySemesterStore from "../../stores/useActivitySemesterStore";
-import userInfoStore from "../../stores/userInfoStore"; // userInfoStore 가져오기
+import userInfoStore from "../../stores/userInfoStore";
 import { authAxios } from "../../api/axios";
 
 const defaultActivities = [
-  { images: activity1, name: "아직 없음" },
-  { images: activity2, name: "아직 없음" },
-  { images: activity3, name: "아직 없음" },
+  { images: activity1, title: "아직 없음" },
+  { images: activity2, title: "아직 없음" },
+  { images: activity3, title: "아직 없음" },
 ];
 
 function Activities() {
   const { activitySemester } = useActivitySemesterStore();
-  const { isStaff, isLoggedIn } = userInfoStore(); // 스태프 여부와 로그인 상태 확인
+  const { isStaff, isLoggedIn } = userInfoStore();
   const [activities, setActivities] = useState(defaultActivities);
-  const [showForm, setShowForm] = useState(false); // 폼 표시 여부 상태
-  const [showActivityPopup, setShowActivityPopup] = useState(false); // 활동 팝업 표시 여부 상태
-  const [selectedActivity, setSelectedActivity] = useState(null); // 선택된 활동 상태
+  const [showForm, setShowForm] = useState(false);
+  const [showActivityPopup, setShowActivityPopup] = useState(false);
+  const [selectedActivity, setSelectedActivity] = useState({
+    id: null,
+    title: "",
+    content: "",
+    images: "",
+    comments: [], // 초기값을 빈 배열로 설정
+  });
   const [newActivity, setNewActivity] = useState({
     title: "",
     content: "",
     image: null,
   });
-  const [newComment, setNewComment] = useState(""); // 새로운 댓글 상태
+  const [newComment, setNewComment] = useState("");
   const activityRef = useRef(null);
 
+  {/* 활동 데이터 가져오기*/}
   const fetchActivities = async () => {
     const [year, semester] = activitySemester.split("-");
     try {
       const response = await authAxios.get(`/activity/${year}/${semester}`);
       if (response.data.length > 0) {
         response.data.forEach((activity) => {
-          // 아래 부분은 실제 데이터를 삽입하면 달라져야함.
-          // 수정 필요.
           if (activity.images[0].includes("https")) {
             activity.images[0] = `${activity.images[0]}`.replace(
               "/public/activity/",
@@ -56,19 +61,44 @@ function Activities() {
     }
   };
 
+  {/* 댓글 데이터 가져오기*/}
+  const fetchComments = async (activityId) => {
+    try {
+      const response = await authAxios.get(`/activity/${activityId}/comment`);
+      if (Array.isArray(response.data)) {
+        setSelectedActivity((prev) => ({
+          ...prev,
+          comments: response.data,
+        }));
+      } else {
+        console.error("Invalid comments data:", response.data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch comments:", error);
+      setSelectedActivity((prev) => ({
+        ...prev,
+        comments: [],
+      }));
+    }
+  };
+
+  {/* 컴포넌트 마운트 시 활동 데이터 가져오기 */}
   useEffect(() => {
     fetchActivities();
   }, [activitySemester]);
 
+  {/* 입력 필드 값 변경 처리 */}
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewActivity((prev) => ({ ...prev, [name]: value }));
   };
 
+  {/* 이미지 파일 선택 처리 */}
   const handleImageChange = (e) => {
     setNewActivity((prev) => ({ ...prev, image: e.target.files[0] }));
   };
 
+  {/* 활동 제출 처리 */}
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -91,7 +121,6 @@ function Activities() {
         alert("활동이 성공적으로 추가되었습니다.");
         setShowForm(false);
         setNewActivity({ title: "", content: "", image: null });
-        // 활동 리스트를 새로고침하거나 업데이트합니다.
         fetchActivities();
       } else {
         alert("활동 추가에 실패했습니다.");
@@ -102,11 +131,14 @@ function Activities() {
     }
   };
 
+  {/* 활동 클릭 처리 */}
   const handleActivityClick = (activity) => {
     setSelectedActivity(activity);
+    fetchComments(activity.id); // 댓글을 불러오는 요청 추가
     setShowActivityPopup(true);
   };
 
+  {/* 댓글 제출 처리 */}
   const handleCommentSubmit = async () => {
     if (!newComment.trim()) return;
 
@@ -119,7 +151,9 @@ function Activities() {
       if (response.status === 201) {
         setSelectedActivity((prev) => ({
           ...prev,
-          comments: [...prev.comments, response.data],
+          comments: Array.isArray(prev.comments)
+            ? [...prev.comments, response.data]
+            : [response.data],
         }));
         setNewComment("");
       } else {
@@ -157,17 +191,16 @@ function Activities() {
                 >
                   <img
                     src={activity.images || defaultActivities[index].images}
-                    alt={activity.name}
+                    alt={activity.title}
                     style={styles.activityImage}
                   />
-                  <div style={styles.activityName}>{activity.name}</div>
+                  <div style={styles.activityName}>{activity.title}</div>
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        {/* 활동 추가 폼 */}
         {showForm && (
           <div style={styles.popupOverlay}>
             <div style={styles.popup}>
@@ -208,20 +241,19 @@ function Activities() {
           </div>
         )}
 
-        {/* 활동 상세 팝업 */}
         {showActivityPopup && selectedActivity && (
           <div style={styles.popupOverlay}>
             <div style={styles.activityPopup}>
               <div style={styles.activityPopupImage}>
                 <img
                   src={selectedActivity.images}
-                  alt={selectedActivity.name}
+                  alt={selectedActivity.title}
                   style={styles.activityPopupImageStyle}
                 />
               </div>
               <div style={styles.activityPopupContent}>
-                <h2>{selectedActivity.title}</h2>
-                <p>{selectedActivity.content}</p>
+                <h2 style={styles.activityTitle}>{selectedActivity.title}</h2>
+                <p style={styles.activityContent}>{selectedActivity.content}</p>
                 <div style={styles.commentsContainer}>
                   {selectedActivity.comments?.map((comment, index) => (
                     <div key={index} style={styles.comment}>
@@ -246,13 +278,13 @@ function Activities() {
                     </button>
                   </div>
                 )}
-                <button
-                  style={styles.cancelButton}
-                  onClick={() => setShowActivityPopup(false)}
-                >
-                  닫기
-                </button>
               </div>
+              <button
+                style={styles.closeButton}
+                onClick={() => setShowActivityPopup(false)}
+              >
+                &times;
+              </button>
             </div>
           </div>
         )}
