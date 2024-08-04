@@ -5,7 +5,7 @@ function People() {
   return (
     <div>
       <h1>People Page</h1>
-      <p>Here we will introduce our team members.</p>
+      <p>아직 준비 중입니다!</p>
     </div>
   );
 }
