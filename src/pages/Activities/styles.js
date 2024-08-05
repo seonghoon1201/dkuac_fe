@@ -217,7 +217,7 @@ const styles = {
   },
   commentInput: {
     flexGrow: 1,
-    padding: '1vw',
+    padding: '1vw 2vw',
     fontSize: '1vw',
     borderRadius: '0.5vw',
     border: '1px solid #ccc',

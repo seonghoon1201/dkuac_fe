@@ -9,9 +9,9 @@ import userInfoStore from "../../stores/userInfoStore";
 import { authAxios } from "../../api/axios";
 
 const defaultActivities = [
-  { images: activity1, title: "아직 없음" },
-  { images: activity2, title: "아직 없음" },
-  { images: activity3, title: "아직 없음" },
+  { id: null, images: activity1, title: "아직 없음" },
+  { id: null, images: activity2, title: "아직 없음" },
+  { id: null, images: activity3, title: "아직 없음" },
 ];
 
 function Activities() {
@@ -25,7 +25,7 @@ function Activities() {
     title: "",
     content: "",
     images: "",
-    comments: [], // 초기값을 빈 배열로 설정
+    comments: [],
   });
   const [newActivity, setNewActivity] = useState({
     title: "",
@@ -35,23 +35,23 @@ function Activities() {
   const [newComment, setNewComment] = useState("");
   const activityRef = useRef(null);
 
-  {/* 활동 데이터 가져오기*/}
+  {/* 활동 데이터 가져오기 */}
   const fetchActivities = async () => {
     const [year, semester] = activitySemester.split("-");
     try {
       const response = await authAxios.get(`/activity/${year}/${semester}`);
       if (response.data.length > 0) {
-        response.data.forEach((activity) => {
-          if (activity.images[0].includes("https")) {
-            activity.images[0] = `${activity.images[0]}`.replace(
-              "/public/activity/",
-              ""
-            );
+        const activitiesWithFormattedImages = response.data.map((activity) => {
+          let imageUrl = activity.images[0];
+          if (imageUrl.includes("https")) {
+            imageUrl = imageUrl.replace("/public/activity/", "");
           } else {
-            activity.images[0] = `${process.env.REACT_APP_BACKEND_API_URL}${activity.images[0]}`;
+            imageUrl = `${process.env.REACT_APP_BACKEND_API_URL}${imageUrl}`;
           }
+          return { ...activity, images: imageUrl };
         });
-        setActivities(response.data);
+        console.log(activitiesWithFormattedImages);
+        setActivities(activitiesWithFormattedImages);
       } else {
         setActivities(defaultActivities);
       }
@@ -61,7 +61,7 @@ function Activities() {
     }
   };
 
-  {/* 댓글 데이터 가져오기*/}
+  {/* 댓글 데이터 가져오기 */}
   const fetchComments = async (activityId) => {
     try {
       const response = await authAxios.get(`/activity/${activityId}/comment`);
@@ -185,7 +185,7 @@ function Activities() {
             <div style={styles.activityContainer}>
               {activities.map((activity, index) => (
                 <div
-                  key={index}
+                  key={activity.id || index}
                   style={styles.activityBox}
                   onClick={() => handleActivityClick(activity)}
                 >
@@ -274,7 +274,7 @@ function Activities() {
                       style={styles.commentButton}
                       onClick={handleCommentSubmit}
                     >
-                      작성
+                     작성
                     </button>
                   </div>
                 )}
