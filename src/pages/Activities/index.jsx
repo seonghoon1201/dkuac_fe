@@ -70,9 +70,6 @@ function Activities() {
   const fetchComments = async (activityId) => {
     try {
       const response = await basicAxios.get(`/activity/${activityId}/comments`);
-      console.log("you click activity");
-      console.log("activityId", activityId);
-      console.log("response", response);
       if (Array.isArray(response.data)) {
         setSelectedActivity((prev) => ({
           ...prev,
