@@ -21,17 +21,18 @@ function Login() {
       password,
     };
 
-    axios.post(`http://localhost:3000/auth/login`, input, {
+    axios
+      .post(`http://localhost:3000/auth/login`, input, {
         withCredentials: true,
       })
       .then((res) => {
         const {
-          user: { id, isStaff },
+          user: { id, name, isStaff },
           accessToken,
           expiredTime,
         } = res.data;
         localStorage.setItem("accessToken", accessToken);
-        setUserInfo({ id, isStaff, isLoggedIn: true, expiredTime });
+        setUserInfo({ id, name, isStaff, isLoggedIn: true, expiredTime });
         navigate("/");
       })
       .catch((err) => {
