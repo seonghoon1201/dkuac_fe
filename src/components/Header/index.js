@@ -33,7 +33,6 @@ const Header = () => {
       .finally(() => {
         window.location.href = "/";
       });
-    // 쿠키 삭제 요청
   };
 
   return (
