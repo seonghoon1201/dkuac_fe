@@ -26,12 +26,15 @@ function App() {
         .then((res) => {
           localStorage.setItem("accessToken", res.data.accessToken);
         })
-        .catch((error) => {
-          if (error.response && error.response.status === 401) {
-            localStorage.removeItem("accessToken");
-            clearUserInfoStorage();
-          }
+        .catch(async (error) => {
+          // if (error.response && error.response.status === 401) {
+          //   localStorage.removeItem("accessToken");
+          //   clearUserInfoStorage();
+          // }
           console.error(error);
+          await basicAxios.post("/auth/logout");
+          localStorage.removeItem("accessToken");
+          clearUserInfoStorage();
           alert("다시 로그인해주세요.");
           window.location.href = "/login";
         });
@@ -52,7 +55,7 @@ function App() {
           <Route path="/login" element={isLoggedIn ? <Home /> : <Login />} />
           <Route path="/signup" element={isLoggedIn ? <Home /> : <SignUp />} />
         </Routes>
-        <Footer/>
+        <Footer />
       </div>
     </Router>
   );
