@@ -16,7 +16,7 @@ const defaultActivities = [
 
 function Activities() {
   const { activitySemester } = useActivitySemesterStore();
-  const { isStaff, isLoggedIn } = userInfoStore();
+  const { isStaff, isLoggedIn, name } = userInfoStore();
   const [activities, setActivities] = useState(defaultActivities);
   const [showForm, setShowForm] = useState(false);
   const [showActivityPopup, setShowActivityPopup] = useState(false);
@@ -158,7 +158,10 @@ function Activities() {
   }
   const handleCommentSubmit = async () => {
     if (!newComment.trim()) return;
-
+    setSelectedActivity((prev) => ({
+      ...prev,
+      comments: [...prev.comments, { content: newComment, Author: { name } }],
+    }));
     try {
       const response = await authAxios.post(
         `/activity/${selectedActivity.id}/comments`,
@@ -170,9 +173,7 @@ function Activities() {
       if (response.status === 201) {
         setSelectedActivity((prev) => ({
           ...prev,
-          comments: Array.isArray(prev.comments)
-            ? [...prev.comments, response.data]
-            : [response.data],
+          comments: [...prev.comments, response.data],
         }));
         setNewComment("");
       } else {
@@ -273,12 +274,25 @@ function Activities() {
               <div style={styles.activityPopupContent}>
                 <h2 style={styles.activityTitle}>{selectedActivity.title}</h2>
                 <p style={styles.activityContent}>{selectedActivity.content}</p>
-                <div style={styles.commentsContainer}>
-                  {selectedActivity.comments?.map((comment, index) => (
-                    <div key={index} style={styles.comment}>
-                      {comment.content}
-                    </div>
-                  ))}
+                <div
+                  className="commentContainer"
+                  style={styles.commentsContainer}
+                >
+                  {selectedActivity.comments?.map(
+                    (comment, index) =>
+                      comment.content && (
+                        <div
+                          className="comment"
+                          key={index}
+                          style={styles.comment}
+                        >
+                          <div style={styles.commentAuthor}>
+                            {comment.Author?.name}
+                          </div>
+                          <div>{comment.content}</div>
+                        </div>
+                      )
+                  )}
                 </div>
                 {isLoggedIn && (
                   <div style={styles.commentInputContainer}>
