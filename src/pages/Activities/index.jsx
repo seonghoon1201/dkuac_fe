@@ -17,7 +17,7 @@ const defaultActivities = [
 function Activities() {
   const { activitySemester } = useActivitySemesterStore();
   const { isStaff, isLoggedIn, name } = userInfoStore();
-  const [activities, setActivities] = useState(defaultActivities);
+  const [activities, setActivities] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [showActivityPopup, setShowActivityPopup] = useState(false);
   const [selectedActivity, setSelectedActivity] = useState({
@@ -56,11 +56,11 @@ function Activities() {
         });
         setActivities(activitiesWithFormattedImages);
       } else {
-        setActivities(defaultActivities);
+        setActivities([]);
       }
     } catch (error) {
       console.error("Failed to fetch activities:", error);
-      setActivities(defaultActivities);
+      setActivities([]);
     }
   };
 
@@ -210,7 +210,8 @@ function Activities() {
                   onClick={() => handleActivityClick(activity)}
                 >
                   <img
-                    src={activity.images || defaultActivities[index].images}
+                    // src={activity.images || defaultActivities[index].images}
+                    src={activity.images}
                     alt={activity.title}
                     style={styles.activityImage}
                   />
