@@ -2,7 +2,7 @@ const styles = {
   header: {
     backgroundColor: "#3a5ba0",
     color: "white",
-    padding: "1vw",
+    padding: "8px",
   },
   navList: {
     listStyle: "none",
@@ -17,15 +17,15 @@ const styles = {
     alignItems: "center",
   },
   logoContainer: {
-    marginRight: "2vw",
+    marginRight: "15px",
     display: "flex",
     alignItems: "center",
     textDecoration: "none",
   },
   logo: {
-    maxWidth: "40px",
+    maxWidth: "50px",
     height: "auto",
-    marginRight: "1vw",
+    marginRight: "10px",
   },
   logoText: {
     fontSize: "30px",
@@ -33,15 +33,15 @@ const styles = {
     color: "white",
     textDecoration: "none",
     lineHeight: "1.2",
-    marginTop: "0.5vw",
-    marginBottom: "1vw",
-    marginRight: "2vw",
+    marginTop: "5px",
+    marginBottom: "10px",
+    marginRight: "10px",
   },
   navLink: {
     textDecoration: "none",
     color: "white",
-    fontSize: "1rem",
-    marginRight: "3vw",
+    fontSize: "16px", 
+    marginRight: "30px",
   },
   rightContainer: {
     display: "flex",
@@ -50,7 +50,7 @@ const styles = {
   icon: {
     maxWidth: "30px",
     height: "auto",
-    marginLeft: "10px",
+    marginLeft: "8px",
     cursor: "pointer",
   },
   logoutButton: {

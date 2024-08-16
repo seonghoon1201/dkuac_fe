@@ -2,31 +2,31 @@ const styles = {
   reviewBox: {
     backgroundColor: "white",
     color: "#3a5ba0",
-    borderRadius: "1vw",
-    padding: "2vw",
+    borderRadius: "10px",
+    padding: "20px",
     position: "relative",
     width: "40%",
     minWidth: "300px",
-    boxSizing: "border-box", // Padding을 포함하여 크기를 계산
+    boxSizing: "border-box",
   },
   quotationIcon: {
     position: "absolute",
-    top: "1vw",
-    left: "1vw",
-    width: "2.5vw",
+    top: "10px",
+    left: "10px",
+    width: "25px",
   },
   reviewText: {
-    fontSize: "1.5vw", // 글씨 크기 조정
-    marginTop: "1vw", // 큰따옴표 아래에 공간 추가
+    fontSize: "15px",
+    marginTop: "10px",
   },
   reviewAuthor: {
-    marginTop: "1.5vw",
-    fontSize: "1.2vw", // 글씨 크기 조정
+    marginTop: "15px",
+    fontSize: "12px",
     fontWeight: "bold",
   },
   reviewDepartment: {
-    fontSize: "1vw", // 글씨 크기 조정
-    marginTop: "0.5vw",
+    fontSize: "10px",
+    marginTop: "5px",
   },
 };
 

@@ -180,7 +180,7 @@ function Activities() {
         alert("댓글 작성에 실패했습니다.");
       }
     } catch (error) {
-      console.log("Failed to submit comment:", error);
+      console.log("Failed to submit comment:", error)
       alert("댓글 작성 중 오류가 발생했습니다.");
     }
   };
