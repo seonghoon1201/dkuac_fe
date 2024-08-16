@@ -30,6 +30,7 @@ authAxios.interceptors.response.use(
   },
   // 요청이 실패했을 때 호출되는 함수 (예: 401 에러)
   async (error) => {
+    console.log("error occured in authAxios.interceptors.response.use");
     const { isLoggedIn } = userInfoStore();
     if (isLoggedIn === true) {
       const originalRequest = error.config; // 원래의 요청 객체를 저장

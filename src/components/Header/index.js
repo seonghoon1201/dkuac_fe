@@ -9,28 +9,30 @@ import logoutIcon from "../../images/logout.png";
 import styles from "./styles";
 import userInfoStore from "../../stores/userInfoStore";
 import { basicAxios } from "../../api/axios";
-import { useCookies } from "react-cookie";
 
 const Header = () => {
   const { isLoggedIn } = userInfoStore();
   const clearUserInfoStorage = userInfoStore.persist.clearStorage;
-  const [cookies, setCookie, removeCookie] = useCookies(["refreshToken"]);
   const location = useLocation();
 
-  const handleLogout = (e) => {
+  const handleLogout = async (e) => {
     e.preventDefault();
-    localStorage.removeItem("accessToken");
-    clearUserInfoStorage();
     // 백엔드에 요청 보내기
+    console.log("로그아웃 요청");
     basicAxios
       .post("/auth/logout")
-      .then((res) => {})
+      .then((res) => {
+        console.log(res);
+        localStorage.removeItem("accessToken");
+        clearUserInfoStorage();
+      })
       .catch((e) => {
         console.error(e);
         alert("로그아웃 과정에서 에러가 발생했습니다.");
+      })
+      .finally(() => {
+        window.location.href = "/";
       });
-    // 쿠키 삭제 요청
-    window.location.href = "/";
   };
 
   return (

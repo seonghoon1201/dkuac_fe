@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import userInfoStore from "../../stores/userInfoStore";
 import { basicAxios, authAxios } from "../../api/axios";
+import axios from "axios";
 import styles from "./styles";
 
 const Equipment = () => {
@@ -74,14 +75,25 @@ const Equipment = () => {
   const handleRent = async () => {
     if (selectedSize) {
       try {
-        const response = await authAxios.post(`/rent`, { size: selectedSize });
-        console.log(response.data);
+        const res = await axios.post(
+          `http://localhost:3000/rent`,
+          {
+            size: selectedSize,
+          },
+          {
+            withCredentials: true,
+            headers: {
+              Authorization: `bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+        console.log(res.data);
         alert("대여가 완료되었습니다!");
         handlePopupClose();
         fetchData();
       } catch (error) {
         console.error("대여 요청에 실패했습니다:", error);
-        alert("대여 요청에 실패했습니다. 다시 시도해주세요.");
+        alert(error.response.data.message);
       }
     } else {
       alert("사이즈를 선택해주세요.");
