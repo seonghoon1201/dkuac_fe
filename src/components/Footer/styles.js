@@ -2,7 +2,7 @@ const styles = {
     footer: {
       backgroundColor: "#3a5ba0",
       color: "white",
-      padding: "2vw",
+      padding: "18px",
       textAlign: "center",
       position: "relative",
       bottom: 0,
@@ -15,7 +15,7 @@ const styles = {
     },
     footerText: {
       margin: "0",
-      fontSize: "1.2vw",
+      fontSize: "10px",
       fontWeight: "400",
     },
   };
