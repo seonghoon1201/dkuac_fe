@@ -6,6 +6,9 @@ import Home from "./pages/Home";
 import Activities from "./pages/Activities";
 import Equipment from "./pages/Equipment";
 import People from "./pages/People";
+import TotalDepartment from "./pages/Departments/Total";
+import ClimbingDepartment from "./pages/Departments/Climbing";
+import HikingDepartment from "./pages/Departments/Hiking";
 import Contact from "./pages/Contact";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -54,6 +57,9 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={isLoggedIn ? <Home /> : <Login />} />
           <Route path="/signup" element={isLoggedIn ? <Home /> : <SignUp />} />
+          <Route path="/departments/total" element={<TotalDepartment/>} />
+          <Route path="/departments/climbing" element={<ClimbingDepartment/>} />
+          <Route path="/departments/hiking" element={<HikingDepartment/>} />
         </Routes>
         <Footer />
       </div>
