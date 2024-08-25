@@ -1,9 +1,8 @@
 import React from "react";
-import styles from "./total_styles";
+import styles from "./styles";
 import header from "../../images/정미르.png";  // 회장
 import vice_chairman from "../../images/황인우.png";  // 부회장
 import general_affair from "../../images/장시은.png"; // 총무
-import exampleImage from "../../images/activity1.png"; // 예시 이미지 경로
 
 const totalMembers = [
   { name: "정미르", role: "회장", image: header },
@@ -13,13 +12,13 @@ const totalMembers = [
 
 function TotalDepartment() {
   return (
-    <div className={styles.membersContainer}>
+    <div style={styles.membersContainer}>
       {totalMembers.map((member, index) => (
-        <div key={index} className={styles.member}>
-          <img src={member.image} alt={member.name} className={styles.memberImage} />
-          <div className={styles.memberOverlay}>
-            <div className={styles.memberName}>{member.name}</div>
-            <div className={styles.memberRole}>{member.role}</div>
+        <div key={index} style={styles.member}>
+          <img src={member.image} alt={member.name} style={styles.memberImage} />
+          <div style={styles.memberOverlay}>
+            <div style={styles.memberName}>{member.name}</div>
+            <div style={styles.memberRole}>{member.role}</div>
           </div>
         </div>
       ))}

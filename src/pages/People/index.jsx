@@ -1,24 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styles from "./styles";
-import exampleImage from "../../images/activity1.png"; // 예시 이미지 경로
+import total from "../../images/정미르.png"; // 예시 이미지 경로
+import climbing from "../../images/정성훈.png"; // 예시 이미지 경로
+import hiking from "../../images/황인우.png"; // 예시 이미지 경로
 
 const departments = [
   {
     name: "총괄부",
-    image: exampleImage,
+    image: total,
     description: "총괄부 설명 예시입니다.",
     link: "/departments/total",
   },
   {
     name: "클라이밍부",
-    image: exampleImage,
+    image: climbing,
     description: "클라이밍부 설명 예시입니다.",
     link: "/departments/climbing",
   },
   {
     name: "등산부",
-    image: exampleImage,
+    image: hiking,
     description: "등산부 설명 예시입니다.",
     link: "/departments/hiking",
   },
