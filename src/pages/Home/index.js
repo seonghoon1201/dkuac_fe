@@ -77,7 +77,7 @@ function FAQItem({ faq }) {
 
 function Home() {
   const handleButtonClick = () => {
-    window.location.href = "https://naver.me/5ch4sm44";
+    window.open("https://naver.me/5ch4sm44","_blank");
   };
 
   return (
