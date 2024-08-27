@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import styles from "./styles";
 import header from "../../images/정성훈.png"; // 클라이밍부장
-import vice_chairman from "../../images/황인우.png"; // 부회장
-import general_affair from "../../images/장시은.png"; // 총무
+import executive1 from "../../images/정성훈.png"; // 클라이밍집행부
+import executive2 from "../../images/정성훈.png"; // 클라이밍집행부
 
 const totalMembers = [
   { name: "정성훈", role: "클라이밍부장", image: header, department: "SW융합학부", major: "소프트웨어학과", year: "19학번" },
-  { name: "황인우", role: "부회장", image: vice_chairman, department: "경영경제대학", major: "경제학과", year: "22학번" },
-  { name: "장시은", role: "총무", image: general_affair, department: "음악학부", major: "피아노전공(부전공 경영학과)", year: "20학번" },
+  { name: "공석", role: "클라이밍 집행부", image: executive1, department: "-", major: "-", year: "-" },
+  { name: "공석", role: "클라이밍 집행부", image: executive2, department: "-", major: "-", year: "-" },
 ];
 
 function TotalDepartment() {

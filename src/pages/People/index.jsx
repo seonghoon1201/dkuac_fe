@@ -9,19 +9,31 @@ const departments = [
   {
     name: "총괄부",
     image: total,
-    description: "총괄부 설명 예시입니다.",
+    description: (
+      <>
+        회장, 부회장, 총무가 속한 부서로<br /> 동아리 전반적인 운영을 담당합니다.
+      </>
+    ),
     link: "/departments/total",
   },
   {
     name: "클라이밍부",
     image: climbing,
-    description: "클라이밍부 설명 예시입니다.",
+    description: (
+      <>
+        동아리 전반적인 운영 및 <br /> 특히 클라이밍 활동을 담당합니다.
+      </>
+    ),
     link: "/departments/climbing",
   },
   {
     name: "등산부",
     image: hiking,
-    description: "등산부 설명 예시입니다.",
+    description: (
+      <>
+        동아리 전반적인 운영 및 <br /> 특히 등산 활동을 담당합니다.
+      </>
+    ),
     link: "/departments/hiking",
   },
 ];
