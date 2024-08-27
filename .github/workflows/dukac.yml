@@ -21,7 +21,7 @@ jobs:
           API_TOKEN_GITHUB: ${{ TOKEN }}
         with:
           source-directory: 'output'
-          destination-github-username: seonghoon1201
+          destination-github-username: seonghoon1201@gmail.com
           destination-repository-name: dkuac_fe
           user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
           commit-message: ${{ OFFICIAL_ACCOUNT_EMAIL }}
