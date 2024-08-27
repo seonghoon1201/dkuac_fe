@@ -12,9 +12,9 @@ const styles = {
     color: "inherit",
   },
   department: {
-    position: "relative", // 부모 요소에 위치 설정
-    width: "300px", // 부서 카드의 너비 조절
-    height: "600px", // 이미지 높이에 맞춰 설정
+    position: "relative",
+    width: "300px",
+    height: "500px", 
     margin: "16px",
     cursor: "pointer",
     overflow: "hidden",
