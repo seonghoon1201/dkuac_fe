@@ -128,7 +128,6 @@ function Schedules() {
           <div style={styles.calendarContainer} ref={calendarRef}>
             <div style={styles.calendarWrapper}>
               <Calendar
-                style={styles.calendar}
                 onChange={handleDateChange}
                 value={selectedDate}
                 tileContent={({ date }) => {

@@ -11,26 +11,29 @@ const styles = {
     flex: 1,
     padding: "2rem",
     width: "100%",
+    display: "flex",
   },
   calendarAndEventContainer: {
     display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    width: "100%", 
+    flexDirection: "row",
+    width: "100%",
+    alignItems: "flex-start",
+    gap: "1rem", // 추가된 부분: 달력과 일정 사이의 간격을 줄이기 위해 gap을 추가합니다.
   },
   calendarContainer: {
-    marginBottom: "2rem",
-    width: "100%", 
+    flex: 2, // 달력 영역을 좀 더 넓게 설정
+    marginRight: "1rem", // 줄어든 여백
+    width: "100%",
     display: "flex",
     justifyContent: "center",
   },
   calendarWrapper: {
-    width: "100%", 
-    maxWidth: "100%", 
+    width: "100%",
     border: "none",
   },
   calendar: {
-    width: "800px",
+    width: "100%", // 달력의 너비를 100%로 설정하여 부모 요소에 맞게 크기 조정
+    maxWidth: "600px", // 최대 너비를 설정하여 크기를 제한
   },
   eventDot: {
     color: "#ff0000",
@@ -38,6 +41,7 @@ const styles = {
     marginTop: "0.5rem",
   },
   selectedDateContainer: {
+    flex: 3, // 일정 영역을 넓게 설정
     width: "100%",
     maxWidth: "600px",
     backgroundColor: "#ffffff",

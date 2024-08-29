@@ -1,18 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
-import activity1 from "../../images/activity1.png";
-import activity2 from "../../images/activity2.png";
-import activity3 from "../../images/activity3.png";
 import styles from "./styles";
 import Sidebar from "../../components/Sidebar";
 import useActivitySemesterStore from "../../stores/useActivitySemesterStore";
 import userInfoStore from "../../stores/userInfoStore";
 import { authAxios, basicAxios } from "../../api/axios";
-
-const defaultActivities = [
-  { id: null, images: activity1, title: "아직 없음" },
-  { id: null, images: activity2, title: "아직 없음" },
-  { id: null, images: activity3, title: "아직 없음" },
-];
 
 function Activities() {
   const { activitySemester } = useActivitySemesterStore();
