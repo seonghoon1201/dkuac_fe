@@ -12,17 +12,17 @@ import ReviewBox from "../../components/ReviewBox";
 
 const reviews = [
   {
-    text: "See you at the top",
+    text: "해치지 않아요!",
+    author: "김세윤",
+    department: "경제학과 19",
+  },
+  {
+    text: "Hello",
     author: "박영진",
     department: "산업보안학과 19",
   },
   {
-    text: "See you at the top",
-    author: "박영진",
-    department: "산업보안학과 19",
-  },
-  {
-    text: "See you at the top",
+    text: "Bye",
     author: "박영진",
     department: "산업보안학과 19",
   },
