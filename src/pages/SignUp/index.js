@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./styles";
 import userInfoStore from "../../stores/userInfoStore";
+import { basicAxios } from "../../api/axios"; // Updated import
 
 function SignUp() {
   const [name, setName] = useState("");
   const [studentNumber, setStudentNumber] = useState("");
-  const [major, setmajor] = useState("");
+  const [major, setMajor] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
@@ -17,18 +17,13 @@ function SignUp() {
   const { isLoggedIn } = userInfoStore();
 
   const navigate = useNavigate();
+
   const handleEmailVerification = () => {
-    axios
-      .post(
-        `http://localhost:3000/auth/create-verification-code`,
-        {
-          studentNumber: studentNumber,
-        },
-        {
-          withCredentials: true,
-        }
-      )
-      .then((response) => {
+    basicAxios
+      .post("/auth/create-verification-code", {
+        studentNumber: studentNumber,
+      })
+      .then(() => {
         setVerificationSent(true);
         setVerificationError(""); // 이메일 인증 코드가 성공적으로 전송됨을 설정합니다.
       })
@@ -39,17 +34,11 @@ function SignUp() {
   };
 
   const handleVerificationSubmit = () => {
-    axios
-      .post(
-        `${process.env.REACT_APP_BACKEND_API_URL}/auth/is-verified`,
-        {
-          studentNumber: studentNumber,
-          codeFromUser: verificationCode,
-        },
-        {
-          withCredentials: true,
-        }
-      )
+    basicAxios
+      .post("/auth/is-verified", {
+        studentNumber: studentNumber,
+        codeFromUser: verificationCode,
+      })
       .then((response) => {
         if (response.data === true) {
           alert("인증이 완료되었습니다!");
@@ -71,21 +60,15 @@ function SignUp() {
       return;
     }
 
-    axios
-      .post(
-        `http://localhost:3000/auth/signup`,
-        {
-          name: name,
-          major: major,
-          studentNumber: +studentNumber,
-          birth: birthDate,
-          phone: phoneNumber,
-        },
-        {
-          withCredentials: true,
-        }
-      )
-      .then((response) => {
+    basicAxios
+      .post("/auth/signup", {
+        name: name,
+        major: major,
+        studentNumber: +studentNumber,
+        birth: birthDate,
+        phone: phoneNumber,
+      })
+      .then(() => {
         alert("회원가입이 완료되었습니다!");
         navigate("/login");
         // setIsSignupComplete(true); // 회원가입 성공 시 상태 업데이트
@@ -100,7 +83,7 @@ function SignUp() {
     if (isLoggedIn) {
       navigate("/");
     }
-  }, []);
+  }, [isLoggedIn, navigate]); // Added dependencies to useEffect
 
   return (
     <div style={styles.container}>
@@ -166,7 +149,7 @@ function SignUp() {
           type="text"
           placeholder="학과"
           value={major}
-          onChange={(e) => setmajor(e.target.value)}
+          onChange={(e) => setMajor(e.target.value)}
           style={styles.inputField}
         />
         <input
