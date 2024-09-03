@@ -17,9 +17,9 @@ const reviews = [
     department: "경제학과 19",
   },
   {
-    text: "Hello",
-    author: "박영진",
-    department: "산업보안학과 19",
+    text: "볼더링 재밌었어요! 난이도가 다양해서 처음하는데도 부담이 없었고 기존 부원들이 잘 가르주면서 자연스럽게 친해질 수 있었어요. 산악부입부 추천해요!",
+    author: "황인우",
+    department: "경제학과 21",
   },
   {
     text: "Bye",
