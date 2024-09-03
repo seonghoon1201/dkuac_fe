@@ -1,14 +1,15 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import userInfoStore from "../../stores/userInfoStore";
 import styles from "./styles";
+import { basicAxios } from "../../api/axios";
 
 function Login() {
   const { setUserInfo, isLoggedIn } = userInfoStore();
   const [studentNumber, setStudentNumber] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
   const handleClick = (e) => {
     e.preventDefault();
     if (studentNumber === "" || password === "") {
@@ -21,8 +22,8 @@ function Login() {
       password,
     };
 
-    axios
-      .post(`http://localhost:3000/auth/login`, input, {
+    basicAxios
+      .post(`/auth/login`, input, {
         withCredentials: true,
       })
       .then((res) => {
@@ -42,11 +43,11 @@ function Login() {
       });
   };
 
-  // useEffect(() => {
-  //   if (isLoggedIn) {
-  //     navigate("/");
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/");
+    }
+  }, [isLoggedIn, navigate]); // Added dependencies to useEffect
 
   return (
     <div style={styles.container}>
