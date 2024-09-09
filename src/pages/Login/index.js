@@ -35,6 +35,7 @@ function Login() {
           accessToken,
           expiredTime,
         } = res.data;
+        console.log(res.data);
         localStorage.setItem("accessToken", accessToken);
         setUserInfo({ id, name, isStaff, isLoggedIn: true, expiredTime });
         navigate("/");

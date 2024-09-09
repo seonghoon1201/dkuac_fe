@@ -32,10 +32,15 @@ authAxios.interceptors.response.use(
   async (error) => {
     console.log("error occured in authAxios.interceptors.response.use");
     const { isLoggedIn } = userInfoStore();
+    console.log("isLoggedIn: ", isLoggedIn);
     if (isLoggedIn === true) {
       const originalRequest = error.config; // 원래의 요청 객체를 저장
       // 401 Unauthorized 에러이고, 재시도 플래그가 설정되지 않았을 경우
+      console.log("error.response.status: ", error.response.status);
       if (error.response.status === 401 && !originalRequest._retry) {
+        console.log("error.response.status === 401 && !originalRequest._retry");
+        console.log(error);
+        console.log(originalRequest);
         originalRequest._retry = true; // 재시도 플래그 설정
         try {
           // 새로운 access token을 얻기 위해 refresh token을 사용하여 요청을 보냄
