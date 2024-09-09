@@ -69,7 +69,7 @@ function Login() {
           style={styles.inputField}
           required
         />
-        <div style={{ position: "relative" }}>
+        <div style={styles.password}>
           <input
             type={showPassword ? "text" : "password"} // 비밀번호가 보이는지 여부에 따라 타입 설정
             placeholder="첫 비번은 010을 제외한 전화번호 8자리입니다."
