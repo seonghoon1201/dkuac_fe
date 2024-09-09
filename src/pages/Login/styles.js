@@ -42,6 +42,15 @@ const styles = {
     textDecoration: "none", // 링크 텍스트 밑줄 제거
     fontWeight: "bold",
   },
+  eyeIcon: {
+    position: "absolute", // 부모 요소 내부에서의 위치 지정
+    right: 10, // 오른쪽에서 10px 떨어진 위치
+    top: "50%", // 입력 필드의 중간 높이에 배치
+    transform: "translateY(-50%)", // 수직 가운데 정렬
+    cursor: "pointer", // 커서를 포인터로 변경
+    width: "24px", // 아이콘 크기 지정
+    height: "24px", // 아이콘 크기 지정
+  },
 };
 
 export default styles;

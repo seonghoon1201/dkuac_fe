@@ -3,11 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import userInfoStore from "../../stores/userInfoStore";
 import styles from "./styles";
 import { basicAxios } from "../../api/axios";
+import openEyeIcon from "../../images/open_eye.png";
+import closeEyeIcon from "../../images/close_eye.png";
 
 function Login() {
   const { setUserInfo, isLoggedIn } = userInfoStore();
   const [studentNumber, setStudentNumber] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // 비밀번호 표시 상태
   const navigate = useNavigate();
 
   const handleClick = (e) => {
@@ -49,6 +52,11 @@ function Login() {
     }
   }, [isLoggedIn, navigate]);
 
+  // 비밀번호 표시 토글
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+
   return (
     <div style={styles.container}>
       <h2>로그인</h2>
@@ -61,14 +69,22 @@ function Login() {
           style={styles.inputField}
           required
         />
-        <input
-          type="password"
-          placeholder="첫 비번은 010을 제외한 전화번호 8자리입니다."
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={styles.inputField}
-          required
-        />
+        <div style={{ position: "relative" }}>
+          <input
+            type={showPassword ? "text" : "password"} // 비밀번호가 보이는지 여부에 따라 타입 설정
+            placeholder="첫 비번은 010을 제외한 전화번호 8자리입니다."
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            style={styles.inputField}
+            required
+          />
+          <img
+            src={showPassword ? closeEyeIcon : openEyeIcon}
+            alt={showPassword ? "비밀번호 숨기기" : "비밀번호 보기"}
+            onClick={togglePasswordVisibility}
+            style={styles.eyeIcon}
+          />
+        </div>
         <div style={styles.buttonContainer}>
           <button type="submit" onClick={handleClick} style={styles.button}>
             로그인
