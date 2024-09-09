@@ -47,7 +47,7 @@ function Login() {
     if (isLoggedIn) {
       navigate("/");
     }
-  }, [isLoggedIn, navigate]); // Added dependencies to useEffect
+  }, [isLoggedIn, navigate]);
 
   return (
     <div style={styles.container}>
