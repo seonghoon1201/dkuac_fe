@@ -22,9 +22,9 @@ const reviews = [
     department: "경제학과 21",
   },
   {
-    text: "Bye",
-    author: "박영진",
-    department: "산업보안학과 19",
+    text: "졸업만 안했으면 계속 했을텐데.. 사람들 만나기도 좋고 주말에 한번씩 등산을 하면 리프레쉬되는거같아 학기동안 번아웃도 안오고 좋았습니다!",
+    author: "정미르",
+    department: "고분자공학과 20",
   },
   {
     text: "See you at the top",
