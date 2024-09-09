@@ -21,6 +21,10 @@ const styles = {
     borderRadius: "5px",
     fontSize: "16px",
   },
+  password: {
+    position : "relative",
+    width: "300px",
+  },
   buttonContainer: {
     display: "flex",
     justifyContent: "space-around", // 가운데 정렬 및 간격 조정
@@ -45,7 +49,7 @@ const styles = {
   eyeIcon: {
     position: "absolute", // 부모 요소 내부에서의 위치 지정
     right: 10, // 오른쪽에서 10px 떨어진 위치
-    top: "50%", // 입력 필드의 중간 높이에 배치
+    top: "45%", // 입력 필드의 중간 높이에 배치
     transform: "translateY(-50%)", // 수직 가운데 정렬
     cursor: "pointer", // 커서를 포인터로 변경
     width: "24px", // 아이콘 크기 지정
