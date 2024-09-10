@@ -152,6 +152,9 @@ function SignUp() {
           onChange={(e) => setMajor(e.target.value)}
           style={styles.inputField}
         />
+        <label htmlFor="birthDate" style={styles.label}>
+          생년월일
+        </label>
         <input
           type="date"
           placeholder="생년월일"
