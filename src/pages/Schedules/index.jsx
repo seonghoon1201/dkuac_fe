@@ -89,7 +89,10 @@ function Schedules() {
     };
 
     try {
+      const accessToken = localStorage.getItem("accessToken");
+      console.log("accessToken: ", accessToken);
       const response = await authAxios.post("/schedule", newEvent);
+      console.log(response);
       const createdEvent = response.data;
       setDayEvents([...dayEvents, createdEvent]);
       setAllEvents([...allEvents, createdEvent]);
