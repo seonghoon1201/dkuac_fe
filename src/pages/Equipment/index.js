@@ -76,7 +76,7 @@ const Equipment = () => {
     if (selectedSize) {
       try {
         const res = await axios.post(
-          `http://localhost:3000/rent`,
+          `https://dkuac.store/rent`,
           {
             size: selectedSize,
           },
