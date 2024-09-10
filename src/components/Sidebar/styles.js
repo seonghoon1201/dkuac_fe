@@ -22,12 +22,12 @@ const styles = {
   caretIcon: {
     marginRight: "0.5vw",
   },
-  rightCaret: {
-    marginRight: "0.5vw",
-  },
   termList: {
     marginTop: "1vw",
     paddingLeft: "1.8vw", // Ensure the terms are aligned under the "활동" text
+    transition: "max-height 0.3s ease-in-out",
+    maxHeight: "200px", // 드롭다운에 필요한 최대 높이
+    overflow: "hidden",
   },
   termItem: {
     color: "#3a5ba0",
@@ -36,11 +36,10 @@ const styles = {
     display: "flex",
     alignItems: "center",
     padding: "0.5vw 0",
+    transition: "opacity 0.3s ease", // 부드러운 나타나는 효과
   },
-  selectedTerm: {
-    color: "#3a5ba0",
-    fontSize: "12px", // 고정 글씨 크기
-    fontWeight: "bold",
+  rightCaret: {
+    marginRight: "0.5vw",
   },
 };
 
