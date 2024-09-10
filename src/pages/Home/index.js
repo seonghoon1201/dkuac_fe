@@ -12,7 +12,7 @@ import ReviewBox from "../../components/ReviewBox";
 
 const reviews = [
   {
-    text: "해치지 않아요!",
+    text: "등산도 재밌고 클라이밍도 처음 해봤는데 재밌었어요!",
     author: "김세윤",
     department: "경제학과 19",
   },
