@@ -1,50 +1,66 @@
-import React, { useRef } from "react";
-import { FaCaretDown, FaCaretRight } from "react-icons/fa"; // 아이콘 추가
+import React, { useState } from "react";
+import { FaCaretDown, FaCaretRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import useActivitySemesterStore from "../../stores/useActivitySemesterStore";
 import styles from "./styles";
 
-const terms = ["2023-1", "2023-2", "2024-1"];
+const terms = ["2024-1", "2024-2"]; // 2024 학기만 표시
 
 function Sidebar() {
-  const { setActivitySemester } = useActivitySemesterStore();
-  const activityRef = useRef(null);
+  const [isHovered, setIsHovered] = useState(false); // 마우스 오버 상태 관리
   const navigate = useNavigate();
-  const handleTermChange = (term) => {
-    setActivitySemester(term);
-    if (activityRef.current) {
-      activityRef.current.scrollIntoView({ behavior: "smooth" });
-    }
+
+  // 마우스 오버 시 드롭다운 표시
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
+  // 학기 선택 시 해당 페이지로 이동
+  const handleTermClick = (term) => {
+    navigate(`/activities?semester=${term}`);
   };
 
   const handleCalendarToggle = () => {
     navigate("/schedules");
   };
 
-  const handleActivityToggle = () => {
-    navigate("/activities");
-  };
-
   return (
     <div style={styles.sidebar}>
-      <div style={styles.sidebarLink} onClick={handleActivityToggle}>
+      {/* 활동 메뉴 */}
+      <div
+        style={styles.sidebarLink}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
         <div style={styles.sidebarLinkText}>
-          <FaCaretDown style={styles.caretIcon} />
+          {isHovered ? (
+            <FaCaretDown style={styles.caretIcon} />
+          ) : (
+            <FaCaretRight style={styles.caretIcon} />
+          )}
           <span>활동</span>
         </div>
-        <div style={styles.termList}>
-          {terms.map((term, index) => (
-            <div
-              key={index}
-              style={styles.termItem}
-              onClick={() => handleTermChange(term)}
-            >
-              <FaCaretRight style={styles.rightCaret} />
-              <span>{term}</span>
-            </div>
-          ))}
-        </div>
+        {/* 드롭다운 학기 목록 */}
+        {isHovered && (
+          <div style={styles.termList}>
+            {terms.map((term, index) => (
+              <div
+                key={index}
+                style={styles.termItem}
+                onClick={() => handleTermClick(term)} // 학기 클릭 시 호출
+              >
+                <FaCaretRight style={styles.rightCaret} />
+                <span>{term}</span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
+
+      {/* 캘린더 메뉴 */}
       <div style={styles.sidebarLink} onClick={handleCalendarToggle}>
         <FaCaretRight style={styles.rightCaret} />
         <span>캘린더</span>
