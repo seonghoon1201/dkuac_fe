@@ -38,6 +38,7 @@ function TotalDepartment() {
           <div style={styles.modalContent} onClick={(e) => e.stopPropagation()}>
             <img src={selectedMember.image} alt={selectedMember.name} style={styles.modalImage} />
             <div style={styles.modalTextContainer}>
+              <h2 style={styles.modalRole}>{selectedMember.role}</h2>
               <h2 style={styles.modalName}>{selectedMember.name}</h2>
               <p style={styles.modalDepartment}>
                 {selectedMember.department} <br />{selectedMember.major}
