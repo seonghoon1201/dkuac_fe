@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styles from "./styles";
 import total from "../../images/정미르.png"; // 예시 이미지 경로
 import climbing from "../../images/정성훈.png"; // 예시 이미지 경로
-import hiking from "../../images/황인우.png"; // 예시 이미지 경로
+import hiking from "../../images/박종화.png"; // 예시 이미지 경로
 
 const departments = [
   {
