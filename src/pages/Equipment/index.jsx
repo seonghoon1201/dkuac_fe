@@ -91,6 +91,7 @@ const Equipment = () => {
       } catch (error) {
         console.error("대여 요청에 실패했습니다:", error);
         alert(error.response.data.message);
+        logoutUtil();
       }
     } else {
       alert("사이즈를 선택해주세요.");
