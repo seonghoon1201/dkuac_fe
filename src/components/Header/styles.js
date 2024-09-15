@@ -79,7 +79,7 @@ const styles = {
     textDecoration: "none",
   },
   // 반응형 설정
-  '@media (max-width: 768px)': {
+  '@media (max-width: 640px)': {
     navList: {
       flexDirection: "column",
       alignItems: "flex-start",
@@ -92,7 +92,7 @@ const styles = {
     },
   },
   // 노트북 화면 이상에서는 원래 메뉴가 보여야 함
-  '@media (min-width: 769px)': {
+  '@media (min-width: 641px)': {
     hamburgerIconContainer: {
       display: "none", // 768px 이상에서는 햄버거 아이콘 숨김
     },
