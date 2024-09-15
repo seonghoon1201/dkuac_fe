@@ -4,6 +4,7 @@ import Sidebar from "../../components/Sidebar";
 import useActivitySemesterStore from "../../stores/useActivitySemesterStore";
 import userInfoStore from "../../stores/userInfoStore";
 import { authAxios, basicAxios } from "../../api/axios";
+import logoutUtil from "../../utils/logout-util";
 
 function Activities() {
   const { activitySemester } = useActivitySemesterStore();
@@ -32,7 +33,7 @@ function Activities() {
   const fetchActivities = async () => {
     const [year, semester] = activitySemester.split("-");
     try {
-      const response = await authAxios.get(
+      const response = await basicAxios.get(
         `/activity?year=${year}&semester=${semester}`
       );
       if (response.data.length > 0) {
@@ -132,6 +133,7 @@ function Activities() {
     } catch (error) {
       console.error("Failed to submit activity:", error);
       alert("활동 추가 중 오류가 발생했습니다.");
+      logoutUtil();
     }
   };
 
@@ -171,8 +173,9 @@ function Activities() {
         alert("댓글 작성에 실패했습니다.");
       }
     } catch (error) {
-      console.log("Failed to submit comment:", error)
+      console.log("Failed to submit comment:", error);
       alert("댓글 작성 중 오류가 발생했습니다.");
+      logoutUtil();
     }
   };
 

@@ -8,6 +8,7 @@ import styles from "./styles";
 import { basicAxios, authAxios } from "../../api/axios";
 import Sidebar from "../../components/Sidebar";
 import userInfoStore from "../../stores/userInfoStore";
+import logoutUtil from "../../utils/logout-util";
 
 const customWeekDays = ["일", "월", "화", "수", "목", "금", "토"];
 
@@ -23,7 +24,7 @@ function Schedules() {
   const calendarRef = useRef(null);
 
   const formattingDate = (date) => {
-    return format(date, 'yyyy-MM-dd');
+    return format(date, "yyyy-MM-dd");
   };
 
   const formattedDate = formattingDate(selectedDate);
@@ -89,10 +90,7 @@ function Schedules() {
     };
 
     try {
-      const accessToken = localStorage.getItem("accessToken");
-      console.log("accessToken: ", accessToken);
       const response = await authAxios.post("/schedule", newEvent);
-      console.log(response);
       const createdEvent = response.data;
       setDayEvents([...dayEvents, createdEvent]);
       setAllEvents([...allEvents, createdEvent]);
@@ -101,6 +99,7 @@ function Schedules() {
       setNewEventContent("");
     } catch (error) {
       console.error("Error creating event:", error);
+      logoutUtil();
     }
   };
 
@@ -116,6 +115,7 @@ function Schedules() {
     } catch (error) {
       console.error("Error deleting event:", error);
       alert("일정 삭제에 실패했습니다. 다시 시도하거나 관리자에게 문의하세요.");
+      logoutUtil();
     }
   };
 
@@ -135,8 +135,9 @@ function Schedules() {
                 value={selectedDate}
                 tileContent={({ date }) => {
                   const formattedDate = format(date, "yyyy-MM-dd");
-                  const hasEvent = Array.isArray(allEvents) &&
-                                    allEvents.some(event => event.date === formattedDate);
+                  const hasEvent =
+                    Array.isArray(allEvents) &&
+                    allEvents.some((event) => event.date === formattedDate);
                   return hasEvent ? <div style={styles.eventDot}>•</div> : null;
                 }}
                 formatShortWeekday={formatShortWeekday}
@@ -150,17 +151,16 @@ function Schedules() {
             <div style={styles.selectedDate}>
               {format(selectedDate, "yyyy-MM-dd")}
               {isStaff && (
-                <FaPlus
-                  style={styles.addIcon}
-                  onClick={handleAddEvent}
-                />
+                <FaPlus style={styles.addIcon} onClick={handleAddEvent} />
               )}
             </div>
             {dayEvents.length === 0 ? (
-              <div style={styles.noEventsMessage}>해당일에는 아무 활동이 없습니다.</div>
+              <div style={styles.noEventsMessage}>
+                해당일에는 아무 활동이 없습니다.
+              </div>
             ) : (
               <div style={styles.eventList}>
-                {dayEvents.map(event => (
+                {dayEvents.map((event) => (
                   <div key={event.id} style={styles.eventItem}>
                     <div style={styles.eventContent}>
                       <div style={styles.eventTitle}>{event.title}</div>
@@ -202,7 +202,7 @@ function Schedules() {
                   취소
                 </button>
               </div>
-            </div> 
+            </div>
           </div>
         )}
       </div>
