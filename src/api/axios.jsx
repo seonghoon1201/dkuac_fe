@@ -8,7 +8,7 @@ const clearUserInfoStorage = userInfoStore.persist.clearStorage;
 export const basicAxios = axios.create({
   baseURL: BASE_URL,
   headers: {
-    "Content-Type": "application/json", // 'header'를 'headers'로 수정
+    "Content-Type": "application/json",
   },
   withCredentials: true,
 });
@@ -32,7 +32,7 @@ authAxios.interceptors.response.use(
     console.log("error occurred in authAxios.interceptors.response.use");
     
     const userStore = userInfoStore(); // userInfoStore가 함수일 경우에 호출
-    const { isLoggedIn } = userStore; // isLoggedIn을 올바르게 가져오기
+    const { isLoggedIn } = userStore;
     console.log("isLoggedIn: ", isLoggedIn);
     
     // error.response가 있는지 확인
@@ -42,8 +42,30 @@ authAxios.interceptors.response.use(
       // 401 Unauthorized 에러 처리
       if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true; // 재시도 플래그 설정
+
         try {
-          // 새로운 access token 요청
+          // **리프레시 토큰 없이 바로 로그아웃 처리** 
+          localStorage.removeItem("accessToken"); // accessToken 제거
+          clearUserInfoStorage(); // 사용자 정보 저장소 초기화
+          alert("토큰이 만료되었습니다. 다시 로그인해주세요.");
+          window.location.href = "/login"; // 로그인 페이지로 리다이렉트
+          return; // 이후 코드 실행 중단
+        } catch (logoutError) {
+          console.error("로그아웃 처리 중 오류:", logoutError);
+          return Promise.reject(logoutError);
+        }
+      }
+    }
+    
+    return Promise.reject(error); // 다른 에러는 그대로 거부
+  }
+);
+
+/* 
+리프레시 토큰을 활용한 기존 코드
+-------------------------------
+        try {
+          // 새로운 access token 요청 (리프레시 토큰 사용 부분 제거)
           const res = await basicAxios.get("/auth/token/access");
           const newAccessToken = res.data.accessToken; // 새로운 access token을 추출
           localStorage.setItem("accessToken", newAccessToken); // localStorage에 저장
@@ -59,9 +81,5 @@ authAxios.interceptors.response.use(
           window.location.href = "/login"; // 로그인 페이지로 리다이렉트
           return; // 이후 코드 실행 중단
         }
-      }
-    }
-    
-    return Promise.reject(error); // 다른 에러는 그대로 거부
-  }
-);
+-------------------------------
+*/
