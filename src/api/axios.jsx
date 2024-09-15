@@ -1,5 +1,5 @@
 import axios from "axios";
-import jwt_decode from "jwt-decode";
+import { decode as jwt_decode } from "jwt-decode";
 import userInfoStore from "../stores/userInfoStore";
 
 // 기본 설정 및 유틸리티
