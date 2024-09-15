@@ -27,7 +27,7 @@ const reviews = [
     department: "고분자공학과 20",
   },
   {
-    text: "gdgdgd",
+    text: "gdgdgdgdgdgddggdgdgdddaa",
     author: "박영진",
     department: "산업보안학과 19",
   },
