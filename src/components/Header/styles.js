@@ -79,7 +79,7 @@ const styles = {
     textDecoration: "none",
   },
   // 반응형 설정
-  '@media (max-width: 640px)': {
+  '@media only screen and (max-width: 320px)': {
     navList: {
       flexDirection: "column",
       alignItems: "flex-start",

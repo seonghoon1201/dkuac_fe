@@ -28,11 +28,11 @@ const styles = {
   },
   h1: {
     margin: 0,
-    fontSize: "4vw",
+    fontSize: "4vw", // 반응형 폰트
   },
   h2: {
     margin: 0,
-    fontSize: "4vw",
+    fontSize: "4vw", // 반응형 폰트
     display: "flex",
     justifyContent: "center",
     alignItems: "baseline",
@@ -59,7 +59,7 @@ const styles = {
     padding: "2vw",
     minHeight: "50vh",
     marginTop: "4vw",
-    width: "100%", // Ensure the section takes the full width of its container
+    width: "100%", 
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -76,15 +76,15 @@ const styles = {
     margin: "1vw",
   },
   sectionTitle: {
-    fontSize: "3vw",
+    fontSize: "3vw", // 반응형 폰트
     margin: "2vw 0",
     alignSelf: "flex-start",
     fontWeight: "600",
   },
   reviewsSection: {
-    backgroundColor: "#3a5ba0", // 파란색 배경
+    backgroundColor: "#3a5ba0",
     padding: "2vw",
-    textAlign: "left", // 왼쪽 정렬
+    textAlign: "left",
     minHeight: "50vh",
     display: "flex",
     flexDirection: "column",
@@ -94,7 +94,7 @@ const styles = {
     fontSize: "3vw",
     color: "white",
     marginBottom: "2vw",
-    marginLeft: "2vw", // 왼쪽에 위치하도록 마진 추가
+    marginLeft: "2vw",
     fontWeight: "600",
   },
   reviewContainer: {
@@ -103,7 +103,7 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     gap: "2vw",
-    paddingBottom: "5vw", // 하단에 여백 추가
+    paddingBottom: "5vw",
   },
   reviewBox: {
     backgroundColor: "white",
@@ -113,7 +113,7 @@ const styles = {
     position: "relative",
     width: "40%",
     minWidth: "300px",
-    boxSizing: "border-box", // Padding을 포함하여 크기를 계산
+    boxSizing: "border-box",
   },
   quotationIcon: {
     position: "absolute",
@@ -122,16 +122,16 @@ const styles = {
     width: "2.5vw",
   },
   reviewText: {
-    fontSize: "1.5vw", // 글씨 크기 조정
-    marginTop: "1vw", // 큰따옴표 아래에 공간 추가
+    fontSize: "1.5vw",
+    marginTop: "1vw",
   },
   reviewAuthor: {
     marginTop: "1.5vw",
-    fontSize: "1.2vw", // 글씨 크기 조정
+    fontSize: "1.2vw",
     fontWeight: "bold",
   },
   reviewDepartment: {
-    fontSize: "1vw", // 글씨 크기 조정
+    fontSize: "1vw",
     marginTop: "0.5vw",
   },
   activitiesSection: {
@@ -167,11 +167,11 @@ const styles = {
     fontWeight: "600",
     cursor: "pointer",
     borderRadius: "25px",
-    textDecoration: "none", // 밑줄 제거
-    display: "inline-block", // 인라인 블록 요소로 설정
-    position: "relative", // 상대적 위치 설정
-    overflow: "hidden", // 오버플로우 숨기기
-    transition: "color 0.3s, background-color 0.3s", // 트랜지션 추가
+    textDecoration: "none",
+    display: "inline-block",
+    position: "relative",
+    overflow: "hidden",
+    transition: "color 0.3s, background-color 0.3s",
   },
   activityContainer: {
     display: "flex",
