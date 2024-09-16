@@ -45,3 +45,16 @@ authAxios.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+formDataAxios.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      config.headers.Authorization = `bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
