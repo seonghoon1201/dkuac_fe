@@ -23,6 +23,16 @@ export const authAxios = axios.create({
   withCredentials: true,
 });
 
+// ContentType이 multipart/form-data인 경우
+export const formDataAxios = axios.create({
+  baseURL: BASE_URL,
+  headers: {
+    Authorization: `bearer ${localStorage.getItem("accessToken") || ""}`,
+    "Content-Type": "multipart/form-data",
+  },
+  withCredentials: true,
+});
+
 authAxios.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("accessToken");

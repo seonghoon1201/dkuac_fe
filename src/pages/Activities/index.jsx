@@ -3,7 +3,7 @@ import styles from "./styles";
 import Sidebar from "../../components/Sidebar";
 import useActivitySemesterStore from "../../stores/useActivitySemesterStore";
 import userInfoStore from "../../stores/userInfoStore";
-import { authAxios, basicAxios } from "../../api/axios";
+import { authAxios, basicAxios, formDataAxios } from "../../api/axios";
 import logoutUtil from "../../utils/logout-util";
 
 function Activities() {
@@ -116,11 +116,7 @@ function Activities() {
     formData.append("date", currentDate);
 
     try {
-      const response = await authAxios.post("/activity", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await formDataAxios.post("/activity", formData);
 
       if (response.status === 201) {
         alert("활동이 성공적으로 추가되었습니다.");
