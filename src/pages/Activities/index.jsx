@@ -131,6 +131,7 @@ function Activities() {
         alert("활동 추가에 실패했습니다.");
       }
     } catch (error) {
+      console.log(error);
       console.error("Failed to submit activity:", error);
       alert("활동 추가 중 오류가 발생했습니다.");
       logoutUtil();
