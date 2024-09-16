@@ -17,8 +17,21 @@ export const basicAxios = axios.create({
 export const authAxios = axios.create({
   baseURL: BASE_URL,
   headers: {
-    Authorization: `Bearer ${localStorage.getItem("accessToken") || ""}`,
+    Authorization: `bearer ${localStorage.getItem("accessToken") || ""}`,
     "Content-Type": "application/json",
   },
   withCredentials: true,
 });
+
+authAxios.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      config.headers.Authorization = `bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
