@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./styles";
 import userInfoStore from "../../stores/userInfoStore";
-import { basicAxios } from "../../api/axios"; // Updated import
+import { basicAxios } from "../../api/axios";
 
 function SignUp() {
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [studentNumber, setStudentNumber] = useState("");
   const [major, setMajor] = useState("");
   const [birthDate, setBirthDate] = useState("");
@@ -21,11 +22,11 @@ function SignUp() {
   const handleEmailVerification = () => {
     basicAxios
       .post("/auth/create-verification-code", {
-        studentNumber: studentNumber,
+        email: email,
       })
       .then(() => {
         setVerificationSent(true);
-        setVerificationError(""); // 이메일 인증 코드가 성공적으로 전송됨을 설정합니다.
+        setVerificationError("");
       })
       .catch((error) => {
         console.error("인증 코드 전송 오류:", error);
@@ -36,7 +37,7 @@ function SignUp() {
   const handleVerificationSubmit = () => {
     basicAxios
       .post("/auth/is-verified", {
-        studentNumber: studentNumber,
+        email: email,
         codeFromUser: verificationCode,
       })
       .then((response) => {
@@ -55,7 +56,7 @@ function SignUp() {
 
   const handleSignupSubmit = (e) => {
     e.preventDefault();
-    if (!name || !major || !studentNumber || !birthDate || !phoneNumber) {
+    if (!name || !email || !major || !studentNumber || !birthDate || !phoneNumber) {
       alert("모든 정보를 입력해주세요!");
       return;
     }
@@ -63,6 +64,7 @@ function SignUp() {
     basicAxios
       .post("/auth/signup", {
         name: name,
+        email: email,
         major: major,
         studentNumber: +studentNumber,
         birth: birthDate,
@@ -71,7 +73,6 @@ function SignUp() {
       .then(() => {
         alert("회원가입이 완료되었습니다!");
         navigate("/login");
-        // setIsSignupComplete(true); // 회원가입 성공 시 상태 업데이트
       })
       .catch((error) => {
         console.error("회원가입 오류:", error);
@@ -83,7 +84,7 @@ function SignUp() {
     if (isLoggedIn) {
       navigate("/");
     }
-  }, [isLoggedIn, navigate]); // Added dependencies to useEffect
+  }, [isLoggedIn, navigate]);
 
   return (
     <div style={styles.container}>
@@ -96,18 +97,13 @@ function SignUp() {
           onChange={(e) => setName(e.target.value)}
           style={styles.inputField}
         />
-        <div style={{ display: "flex", alignItems: "center", width: "100%" }}>
-          <input
-            type="text"
-            placeholder="학번"
-            value={studentNumber}
-            onChange={(e) => setStudentNumber(e.target.value)}
-            style={{ ...styles.inputField, marginRight: "10px" }}
-          />
-          <span style={{ fontSize: "16px", color: "white" }}>
-            @dankook.ac.kr
-          </span>
-        </div>
+        <input
+          type="email"
+          placeholder="이메일"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          style={styles.inputField}
+        />
         <div style={styles.emailButtonContainer}>
           <button
             type="button"
@@ -147,9 +143,16 @@ function SignUp() {
         )}
         <input
           type="text"
-          placeholder="학과"
+          placeholder="학과 - ex) 소프트웨어학과"
           value={major}
           onChange={(e) => setMajor(e.target.value)}
+          style={styles.inputField}
+        />
+        <input
+          type="text"
+          placeholder="학번 - ex) 32241234"
+          value={studentNumber}
+          onChange={(e) => setStudentNumber(e.target.value)}
           style={styles.inputField}
         />
         <label htmlFor="birthDate" style={styles.label}>
@@ -164,7 +167,7 @@ function SignUp() {
         />
         <input
           type="text"
-          placeholder="핸드폰 번호"
+          placeholder="핸드폰 번호('-'제외하고 입력해 주세요)"
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
           style={styles.inputField}
