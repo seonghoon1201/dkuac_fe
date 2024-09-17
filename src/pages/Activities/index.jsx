@@ -43,7 +43,7 @@ const fetchActivities = async () => {
         if (imageUrl.includes("/public/activity/")) {
           imageUrl = imageUrl.replace("/public/activity/", "");
         }
-        if (!imageUrl.startswith("https")) {
+        if (!imageUrl.startsWith("https")) {
           imageUrl = `${process.env.REACT_APP_BACKEND_API_URL}${imageUrl}`;
         }
         return { ...activity, images: imageUrl };
