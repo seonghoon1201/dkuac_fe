@@ -32,27 +32,32 @@ function Activities() {
   const semester = searchParams.get('semester');
 
   // 활동 데이터 가져오기
-  const fetchActivities = async () => {
-    const [year, semesterTerm] = semester.split("-");
-    try {
-      const response = await basicAxios.get(`/activity?year=${year}&semester=${semesterTerm}`);
-      if (response.data.length > 0) {
-        const activitiesWithFormattedImages = response.data.map((activity) => {
-          let imageUrl = activity.images[0];
-          if (!imageUrl.includes("https")) {
-            imageUrl = `${process.env.REACT_APP_BACKEND_API_URL}${imageUrl}`;
-          }
-          return { ...activity, images: imageUrl };
-        });
-        setActivities(activitiesWithFormattedImages);
-      } else {
-        setActivities([]);
-      }
-    } catch (error) {
-      console.error("활동 데이터를 가져오는 데 실패했습니다:", error);
+const fetchActivities = async () => {
+  const [year, semesterTerm] = semester.split("-");
+  try {
+    const response = await basicAxios.get(`/activity?year=${year}&semester=${semesterTerm}`);
+    if (response.data.length > 0) {
+      const activitiesWithFormattedImages = response.data.map((activity) => {
+        let imageUrl = activity.images[0];
+        // 이미지 URL에서 '/public/activity/' 부분 제거
+        if (imageUrl.includes("/public/activity/")) {
+          imageUrl = imageUrl.replace("/public/activity/", "");
+        }
+        if (!imageUrl.includes("https")) {
+          imageUrl = `${process.env.REACT_APP_BACKEND_API_URL}${imageUrl}`;
+        }
+        return { ...activity, images: imageUrl };
+      });
+      setActivities(activitiesWithFormattedImages);
+    } else {
       setActivities([]);
     }
-  };
+  } catch (error) {
+    console.error("활동 데이터를 가져오는 데 실패했습니다:", error);
+    setActivities([]);
+  }
+};
+
 
   // 댓글 데이터 가져오기
   const fetchComments = async (activityId) => {
