@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import styles from "./styles";
 import Sidebar from "../../components/Sidebar";
 import useActivitySemesterStore from "../../stores/useActivitySemesterStore";
@@ -14,7 +15,7 @@ function Activities() {
   const [showActivityPopup, setShowActivityPopup] = useState(false);
   const [selectedActivity, setSelectedActivity] = useState({
     id: null,
-    title: "",
+    title: "", 
     content: "",
     images: "",
     comments: [],
@@ -26,6 +27,7 @@ function Activities() {
   });
   const [newComment, setNewComment] = useState("");
   const activityRef = useRef(null);
+  const location = useLocation();
 
   // 활동 데이터 가져오기
   const fetchActivities = async () => {
@@ -52,7 +54,14 @@ function Activities() {
       console.error("Failed to fetch activities:", error);
       setActivities([]);
     }
-  };
+  };  
+  
+  // 학기 정보가 바뀔 때마다 활동 데이터 불러오기
+  useEffect(() => {
+    if (semester) {
+      fetchActivities();
+    }
+  }, [semester]);
 
   // 댓글 데이터 가져오기
   const fetchComments = async (activityId) => {
@@ -74,11 +83,6 @@ function Activities() {
       }));
     }
   };
-
-  // 컴포넌트 마운트 시 활동 데이터 가져오기
-  useEffect(() => {
-    fetchActivities();
-  }, [activitySemester]);
 
   // 입력 필드 값 변경 처리
   const handleInputChange = (e) => {
