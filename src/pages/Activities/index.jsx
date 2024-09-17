@@ -39,10 +39,10 @@ const fetchActivities = async () => {
     if (response.data.length > 0) {
       const activitiesWithFormattedImages = response.data.map((activity) => {
         let imageUrl = activity.images[0];
-        // 이미지 URL에서 '/public/activity/' 부분 제거
+        /*// 이미지 URL에서 '/public/activity/' 부분 제거
         if (imageUrl.includes("/public/activity/")) {
           imageUrl = imageUrl.replace("/public/activity/", "");
-        }
+        }*/
         if (!imageUrl.includes("https")) {
           imageUrl = `${process.env.REACT_APP_BACKEND_API_URL}${imageUrl}`;
         }
