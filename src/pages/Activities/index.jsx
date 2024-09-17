@@ -2,20 +2,18 @@ import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import styles from "./styles";
 import Sidebar from "../../components/Sidebar";
-import useActivitySemesterStore from "../../stores/useActivitySemesterStore";
 import userInfoStore from "../../stores/userInfoStore";
 import { authAxios, basicAxios, formDataAxios } from "../../api/axios";
 import logoutUtil from "../../utils/logout-util";
 
 function Activities() {
-  const { activitySemester, setActivitySemester } = useActivitySemesterStore(); // 추가: setActivitySemester 포함
-  const { isStaff, isLoggedIn, name } = userInfoStore();
+  const { isLoggedIn, isStaff, name } = userInfoStore();
   const [activities, setActivities] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [showActivityPopup, setShowActivityPopup] = useState(false);
   const [selectedActivity, setSelectedActivity] = useState({
     id: null,
-    title: "", 
+    title: "",
     content: "",
     images: "",
     comments: [],
@@ -26,22 +24,22 @@ function Activities() {
     image: null,
   });
   const [newComment, setNewComment] = useState("");
-  const activityRef = useRef(null);
   const location = useLocation();
+  const activityRef = useRef(null);
+
+  // URL에서 학기 정보 가져오기
+  const searchParams = new URLSearchParams(location.search);
+  const semester = searchParams.get('semester');
 
   // 활동 데이터 가져오기
   const fetchActivities = async () => {
-    const [year, semester] = activitySemester.split("-");
+    const [year, semesterTerm] = semester.split("-");
     try {
-      const response = await basicAxios.get(
-        `/activity?year=${year}&semester=${semester}`
-      );
+      const response = await basicAxios.get(`/activity?year=${year}&semester=${semesterTerm}`);
       if (response.data.length > 0) {
         const activitiesWithFormattedImages = response.data.map((activity) => {
           let imageUrl = activity.images[0];
-          if (imageUrl.includes("https")) {
-            imageUrl = imageUrl.replace("/public/activity/", "");
-          } else {
+          if (!imageUrl.includes("https")) {
             imageUrl = `${process.env.REACT_APP_BACKEND_API_URL}${imageUrl}`;
           }
           return { ...activity, images: imageUrl };
@@ -51,17 +49,10 @@ function Activities() {
         setActivities([]);
       }
     } catch (error) {
-      console.error("Failed to fetch activities:", error);
+      console.error("활동 데이터를 가져오는 데 실패했습니다:", error);
       setActivities([]);
     }
-  };  
-  
-  // 학기 정보가 바뀔 때마다 활동 데이터 불러오기
-  useEffect(() => {
-    if (semester) {
-      fetchActivities();
-    }
-  }, [semester]);
+  };
 
   // 댓글 데이터 가져오기
   const fetchComments = async (activityId) => {
@@ -73,16 +64,23 @@ function Activities() {
           comments: response.data,
         }));
       } else {
-        console.error("Invalid comments data:", response.data);
+        console.error("댓글 데이터가 유효하지 않습니다:", response.data);
       }
     } catch (error) {
-      console.error("Failed to fetch comments:", error);
+      console.error("댓글을 가져오는 데 실패했습니다:", error);
       setSelectedActivity((prev) => ({
         ...prev,
         comments: [],
       }));
     }
   };
+
+  // 학기 정보가 변경될 때마다 활동 데이터를 불러옴
+  useEffect(() => {
+    if (semester) {
+      fetchActivities();
+    }
+  }, [semester]);
 
   // 입력 필드 값 변경 처리
   const handleInputChange = (e) => {
@@ -120,7 +118,7 @@ function Activities() {
       }
     } catch (error) {
       console.log(error);
-      console.error("Failed to submit activity:", error);
+      console.error("활동 제출 중 오류가 발생했습니다:", error);
       alert("활동 추가 중 오류가 발생했습니다.");
       logoutUtil();
     }
@@ -129,7 +127,7 @@ function Activities() {
   // 활동 클릭 처리
   const handleActivityClick = (activity) => {
     setSelectedActivity(activity);
-    fetchComments(activity.id);
+    fetchComments(activity.id); // 댓글을 불러오는 요청 추가
     setShowActivityPopup(true);
   };
 
@@ -158,25 +156,20 @@ function Activities() {
         alert("댓글 작성에 실패했습니다.");
       }
     } catch (error) {
-      console.log("Failed to submit comment:", error);
+      console.log("댓글 제출 중 오류가 발생했습니다:", error);
       alert("댓글 작성 중 오류가 발생했습니다.");
       logoutUtil();
     }
   };
 
-  // 학기 변경 핸들러
-  const handleSemesterChange = (newSemester) => {
-    setActivitySemester(newSemester); // 학기 변경 시 store에 반영
-  };
-
   return (
     <div style={{ ...styles.home, overflowX: "hidden" }}>
-      <Sidebar onSemesterChange={handleSemesterChange} /> {/* 추가된 prop */}
+      <Sidebar />
       <div style={styles.content}>
         <div style={styles.banner}>
           <div style={styles.bannerItem} ref={activityRef}>
             <div style={styles.bannerTitle}>
-              {activitySemester} 활동
+              {semester} 활동
               {isLoggedIn && isStaff && (
                 <button
                   style={styles.addActivityButton}
@@ -299,15 +292,15 @@ function Activities() {
               <button
                 style={styles.closeButton}
                 onClick={() => setShowActivityPopup(false)}
-                >
-                  닫기
-                </button>
-              </div>
+              >
+                &times;
+              </button>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
-    );
-  }
-  
-  export default Activities;
+    </div>
+  );
+}
+
+export default Activities;
