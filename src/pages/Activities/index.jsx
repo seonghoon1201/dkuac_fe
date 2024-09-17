@@ -56,7 +56,7 @@ function Activities() {
     }
   };  
   
-  // 학기 정보 바뀔 때마다 활동 데이터 불러오기
+  // 학기 정보가 바뀔 때마다 활동 데이터 불러오기
   useEffect(() => {
     if (semester) {
       fetchActivities();
