@@ -36,15 +36,18 @@ const fetchActivities = async () => {
   const [year, semesterTerm] = semester.split("-");
   try {
     const response = await basicAxios.get(`/activity?year=${year}&semester=${semesterTerm}`);
+    console.log(response);
     if (response.data.length > 0) {
       const activitiesWithFormattedImages = response.data.map((activity) => {
         let imageUrl = activity.images[0];
         // 이미지 URL에서 '/public/activity/' 부분 제거
         if (imageUrl.includes("/public/activity/")) {
           imageUrl = imageUrl.replace("/public/activity/", "");
+          console.log(imageUrl);
         }
-        if (!imageUrl.startsWith("https")) {
+        if (!imageUrl.includes("https")) {
           imageUrl = `${process.env.REACT_APP_BACKEND_API_URL}${imageUrl}`;
+          console.log(imageUrl);
         }
         return { ...activity, images: imageUrl };
       });
