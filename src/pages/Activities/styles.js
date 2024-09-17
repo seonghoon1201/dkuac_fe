@@ -236,6 +236,17 @@ const styles = {
     fontWeight: "bold",
     marginBottom: "0.5vw",
   },
+  deleteButton: {
+    backgroundColor: "red",
+    color: "white",
+    border: "none",
+    borderRadius: "4px",
+    padding: "5px 10px",
+    cursor: "pointer",
+    position: "absolute",
+    top: "10px",
+    right: "10px",
+  },
 };
 
 export default styles;
