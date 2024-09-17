@@ -7,11 +7,11 @@ import { authAxios, basicAxios, formDataAxios } from "../../api/axios";
 import logoutUtil from "../../utils/logout-util";
 
 function Activities() {
-  const { activitySemester } = useActivitySemesterStore(); // 학기 정보 가져옴
-  const { isStaff, isLoggedIn, name } = userInfoStore(); // 사용자 정보
-  const [activities, setActivities] = useState([]); // 활동 목록
-  const [showForm, setShowForm] = useState(false); // 활동 추가 폼
-  const [showActivityPopup, setShowActivityPopup] = useState(false); // 활동 상세 팝업
+  const { activitySemester, setActivitySemester } = useActivitySemesterStore(); // 추가: setActivitySemester 포함
+  const { isStaff, isLoggedIn, name } = userInfoStore();
+  const [activities, setActivities] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [showActivityPopup, setShowActivityPopup] = useState(false);
   const [selectedActivity, setSelectedActivity] = useState({
     id: null,
     title: "",
@@ -125,7 +125,7 @@ function Activities() {
   // 활동 클릭 처리
   const handleActivityClick = (activity) => {
     setSelectedActivity(activity);
-    fetchComments(activity.id); // 댓글 불러오기
+    fetchComments(activity.id);
     setShowActivityPopup(true);
   };
 
@@ -160,9 +160,14 @@ function Activities() {
     }
   };
 
+  // 학기 변경 핸들러
+  const handleSemesterChange = (newSemester) => {
+    setActivitySemester(newSemester); // 학기 변경 시 store에 반영
+  };
+
   return (
     <div style={{ ...styles.home, overflowX: "hidden" }}>
-      <Sidebar />
+      <Sidebar onSemesterChange={handleSemesterChange} /> {/* 추가된 prop */}
       <div style={styles.content}>
         <div style={styles.banner}>
           <div style={styles.bannerItem} ref={activityRef}>
@@ -290,15 +295,15 @@ function Activities() {
               <button
                 style={styles.closeButton}
                 onClick={() => setShowActivityPopup(false)}
-              >
-                &times;
-              </button>
+                >
+                  닫기
+                </button>
+              </div>
             </div>
-            </div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
-  );
-}
-
-export default Activities;
+    );
+  }
+  
+  export default Activities;
