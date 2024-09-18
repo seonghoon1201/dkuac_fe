@@ -26,6 +26,8 @@ function Activities() {
   const [newComment, setNewComment] = useState("");
   const location = useLocation();
   const activityRef = useRef(null);
+  const [editingCommentId, setEditingCommentId] = useState(null);
+const [editedComment, setEditedComment] = useState("");
 
   // URL에서 학기 정보 가져오기
   const searchParams = new URLSearchParams(location.search);
@@ -190,6 +192,45 @@ const handleCommentDelete = async (commentId) => {
   }
 };
 
+// 댓글 수정 요청 처리 함수
+const handleCommentEdit = async (commentId) => {
+  try {
+    const response = await authAxios.put(
+      `/activity/${selectedActivity.id}/comments/${commentId}`,
+      { content: editedComment }
+    );
+
+    if (response.status === 200) {
+      setSelectedActivity((prev) => ({
+        ...prev,
+        comments: prev.comments.map((comment) =>
+          comment.id === commentId ? { ...comment, content: editedComment } : comment
+        ),
+      }));
+      setEditingCommentId(null);
+      setEditedComment("");
+      alert("댓글이 수정되었습니다.");
+    } else {
+      alert("댓글 수정에 실패했습니다.");
+    }
+  } catch (error) {
+    console.log("댓글 수정 중 오류가 발생했습니다:", error);
+    alert("댓글 수정 중 오류가 발생했습니다.");
+    logoutUtil();
+  }
+};
+
+// 수정 버튼 클릭 시, 댓글을 수정 모드로 전환
+const handleEditClick = (comment) => {
+  setEditingCommentId(comment.id);
+  setEditedComment(comment.content);  // 기존 댓글 내용을 수정란에 미리 채움
+};
+
+// 수정 취소 처리
+const handleCancelEdit = () => {
+  setEditingCommentId(null);
+  setEditedComment("");
+};
 return (
   <div style={{ ...styles.home, overflowX: "hidden" }}>
     <Sidebar />
@@ -283,27 +324,59 @@ return (
                 className="commentContainer"
                 style={styles.commentsContainer}
               >
-                {selectedActivity.comments?.map(
-                  (comment, index) =>
-                    comment.content && (
-                      <div className="comment" key={index} style={styles.comment}>
-                        <div style={styles.commentHeader}>
-                          <div style={styles.commentAuthor}>
-                            {comment.Author?.name}
-                          </div>
-                          {isLoggedIn && isStaff && (
+                {selectedActivity.comments?.map((comment, index) =>
+                  comment.content && (
+                    <div className="comment" key={index} style={styles.comment}>
+                      <div style={styles.commentHeader}>
+                        <div style={styles.commentAuthor}>{comment.Author?.name}</div>
+                        {isLoggedIn && isStaff && (
+                          <div style={styles.commentActions}>
+                            <button
+                              style={styles.commentEdit}
+                              onClick={() => handleEditClick(comment)}
+                            >
+                              수정
+                            </button>
                             <button
                               style={styles.commentDelete}
                               onClick={() => handleCommentDelete(comment.id)}
                             >
                               삭제
                             </button>
-                          )}
-                        </div>
-                        <div>{comment.content}</div>
+                          </div>
+                        )}
                       </div>
-                    )
+                      {/* 수정 모드일 때 */}
+                      {editingCommentId === comment.id ? (
+                        <div style={styles.editContainer}>
+                          <input
+                            type="text"
+                            value={editedComment}
+                            onChange={(e) => setEditedComment(e.target.value)}
+                            style={styles.commentInput}
+                          />
+                          <div style={styles.editButtonsContainer}>
+                            <button
+                              style={styles.commentButton}
+                              onClick={() => handleCommentEdit(comment.id)}
+                            >
+                              수정
+                            </button>
+                            <button
+                              style={styles.commentButton}
+                              onClick={handleCancelEdit}
+                            >
+                              취소
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div>{comment.content}</div>
+                      )}
+                    </div>
+                  )
                 )}
+
               </div>
               {isLoggedIn && (
                 <div style={styles.commentInputContainer}>
