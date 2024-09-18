@@ -148,7 +148,7 @@ const styles = {
     display: "flex",
     flexDirection: "row", // 이미지를 왼쪽에, 콘텐츠를 오른쪽에 배치
     maxWidth: "90vw",
-    maxHeight: "60vh",
+    maxHeight: "90vh",
     backgroundColor: "#ffffff",
     borderRadius: "1vw",
     boxShadow: "0 1vw 2vw rgba(0, 0, 0, 0.2)",
@@ -203,7 +203,7 @@ const styles = {
     marginBottom: "1vw",
   },
   comment: {
-    padding: "0.3vw",
+    padding: "1vw",
     borderRadius: "0.5vw",
     marginBottom: "0.5vw",
     fontSize: "1vw",
@@ -251,13 +251,34 @@ const styles = {
     justifyContent: "space-between",
     alignItems: "center",
   },
-  commentDelete: {
-    fontSize: "0.8vw",  // 댓글 작성자보다 작게 설정
+  commentActions: {
+    display: "flex",
+    alignItems: "center", // 버튼을 같은 줄에 위치
+    gap: "0.3vw", // 버튼 사이 간격 조정
+  },
+  editContainer: {
+    display: "flex",
+    flexDirection: "column", // 수정 입력 칸과 버튼을 위아래로 배치
+    gap: "1vw",
+  },
+  editButtonsContainer: {
+    display: "flex",
+    justifyContent: "space-between", // 수정과 취소 버튼을 양옆으로 배치
+    gap: "0.5vw", // 버튼 사이 간격
+  },
+  commentEdit: {
+    fontSize: "0.8vw",  // 댓글 크기와 맞추기
     color: "#3a5ba0",   // 기존 글씨 색과 동일
     backgroundColor: "transparent",
     border: "none",
     cursor: "pointer",
-    marginLeft: "0.5vw",
+  },
+  commentDelete: {
+    fontSize: "0.8vw",  // 댓글 크기와 맞추기
+    color: "#3a5ba0",   // 기존 글씨 색과 동일
+    backgroundColor: "transparent",
+    border: "none",
+    cursor: "pointer",
   },
 };
 
