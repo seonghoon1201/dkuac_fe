@@ -36,18 +36,15 @@ const fetchActivities = async () => {
   const [year, semesterTerm] = semester.split("-");
   try {
     const response = await basicAxios.get(`/activity?year=${year}&semester=${semesterTerm}`);
-    console.log(response);
     if (response.data.length > 0) {
       const activitiesWithFormattedImages = response.data.map((activity) => {
         let imageUrl = activity.images[0];
         // 이미지 URL에서 '/public/activity/' 부분 제거
         if (imageUrl.includes("/public/activity/")) {
           imageUrl = imageUrl.replace("/public/activity/", "");
-          console.log(imageUrl);
         }
         if (!imageUrl.includes("https")) {
           imageUrl = `${process.env.REACT_APP_BACKEND_API_URL}${imageUrl}`;
-          console.log(imageUrl);
         }
         return { ...activity, images: imageUrl };
       });
@@ -170,145 +167,174 @@ const fetchActivities = async () => {
     }
   };
 
-  return (
-    <div style={{ ...styles.home, overflowX: "hidden" }}>
-      <Sidebar />
-      <div style={styles.content}>
-        <div style={styles.banner}>
-          <div style={styles.bannerItem} ref={activityRef}>
-            <div style={styles.bannerTitle}>
-              {semester} 활동
-              {isLoggedIn && isStaff && (
-                <button
-                  style={styles.addActivityButton}
-                  onClick={() => setShowForm(true)}
-                >
-                  + 글 작성
-                </button>
-              )}
-            </div>
-            <div style={styles.activityContainer}>
-              {activities.map((activity, index) => (
-                <div
-                  key={activity.id || index}
-                  style={styles.activityBox}
-                  onClick={() => handleActivityClick(activity)}
-                >
-                  <img
-                    src={activity.images}
-                    alt={activity.title}
-                    style={styles.activityImage}
-                  />
-                  <div style={styles.activityName}>{activity.title}</div>
-                </div>
-              ))}
-            </div>
+  // 댓글 삭제 처리 함수
+const handleCommentDelete = async (commentId) => {
+  try {
+    const response = await authAxios.delete(
+      `/activity/${selectedActivity.id}/comments/${commentId}`
+    );
+
+    if (response.status === 200) {
+      setSelectedActivity((prev) => ({
+        ...prev,
+        comments: prev.comments.filter((comment) => comment.id !== commentId),
+      }));
+      alert("댓글이 삭제되었습니다.");
+    } else {
+      alert("댓글 삭제에 실패했습니다.");
+    }
+  } catch (error) {
+    console.log("댓글 삭제 중 오류가 발생했습니다:", error);
+    alert("댓글 삭제 중 오류가 발생했습니다.");
+    logoutUtil();
+  }
+};
+
+return (
+  <div style={{ ...styles.home, overflowX: "hidden" }}>
+    <Sidebar />
+    <div style={styles.content}>
+      <div style={styles.banner}>
+        <div style={styles.bannerItem} ref={activityRef}>
+          <div style={styles.bannerTitle}>
+            {semester} 활동
+            {isLoggedIn && isStaff && (
+              <button
+                style={styles.addActivityButton}
+                onClick={() => setShowForm(true)}
+              >
+                + 글 작성
+              </button>
+            )}
+          </div>
+          <div style={styles.activityContainer}>
+            {activities.map((activity, index) => (
+              <div
+                key={activity.id || index}
+                style={styles.activityBox}
+                onClick={() => handleActivityClick(activity)}
+              >
+                <img
+                  src={activity.images}
+                  alt={activity.title}
+                  style={styles.activityImage}
+                />
+                <div style={styles.activityName}>{activity.title}</div>
+              </div>
+            ))}
           </div>
         </div>
+      </div>
 
-        {showForm && (
-          <div style={styles.popupOverlay}>
-            <div style={styles.popup}>
-              <h2>활동 추가하기</h2>
-              <input
-                type="text"
-                name="title"
-                placeholder="활동 제목"
-                value={newActivity.title}
-                onChange={handleInputChange}
-                style={styles.input}
-              />
-              <textarea
-                name="content"
-                placeholder="활동 내용"
-                value={newActivity.content}
-                onChange={handleInputChange}
-                style={styles.textarea}
-              />
-              <input
-                type="file"
-                name="image"
-                onChange={handleImageChange}
-                style={styles.input}
-              />
-              <div style={styles.popupButtonsContainer}>
-                <button style={styles.submitButton} onClick={handleSubmit}>
-                  작성하기
-                </button>
-                <button
-                  style={styles.cancelButton}
-                  onClick={() => setShowForm(false)}
-                >
-                  취소하기
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {showActivityPopup && selectedActivity && (
-          <div style={styles.popupOverlay}>
-            <div style={styles.activityPopup}>
-              <div style={styles.activityPopupImage}>
-                <img
-                  src={selectedActivity.images}
-                  alt={selectedActivity.title}
-                  style={styles.activityPopupImageStyle}
-                />
-              </div>
-              <div style={styles.activityPopupContent}>
-                <h2 style={styles.activityTitle}>{selectedActivity.title}</h2>
-                <p style={styles.activityContent}>{selectedActivity.content}</p>
-                <div
-                  className="commentContainer"
-                  style={styles.commentsContainer}
-                >
-                  {selectedActivity.comments?.map(
-                    (comment, index) =>
-                      comment.content && (
-                        <div
-                          className="comment"
-                          key={index}
-                          style={styles.comment}
-                        >
-                          <div style={styles.commentAuthor}>
-                            {comment.Author?.name}
-                          </div>
-                          <div>{comment.content}</div>
-                        </div>
-                      )
-                  )}
-                </div>
-                {isLoggedIn && (
-                  <div style={styles.commentInputContainer}>
-                    <input
-                      type="text"
-                      placeholder="댓글을 입력하세요"
-                      value={newComment}
-                      onChange={(e) => setNewComment(e.target.value)}
-                      style={styles.commentInput}
-                    />
-                    <button
-                      style={styles.commentButton}
-                      onClick={handleCommentSubmit}
-                    >
-                      작성
-                    </button>
-                  </div>
-                )}
-              </div>
+      {showForm && (
+        <div style={styles.popupOverlay}>
+          <div style={styles.popup}>
+            <h2>활동 추가하기</h2>
+            <input
+              type="text"
+              name="title"
+              placeholder="활동 제목"
+              value={newActivity.title}
+              onChange={handleInputChange}
+              style={styles.input}
+            />
+            <textarea
+              name="content"
+              placeholder="활동 내용"
+              value={newActivity.content}
+              onChange={handleInputChange}
+              style={styles.textarea}
+            />
+            <input
+              type="file"
+              name="image"
+              onChange={handleImageChange}
+              style={styles.input}
+            />
+            <div style={styles.popupButtonsContainer}>
+              <button style={styles.submitButton} onClick={handleSubmit}>
+                작성하기
+              </button>
               <button
-                style={styles.closeButton}
-                onClick={() => setShowActivityPopup(false)}
+                style={styles.cancelButton}
+                onClick={() => setShowForm(false)}
               >
-                &times;
+                취소하기
               </button>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
+
+      {showActivityPopup && selectedActivity && (
+        <div style={styles.popupOverlay}>
+          <div style={styles.activityPopup}>
+            <div style={styles.activityPopupImage}>
+              <img
+                src={selectedActivity.images}
+                alt={selectedActivity.title}
+                style={styles.activityPopupImageStyle}
+              />
+            </div>
+            <div style={styles.activityPopupContent}>
+              <h2 style={styles.activityTitle}>{selectedActivity.title}</h2>
+              <p style={styles.activityContent}>{selectedActivity.content}</p>
+              <div
+                className="commentContainer"
+                style={styles.commentsContainer}
+              >
+                {selectedActivity.comments?.map(
+                  (comment, index) =>
+                    comment.content && (
+                      <div className="comment" key={index} style={styles.comment}>
+                        <div style={styles.commentHeader}>
+                          <div style={styles.commentAuthor}>
+                            {comment.Author?.name}
+                          </div>
+                          {isLoggedIn && isStaff && (
+                            <button
+                              style={styles.commentDelete}
+                              onClick={() => handleCommentDelete(comment.id)}
+                            >
+                              삭제
+                            </button>
+                          )}
+                        </div>
+                        <div>{comment.content}</div>
+                      </div>
+                    )
+                )}
+              </div>
+              {isLoggedIn && (
+                <div style={styles.commentInputContainer}>
+                  <input
+                    type="text"
+                    placeholder="댓글을 입력하세요"
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    style={styles.commentInput}
+                  />
+                  <button
+                    style={styles.commentButton}
+                    onClick={handleCommentSubmit}
+                  >
+                    작성
+                  </button>
+                </div>
+              )}
+            </div>
+            <button
+              style={styles.closeButton}
+              onClick={() => setShowActivityPopup(false)}
+            >
+              &times;
+            </button>
+          </div>
+        </div>
+      )}
     </div>
-  );
+  </div>
+);
 }
 
 export default Activities;

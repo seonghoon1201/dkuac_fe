@@ -148,7 +148,7 @@ const styles = {
     display: "flex",
     flexDirection: "row", // 이미지를 왼쪽에, 콘텐츠를 오른쪽에 배치
     maxWidth: "90vw",
-    maxHeight: "90vh",
+    maxHeight: "60vh",
     backgroundColor: "#ffffff",
     borderRadius: "1vw",
     boxShadow: "0 1vw 2vw rgba(0, 0, 0, 0.2)",
@@ -203,8 +203,7 @@ const styles = {
     marginBottom: "1vw",
   },
   comment: {
-    backgroundColor: "#f1f1f1",
-    padding: "1vw",
+    padding: "0.3vw",
     borderRadius: "0.5vw",
     marginBottom: "0.5vw",
     fontSize: "1vw",
@@ -235,6 +234,30 @@ const styles = {
   commentAuthor: {
     fontWeight: "bold",
     marginBottom: "0.5vw",
+  },
+  deleteButton: {
+    backgroundColor: "red",
+    color: "white",
+    border: "none",
+    borderRadius: "4px",
+    padding: "5px 10px",
+    cursor: "pointer",
+    position: "absolute",
+    top: "10px",
+    right: "10px",
+  },
+  commentHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  commentDelete: {
+    fontSize: "0.8vw",  // 댓글 작성자보다 작게 설정
+    color: "#3a5ba0",   // 기존 글씨 색과 동일
+    backgroundColor: "transparent",
+    border: "none",
+    cursor: "pointer",
+    marginLeft: "0.5vw",
   },
 };
 
