@@ -138,6 +138,25 @@ const fetchActivities = async () => {
     setShowActivityPopup(true);
   };
 
+  // 활동 삭제 처리 함수 추가
+const handleActivityDelete = async () => {
+  try {
+    const response = await authAxios.delete(`/activity/${selectedActivity.id}`);
+
+    if (response.status === 200) {
+      alert("활동이 삭제되었습니다.");
+      setShowActivityPopup(false);
+      fetchActivities(); // 삭제 후 활동 목록을 다시 불러옵니다.
+    } else {
+      alert("활동 삭제에 실패했습니다.");
+    }
+  } catch (error) {
+    console.log("활동 삭제 중 오류가 발생했습니다:", error);
+    alert("활동 삭제 중 오류가 발생했습니다.");
+    logoutUtil();
+  }
+};
+
   // 댓글 제출 처리
   const handleCommentSubmit = async () => {
     if (!newComment.trim()) return;
@@ -206,7 +225,7 @@ const handleCommentEdit = async (commentId) => {
         comments: prev.comments.map((comment) =>
           comment.id === commentId ? { ...comment, content: editedComment } : comment
         ),
-      }));
+      })); 
       setEditingCommentId(null);
       setEditedComment("");
       alert("댓글이 수정되었습니다.");
@@ -231,6 +250,7 @@ const handleCancelEdit = () => {
   setEditingCommentId(null);
   setEditedComment("");
 };
+
 return (
   <div style={{ ...styles.home, overflowX: "hidden" }}>
     <Sidebar />
@@ -328,7 +348,9 @@ return (
                   comment.content && (
                     <div className="comment" key={index} style={styles.comment}>
                       <div style={styles.commentHeader}>
-                        <div style={styles.commentAuthor}>{comment.Author?.name}</div>
+                        <div style={styles.commentAuthor}>
+                          {comment.Author?.name}
+                        </div>
                         {isLoggedIn && isStaff && (
                           <div style={styles.commentActions}>
                             <button
@@ -376,7 +398,6 @@ return (
                     </div>
                   )
                 )}
-
               </div>
               {isLoggedIn && (
                 <div style={styles.commentInputContainer}>
@@ -396,6 +417,10 @@ return (
                 </div>
               )}
             </div>
+            {/* 삭제 버튼 및 닫기 버튼 */}
+            <button style={styles.deleteButton} onClick={handleActivityDelete}>
+              삭제
+            </button>
             <button
               style={styles.closeButton}
               onClick={() => setShowActivityPopup(false)}
