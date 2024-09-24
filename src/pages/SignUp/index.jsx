@@ -6,7 +6,7 @@ import { basicAxios } from "../../api/axios";
 
 function SignUp() {
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [emailPrefix, setEmailPrefix] = useState(""); // 이메일 입력 부분 수정
   const [studentNumber, setStudentNumber] = useState("");
   const [major, setMajor] = useState("");
   const [birthDate, setBirthDate] = useState("");
@@ -20,9 +20,10 @@ function SignUp() {
   const navigate = useNavigate();
 
   const handleEmailVerification = () => {
+    const fullEmail = `${emailPrefix}@dankook.ac.kr`; // @dankook.ac.kr 추가
     basicAxios
       .post("/auth/create-verification-code", {
-        email: email,
+        email: fullEmail,
       })
       .then(() => {
         setVerificationSent(true);
@@ -35,9 +36,10 @@ function SignUp() {
   };
 
   const handleVerificationSubmit = () => {
+    const fullEmail = `${emailPrefix}@dankook.ac.kr`; // @dankook.ac.kr 추가
     basicAxios
       .post("/auth/is-verified", {
-        email: email,
+        email: fullEmail,
         codeFromUser: verificationCode,
       })
       .then((response) => {
@@ -56,7 +58,8 @@ function SignUp() {
 
   const handleSignupSubmit = (e) => {
     e.preventDefault();
-    if (!name || !email || !major || !studentNumber || !birthDate || !phoneNumber) {
+    const fullEmail = `${emailPrefix}@dankook.ac.kr`; // @dankook.ac.kr 추가
+    if (!name || !emailPrefix || !major || !studentNumber || !birthDate || !phoneNumber) {
       alert("모든 정보를 입력해주세요!");
       return;
     }
@@ -64,7 +67,7 @@ function SignUp() {
     basicAxios
       .post("/auth/signup", {
         name: name,
-        email: email,
+        email: fullEmail, // 완성된 이메일을 백엔드로 전송
         major: major,
         studentNumber: +studentNumber,
         birth: birthDate,
@@ -97,13 +100,16 @@ function SignUp() {
           onChange={(e) => setName(e.target.value)}
           style={styles.inputField}
         />
-        <input
-          type="email"
-          placeholder="이메일"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          style={styles.inputField}
-        />
+        <div style={styles.emailContainer}>
+          <input
+            type="text"
+            placeholder="이메일 - ex) abcdefg"
+            value={emailPrefix}
+            onChange={(e) => setEmailPrefix(e.target.value)}
+            style={styles.inputField}
+          />
+          <span style={styles.emailDomain}>@dankook.ac.kr</span>
+        </div>
         <div style={styles.emailButtonContainer}>
           <button
             type="button"

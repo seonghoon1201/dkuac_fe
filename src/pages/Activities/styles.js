@@ -185,17 +185,6 @@ const styles = {
     marginBottom: "2vw",
     color: "#3a5ba0",
   },
-  closeButton: {
-    position: "absolute",
-    top: "0.5vw",
-    right: "0.5vw",
-    backgroundColor: "transparent",
-    border: "none",
-    color: "#000",
-    fontSize: "2vw",
-    fontWeight: "bold",
-    cursor: "pointer",
-  },
   commentsContainer: {
     flexGrow: 1,
     overflowY: "auto",
@@ -279,6 +268,29 @@ const styles = {
     backgroundColor: "transparent",
     border: "none",
     cursor: "pointer",
+  },
+  closeButton: {
+    position: "absolute",
+    top: "0.5vw",
+    left: "0.5vw",  // 왼쪽 위로 위치 변경
+    backgroundColor: "transparent",
+    border: "none",
+    color: "#000",
+    fontSize: "2vw",
+    fontWeight: "bold",
+    cursor: "pointer",
+  },
+  deleteButton: {
+    position: "absolute",
+    top: "0.5vw",
+    right: "0.5vw", // 오른쪽 위에 위치
+    backgroundColor: "red",
+    color: "white",
+    border: "none",
+    fontSize: "1.5vw",
+    borderRadius: "0.5vw",
+    cursor: "pointer",
+    padding: "0.3vw 0.8vw",
   },
 };
 
