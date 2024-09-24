@@ -52,11 +52,6 @@ function Activities() {
           if (imageUrl.includes("/public/activity/")) {
             imageUrl = imageUrl.replace("/public/activity/", "");
           }
-
-          // URL이 https로 시작하지 않는 경우 백엔드 URL을 추가
-          if (!imageUrl.includes("https")) {
-            imageUrl = `${process.env.REACT_APP_BACKEND_API_URL}${imageUrl}`;
-          }
           return { ...activity, images: imageUrl };
         });
         setActivities(activitiesWithFormattedImages);
