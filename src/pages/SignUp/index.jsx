@@ -6,7 +6,7 @@ import { basicAxios } from "../../api/axios";
 
 function SignUp() {
   const [name, setName] = useState("");
-  const [email, setEmail] = useState(""); // 이메일 입력 부분 수정
+  const [emailID, setEmailID] = useState(""); // 이메일 ID 입력
   const [studentNumber, setStudentNumber] = useState("");
   const [major, setMajor] = useState("");
   const [birthDate, setBirthDate] = useState("");
@@ -20,7 +20,7 @@ function SignUp() {
   const navigate = useNavigate();
 
   const handleEmailVerification = () => {
-    // @dankook.ac.kr 추가
+    const email = `${emailID}@dankook.ac.kr`; // 완성된 이메일을 생성
     basicAxios
       .post("/auth/create-verification-code", {
         email,
@@ -36,6 +36,7 @@ function SignUp() {
   };
 
   const handleVerificationSubmit = () => {
+    const email = `${emailID}@dankook.ac.kr`; // 인증 시에도 동일한 이메일 사용
     basicAxios
       .post("/auth/is-verified", {
         email,
@@ -59,7 +60,7 @@ function SignUp() {
     e.preventDefault();
     if (
       !name ||
-      !email ||
+      !emailID ||
       !major ||
       !studentNumber ||
       !birthDate ||
@@ -69,10 +70,11 @@ function SignUp() {
       return;
     }
 
+    const email = `${emailID}@dankook.ac.kr`; // 회원가입 시에도 완성된 이메일을 사용
     basicAxios
       .post("/auth/signup", {
         name: name,
-        email, // 완성된 이메일을 백엔드로 전송
+        email,
         major: major,
         studentNumber: +studentNumber,
         birth: birthDate,
@@ -108,12 +110,12 @@ function SignUp() {
         <div style={styles.emailContainer}>
           <input
             type="text"
-            placeholder="이메일 - ex) 32242573@dankook.ac.kr"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            style={styles.inputField}
+            placeholder="이메일 ID"
+            value={emailID}
+            onChange={(e) => setEmailID(e.target.value)}
+            style={styles.emailInput}
           />
-          {/* <span style={styles.emailDomain}>ex) 32242573@dankook.ac.kr</span> */}
+          <span style={styles.emailDomain}>@dankook.ac.kr</span>
         </div>
         <div style={styles.emailButtonContainer}>
           <button
