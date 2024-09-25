@@ -87,7 +87,7 @@ function Login() {
           />
         </div>
         <div style={styles.buttonContainer}>
-          <Link to="/signup" style={{ width: "100%" }}>
+          <Link to="/signup" style={{ width: "100%", marginRight: "10px"}}>
             <button type="button" style={styles.button}>
               회원가입
             </button>
