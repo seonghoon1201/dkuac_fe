@@ -9,18 +9,16 @@ import People from "./pages/People";
 import TotalDepartment from "./pages/Departments/Total";
 import ClimbingDepartment from "./pages/Departments/Climbing";
 import HikingDepartment from "./pages/Departments/Hiking";
-import Contact from "./pages/Contact";
+import Contact from "./pages/Contact/index.jsx";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import userInfoStore from "./stores/userInfoStore";
-import { authAxios, basicAxios } from "./api/axios";
 import "./App.css";
 import Schedules from "./pages/Schedules";
-import axios from "axios";
+import logoutUtil from "./utils/logout-util.js";
 
 function App() {
-  const { isLoggedIn, expiredTime, isStaff } = userInfoStore();
-  const clearUserInfoStorage = userInfoStore.persist.clearStorage;
+  const { isLoggedIn, expiredTime } = userInfoStore();
 
   useEffect(() => {
     const now = new Date();
@@ -28,23 +26,26 @@ function App() {
 
     const timeDiffBetweenNowAndExpiredTime = (expiredDate - now) / 1000;
 
-    if (expiredTime !== "" && timeDiffBetweenNowAndExpiredTime <= 30) {
-      axios
-        .get("https://dkuac.store/auth/token/access", {
-          withCredentials: true,
-        })
-        .then((res) => {
-          localStorage.setItem("accessToken", res.data.accessToken);
-          userInfoStore.setState({ expiredTime: res.data.expiredTime });
-        })
-        .catch((error) => {
-          localStorage.removeItem("accessToken");
-          clearUserInfoStorage();
-          basicAxios.post("/auth/logout");
-          alert("다시 로그인해주세요.");
-          window.location.href = "/login";
-        });
+    if (expiredTime !== "" && timeDiffBetweenNowAndExpiredTime < 0) {
+      logoutUtil();
     }
+    // if (expiredTime !== "" && timeDiffBetweenNowAndExpiredTime <= 30) {
+    //   axios
+    //     .get("https://dkuac.store/auth/token/access", {
+    //       withCredentials: true,
+    //     })
+    //     .then((res) => {
+    //       localStorage.setItem("accessToken", res.data.accessToken);
+    //       userInfoStore.setState({ expiredTime: res.data.expiredTime });
+    //     })
+    //     .catch((error) => {
+    //       localStorage.removeItem("accessToken");
+    //       clearUserInfoStorage();
+    //       basicAxios.post("/auth/logout");
+    //       alert("다시 로그인해주세요.");
+    //       window.location.href = "/login";
+    //     });
+    // }
   }, [expiredTime]);
 
   return (

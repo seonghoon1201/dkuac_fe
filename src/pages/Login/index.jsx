@@ -41,7 +41,7 @@ function Login() {
         navigate("/");
       })
       .catch((err) => {
-        alert(err.res.data.message);
+        alert(err.response.data.message);
         setStudentNumber("");
         setPassword("");
       });

@@ -185,17 +185,6 @@ const styles = {
     marginBottom: "2vw",
     color: "#3a5ba0",
   },
-  closeButton: {
-    position: "absolute",
-    top: "0.5vw",
-    right: "0.5vw",
-    backgroundColor: "transparent",
-    border: "none",
-    color: "#000",
-    fontSize: "2vw",
-    fontWeight: "bold",
-    cursor: "pointer",
-  },
   commentsContainer: {
     flexGrow: 1,
     overflowY: "auto",
@@ -203,7 +192,6 @@ const styles = {
     marginBottom: "1vw",
   },
   comment: {
-    backgroundColor: "#f1f1f1",
     padding: "1vw",
     borderRadius: "0.5vw",
     marginBottom: "0.5vw",
@@ -235,6 +223,74 @@ const styles = {
   commentAuthor: {
     fontWeight: "bold",
     marginBottom: "0.5vw",
+  },
+  deleteButton: {
+    backgroundColor: "red",
+    color: "white",
+    border: "none",
+    borderRadius: "4px",
+    padding: "5px 10px",
+    cursor: "pointer",
+    position: "absolute",
+    top: "10px",
+    right: "10px",
+  },
+  commentHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  commentActions: {
+    display: "flex",
+    alignItems: "center", // 버튼을 같은 줄에 위치
+    gap: "0.3vw", // 버튼 사이 간격 조정
+  },
+  editContainer: {
+    display: "flex",
+    flexDirection: "column", // 수정 입력 칸과 버튼을 위아래로 배치
+    gap: "1vw",
+  },
+  editButtonsContainer: {
+    display: "flex",
+    justifyContent: "space-between", // 수정과 취소 버튼을 양옆으로 배치
+    gap: "0.5vw", // 버튼 사이 간격
+  },
+  commentEdit: {
+    fontSize: "0.8vw",  // 댓글 크기와 맞추기
+    color: "#3a5ba0",   // 기존 글씨 색과 동일
+    backgroundColor: "transparent",
+    border: "none",
+    cursor: "pointer",
+  },
+  commentDelete: {
+    fontSize: "0.8vw",  // 댓글 크기와 맞추기
+    color: "#3a5ba0",   // 기존 글씨 색과 동일
+    backgroundColor: "transparent",
+    border: "none",
+    cursor: "pointer",
+  },
+  closeButton: {
+    position: "absolute",
+    top: "0.5vw",
+    left: "0.5vw",  // 왼쪽 위로 위치 변경
+    backgroundColor: "transparent",
+    border: "none",
+    color: "#000",
+    fontSize: "2vw",
+    fontWeight: "bold",
+    cursor: "pointer",
+  },
+  deleteButton: {
+    position: "absolute",
+    top: "0.5vw",
+    right: "0.5vw", // 오른쪽 위에 위치
+    backgroundColor: "red",
+    color: "white",
+    border: "none",
+    fontSize: "1.5vw",
+    borderRadius: "0.5vw",
+    cursor: "pointer",
+    padding: "0.3vw 0.8vw",
   },
 };
 

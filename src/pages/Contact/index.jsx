@@ -3,6 +3,7 @@ import userInfoStore from "../../stores/userInfoStore";
 import styles from "./styles";
 import { authAxios } from "../../api/axios";
 import contactBear from "../../images/contact_bear.png"; // 곰돌이 이미지 추가
+import logoutUtil from "../../utils/logout-util";
 
 function Contact() {
   const { isLoggedIn, userId } = userInfoStore();
@@ -26,6 +27,7 @@ function Contact() {
     } else {
       console.error("Error submitting suggestion:", res);
       alert("제출에 실패했습니다.");
+      logoutUtil();
     }
     setSuggestions("");
   };
@@ -37,7 +39,10 @@ function Contact() {
         <div style={styles.upperBox}>
           <div style={styles.leftHalfBox}>
             <h4 style={styles.h4}>
-              동아리 발전을 위해 <br/>건의할 내용이나 <br/>문의할 내용이 있으시다면 <br/>말씀해 주세요!
+              동아리 발전을 위해 <br />
+              건의할 내용이나 <br />
+              문의할 내용이 있으시다면 <br />
+              말씀해 주세요!
             </h4>
             <h4 style={styles.h4}>24시간 건의 받습니다.</h4>
           </div>
@@ -46,7 +51,7 @@ function Contact() {
             <img
               src={contactBear}
               alt="곰돌이"
-              style={{ width: "80%", height: "auto"}}
+              style={{ width: "80%", height: "auto" }}
             />
           </div>
         </div>

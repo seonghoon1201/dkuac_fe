@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import styles from "./styles";
-import header from "../../images/정성훈.png"; // 등산부장
-import executive1 from "../../images/정성훈.png"; // 등산집행부
-import executive2 from "../../images/정성훈.png"; // 등산집행부
+import header from "../../images/박종화.png"; // 등산부장
+import executive1 from "../../images/손샘.png"; // 등산집행부
+import executive2 from "../../images/no_image.png"; // 등산집행부
 
 const totalMembers = [
-  { name: "공석", role: "등산부장", image: header, department: "-", major: "-", year: "-" },
-  { name: "공석", role: "등산집행부", image: executive1, department: "-", major: "-", year: "-" },
-  { name: "공석", role: "등산집행부", image: executive2, department: "-", major: "-", year: "-" },
+  { name: "박종화", role: "등산부장", image: header, department: "공과대학", major: "전자전기공학과", year: "21학번" },
+  { name: "손샘", role: "등산집행부", image: executive1, department: "공과대학", major: "토목환경공학과", year: "21학번" },
+  { name: "민경원", role: "등산집행부", image: executive2, department: "대학원", major: "기계공학과", year: "24학번" },
 ];
 
 function TotalDepartment() {
@@ -38,6 +38,7 @@ function TotalDepartment() {
           <div style={styles.modalContent} onClick={(e) => e.stopPropagation()}>
             <img src={selectedMember.image} alt={selectedMember.name} style={styles.modalImage} />
             <div style={styles.modalTextContainer}>
+              <h2 style={styles.modalRole}>{selectedMember.role}</h2>
               <h2 style={styles.modalName}>{selectedMember.name}</h2>
               <p style={styles.modalDepartment}>
                 {selectedMember.department} <br />{selectedMember.major}

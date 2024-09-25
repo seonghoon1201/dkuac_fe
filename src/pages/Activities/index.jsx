@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import styles from "./styles";
 import Sidebar from "../../components/Sidebar";
-import useActivitySemesterStore from "../../stores/useActivitySemesterStore";
 import userInfoStore from "../../stores/userInfoStore";
-import { authAxios, basicAxios } from "../../api/axios";
+import { authAxios, basicAxios, formDataAxios } from "../../api/axios";
+import logoutUtil from "../../utils/logout-util";
 
 function Activities() {
-  const { activitySemester } = useActivitySemesterStore();
-  const { isStaff, isLoggedIn, name } = userInfoStore();
+  const { isLoggedIn, isStaff, name } = userInfoStore();
   const [activities, setActivities] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [showActivityPopup, setShowActivityPopup] = useState(false);
@@ -24,25 +24,26 @@ function Activities() {
     image: null,
   });
   const [newComment, setNewComment] = useState("");
+  const location = useLocation();
   const activityRef = useRef(null);
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editedComment, setEditedComment] = useState("");
 
-  {
-    /* 활동 데이터 가져오기 */
-  }
+  // URL에서 학기 정보 가져오기
+  const searchParams = new URLSearchParams(location.search);
+  const semester = searchParams.get("semester");
+
+  // 활동 데이터 가져오기
   const fetchActivities = async () => {
-    const [year, semester] = activitySemester.split("-");
+    const [year, semesterTerm] = semester.split("-");
     try {
-      const response = await authAxios.get(
-        `/activity?year=${year}&semester=${semester}`
+      const response = await basicAxios.get(
+        `/activity?year=${year}&semester=${semesterTerm}`
       );
       if (response.data.length > 0) {
         const activitiesWithFormattedImages = response.data.map((activity) => {
-          let imageUrl = activity.images[0];
-          if (imageUrl.includes("https")) {
-            imageUrl = imageUrl.replace("/public/activity/", "");
-          } else {
-            imageUrl = `${process.env.REACT_APP_BACKEND_API_URL}${imageUrl}`;
-          }
+          console.log(activity);
+          let imageUrl = activity.images[0].imageUrl;
           return { ...activity, images: imageUrl };
         });
         setActivities(activitiesWithFormattedImages);
@@ -50,14 +51,12 @@ function Activities() {
         setActivities([]);
       }
     } catch (error) {
-      console.error("Failed to fetch activities:", error);
+      console.error("활동 데이터를 가져오는 데 실패했습니다:", error);
       setActivities([]);
     }
   };
 
-  {
-    /* 댓글 데이터 가져오기 */
-  }
+  // 댓글 데이터 가져오기
   const fetchComments = async (activityId) => {
     try {
       const response = await basicAxios.get(`/activity/${activityId}/comments`);
@@ -67,10 +66,10 @@ function Activities() {
           comments: response.data,
         }));
       } else {
-        console.error("Invalid comments data:", response.data);
+        console.error("댓글 데이터가 유효하지 않습니다:", response.data);
       }
     } catch (error) {
-      console.error("Failed to fetch comments:", error);
+      console.error("댓글을 가져오는 데 실패했습니다:", error);
       setSelectedActivity((prev) => ({
         ...prev,
         comments: [],
@@ -78,31 +77,25 @@ function Activities() {
     }
   };
 
-  {
-    /* 컴포넌트 마운트 시 활동 데이터 가져오기 */
-  }
+  // 학기 정보가 변경될 때마다 활동 데이터를 불러옴
   useEffect(() => {
-    fetchActivities();
-  }, [activitySemester]);
+    if (semester) {
+      fetchActivities();
+    }
+  }, [semester]);
 
-  {
-    /* 입력 필드 값 변경 처리 */
-  }
+  // 입력 필드 값 변경 처리
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewActivity((prev) => ({ ...prev, [name]: value }));
   };
 
-  {
-    /* 이미지 파일 선택 처리 */
-  }
+  // 이미지 파일 선택 처리
   const handleImageChange = (e) => {
     setNewActivity((prev) => ({ ...prev, image: e.target.files[0] }));
   };
 
-  {
-    /* 활동 제출 처리 */
-  }
+  // 활동 제출 처리
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -115,11 +108,7 @@ function Activities() {
     formData.append("date", currentDate);
 
     try {
-      const response = await authAxios.post("/activity", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await formDataAxios.post("/activity", formData);
 
       if (response.status === 201) {
         alert("활동이 성공적으로 추가되었습니다.");
@@ -130,23 +119,42 @@ function Activities() {
         alert("활동 추가에 실패했습니다.");
       }
     } catch (error) {
-      console.error("Failed to submit activity:", error);
+      console.log(error);
+      console.error("활동 제출 중 오류가 발생했습니다:", error);
       alert("활동 추가 중 오류가 발생했습니다.");
+      logoutUtil();
     }
   };
 
-  {
-    /* 활동 클릭 처리 */
-  }
+  // 활동 클릭 처리
   const handleActivityClick = (activity) => {
     setSelectedActivity(activity);
     fetchComments(activity.id); // 댓글을 불러오는 요청 추가
     setShowActivityPopup(true);
   };
 
-  {
-    /* 댓글 제출 처리 */
-  }
+  // 활동 삭제 처리 함수 추가
+  const handleActivityDelete = async () => {
+    try {
+      const response = await authAxios.delete(
+        `/activity/${selectedActivity.id}`
+      );
+
+      if (response.status === 200) {
+        alert("활동이 삭제되었습니다.");
+        setShowActivityPopup(false);
+        fetchActivities(); // 삭제 후 활동 목록을 다시 불러옵니다.
+      } else {
+        alert("활동 삭제에 실패했습니다.");
+      }
+    } catch (error) {
+      console.log("활동 삭제 중 오류가 발생했습니다:", error);
+      alert("활동 삭제 중 오류가 발생했습니다.");
+      logoutUtil();
+    }
+  };
+
+  // 댓글 제출 처리
   const handleCommentSubmit = async () => {
     if (!newComment.trim()) return;
     setSelectedActivity((prev) => ({
@@ -171,8 +179,82 @@ function Activities() {
         alert("댓글 작성에 실패했습니다.");
       }
     } catch (error) {
-      console.log("Failed to submit comment:", error)
+      console.log("댓글 제출 중 오류가 발생했습니다:", error);
       alert("댓글 작성 중 오류가 발생했습니다.");
+      logoutUtil();
+    }
+  };
+
+  // 댓글 삭제 처리 함수
+  const handleCommentDelete = async (commentId) => {
+    try {
+      const response = await authAxios.delete(
+        `/activity/${selectedActivity.id}/comments/${commentId}`
+      );
+
+      if (response.status === 200) {
+        setSelectedActivity((prev) => ({
+          ...prev,
+          comments: prev.comments.filter((comment) => comment.id !== commentId),
+        }));
+        alert("댓글이 삭제되었습니다.");
+      } else {
+        alert("댓글 삭제에 실패했습니다.");
+      }
+    } catch (error) {
+      console.log("댓글 삭제 중 오류가 발생했습니다:", error);
+      alert("댓글 삭제 중 오류가 발생했습니다.");
+      logoutUtil();
+    }
+  };
+
+  // 댓글 수정 요청 처리 함수
+  const handleCommentEdit = async (commentId) => {
+    try {
+      const response = await authAxios.put(
+        `/activity/${selectedActivity.id}/comments/${commentId}`,
+        { content: editedComment }
+      );
+
+      if (response.status === 200) {
+        setSelectedActivity((prev) => ({
+          ...prev,
+          comments: prev.comments.map((comment) =>
+            comment.id === commentId
+              ? { ...comment, content: editedComment }
+              : comment
+          ),
+        }));
+        setEditingCommentId(null);
+        setEditedComment("");
+        alert("댓글이 수정되었습니다.");
+      } else {
+        alert("댓글 수정에 실패했습니다.");
+      }
+    } catch (error) {
+      console.log("댓글 수정 중 오류가 발생했습니다:", error);
+      alert("댓글 수정 중 오류가 발생했습니다.");
+      logoutUtil();
+    }
+  };
+
+  // 수정 버튼 클릭 시, 댓글을 수정 모드로 전환
+  const handleEditClick = (comment) => {
+    setEditingCommentId(comment.id);
+    setEditedComment(comment.content); // 기존 댓글 내용을 수정란에 미리 채움
+  };
+
+  // 수정 취소 처리
+  const handleCancelEdit = () => {
+    setEditingCommentId(null);
+    setEditedComment("");
+  };
+
+  // 팝업 바깥쪽 클릭 시 팝업 닫기 처리 함수
+  const handleOverlayClick = (e) => {
+    // e.target이 팝업 자체가 아니라 오버레이일 경우에만 팝업을 닫음
+    if (e.target.className.includes("popupOverlay")) {
+      setShowActivityPopup(false);
     }
   };
 
@@ -183,7 +265,7 @@ function Activities() {
         <div style={styles.banner}>
           <div style={styles.bannerItem} ref={activityRef}>
             <div style={styles.bannerTitle}>
-              {activitySemester} 활동
+              {semester} 활동
               {isLoggedIn && isStaff && (
                 <button
                   style={styles.addActivityButton}
@@ -201,7 +283,6 @@ function Activities() {
                   onClick={() => handleActivityClick(activity)}
                 >
                   <img
-                    // src={activity.images || defaultActivities[index].images}
                     src={activity.images}
                     alt={activity.title}
                     style={styles.activityImage}
@@ -254,8 +335,15 @@ function Activities() {
         )}
 
         {showActivityPopup && selectedActivity && (
-          <div style={styles.popupOverlay}>
-            <div style={styles.activityPopup}>
+          <div
+            style={styles.popupOverlay}
+            onClick={handleOverlayClick} // 팝업 바깥쪽 클릭 시 팝업을 닫음
+            className="popupOverlay"
+          >
+            <div
+              style={styles.activityPopup}
+              onClick={(e) => e.stopPropagation()} // 팝업 내부 클릭 시 이벤트 전파 방지
+            >
               <div style={styles.activityPopupImage}>
                 <img
                   src={selectedActivity.images}
@@ -278,10 +366,58 @@ function Activities() {
                           key={index}
                           style={styles.comment}
                         >
-                          <div style={styles.commentAuthor}>
-                            {comment.Author?.name}
+                          <div style={styles.commentHeader}>
+                            <div style={styles.commentAuthor}>
+                              {comment.Author?.name}
+                            </div>
+                            {isLoggedIn && isStaff && (
+                              <div style={styles.commentActions}>
+                                <button
+                                  style={styles.commentEdit}
+                                  onClick={() => handleEditClick(comment)}
+                                >
+                                  수정
+                                </button>
+                                <button
+                                  style={styles.commentDelete}
+                                  onClick={() =>
+                                    handleCommentDelete(comment.id)
+                                  }
+                                >
+                                  삭제
+                                </button>
+                              </div>
+                            )}
                           </div>
-                          <div>{comment.content}</div>
+                          {/* 수정 모드일 때 */}
+                          {editingCommentId === comment.id ? (
+                            <div style={styles.editContainer}>
+                              <input
+                                type="text"
+                                value={editedComment}
+                                onChange={(e) =>
+                                  setEditedComment(e.target.value)
+                                }
+                                style={styles.commentInput}
+                              />
+                              <div style={styles.editButtonsContainer}>
+                                <button
+                                  style={styles.commentButton}
+                                  onClick={() => handleCommentEdit(comment.id)}
+                                >
+                                  수정
+                                </button>
+                                <button
+                                  style={styles.commentButton}
+                                  onClick={handleCancelEdit}
+                                >
+                                  취소
+                                </button>
+                              </div>
+                            </div>
+                          ) : (
+                            <div>{comment.content}</div>
+                          )}
                         </div>
                       )
                   )}
@@ -304,6 +440,13 @@ function Activities() {
                   </div>
                 )}
               </div>
+              {/* 삭제 버튼 및 닫기 버튼 */}
+              <button
+                style={styles.deleteButton}
+                onClick={handleActivityDelete}
+              >
+                삭제
+              </button>
               <button
                 style={styles.closeButton}
                 onClick={() => setShowActivityPopup(false)}

@@ -4,8 +4,10 @@ import userInfoStore from "../../stores/userInfoStore";
 import { basicAxios, authAxios } from "../../api/axios";
 import axios from "axios";
 import styles from "./styles";
+import logoutUtil from "../../utils/logout-util";
 
 const Equipment = () => {
+  const clearUserInfoStorage = userInfoStore.persist.clearStorage;
   const { isLoggedIn, userId } = userInfoStore();
   const [showPopup, setShowPopup] = useState(false);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
@@ -38,16 +40,11 @@ const Equipment = () => {
       } else {
         try {
           const response = await authAxios.get(`/rent/my-rent-record`);
-          // 아래는 authAxios 안쓴 버전
-          // const response = await axios.get(`http://localhost:3000/rent/my-rent-record`,  {
-          //   withCredentials: true,
-          //   headers:{
-          //     Authorization: `bearer ${localStorage.getItem('accessToken')}`
-          //   }
-          // })
           setMyRentSize(response.data.data.size); // 사용자 대여 기록에서 사이즈 설정
         } catch (error) {
           console.error("사용자 대여 기록을 가져오는 데 실패했습니다:", error);
+          logoutUtil();
+          window.location.href = "/login";
         }
         setShowRentPopup(false);
         setShowReturnPopup(true);
@@ -94,6 +91,7 @@ const Equipment = () => {
       } catch (error) {
         console.error("대여 요청에 실패했습니다:", error);
         alert(error.response.data.message);
+        logoutUtil();
       }
     } else {
       alert("사이즈를 선택해주세요.");
@@ -113,6 +111,7 @@ const Equipment = () => {
       } catch (error) {
         console.error("반납 요청에 실패했습니다:", error);
         alert("반납 요청에 실패했습니다. 다시 시도해주세요.");
+        logoutUtil();
       }
     } else {
       alert("대여한 암벽화가 없습니다.");
