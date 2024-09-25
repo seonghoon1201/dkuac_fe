@@ -35,7 +35,6 @@ const styles = {
     width: "100%", // 버튼이 가로로 길도록 설정
     padding: "10px",
     margin: "10px 0",
-    marginLeft: "20px", // 버튼 사이의 오른쪽 여백
     border: "none",
     borderRadius: "20px",
     fontSize: "16px",
