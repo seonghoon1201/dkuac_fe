@@ -110,7 +110,7 @@ function SignUp() {
         <div style={styles.emailContainer}>
           <input
             type="text"
-            placeholder="이메일 ID"
+            placeholder="학번 또는 설정한 ID"
             value={emailID}
             onChange={(e) => setEmailID(e.target.value)}
             style={styles.emailInput}
