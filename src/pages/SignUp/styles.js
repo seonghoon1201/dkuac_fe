@@ -37,11 +37,8 @@ const styles = {
   },
   emailDomain: {
     padding: "10px",
-    backgroundColor: "#eaeaea",
-    border: "1px solid #ccc",
-    borderRadius: "0 5px 5px 0",
     fontSize: "16px",
-    color: "#555",
+    color: "#fff",
   },
   button: {
     width: "100%",
