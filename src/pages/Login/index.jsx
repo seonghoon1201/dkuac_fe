@@ -87,14 +87,14 @@ function Login() {
           />
         </div>
         <div style={styles.buttonContainer}>
-          <button type="submit" onClick={handleClick} style={styles.button}>
-            로그인
-          </button>
           <Link to="/signup" style={{ width: "100%" }}>
             <button type="button" style={styles.button}>
               회원가입
             </button>
           </Link>
+          <button type="submit" onClick={handleClick} style={styles.button}>
+            로그인
+          </button>
         </div>
       </form>
     </div>
