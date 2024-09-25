@@ -1,8 +1,7 @@
 import axios from "axios";
 import userInfoStore from "../stores/userInfoStore";
 
-// export const BASE_URL = process.env.REACT_APP_BACKEND_API_URL;
-export const BASE_URL = "http://localhost:3000";
+export const BASE_URL = process.env.REACT_APP_BACKEND_API_URL;
 
 // 기본 인스턴스
 export const basicAxios = axios.create({
