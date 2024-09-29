@@ -9,6 +9,7 @@ import { basicAxios, authAxios } from "../../api/axios";
 import Sidebar from "../../components/Sidebar";
 import userInfoStore from "../../stores/userInfoStore";
 import logoutUtil from "../../utils/logout-util";
+import { StyledCalendar } from "./styledComponents";
 
 const customWeekDays = ["일", "월", "화", "수", "목", "금", "토"];
 
@@ -128,9 +129,13 @@ function Schedules() {
       <Sidebar />
       <div style={styles.content}>
         <div style={styles.calendarAndEventContainer}>
-          <div style={styles.calendarContainer} ref={calendarRef}>
-            <div style={styles.calendarWrapper}>
-              <Calendar
+          <div
+            className="calenderContainer"
+            style={styles.calendarContainer}
+            ref={calendarRef}
+          >
+            <div className="calenderWrapper" style={styles.calendarWrapper}>
+              <StyledCalendar
                 onChange={handleDateChange}
                 value={selectedDate}
                 tileContent={({ date }) => {
@@ -147,8 +152,12 @@ function Schedules() {
             </div>
           </div>
 
-          <div style={styles.selectedDateContainer} ref={activityRef}>
-            <div style={styles.selectedDate}>
+          <div
+            className="selectedDateContainer"
+            style={styles.selectedDateContainer}
+            ref={activityRef}
+          >
+            <div className="selectedDate" style={styles.selectedDate}>
               {format(selectedDate, "yyyy-MM-dd")}
               {isStaff && (
                 <FaPlus style={styles.addIcon} onClick={handleAddEvent} />
