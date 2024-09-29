@@ -15,11 +15,16 @@ function SignUp() {
   const [verificationSent, setVerificationSent] = useState(false);
   const [verificationError, setVerificationError] = useState("");
   const [isSignupComplete, setIsSignupComplete] = useState(false);
+  const [emailError, setEmailError] = useState("");
   const { isLoggedIn } = userInfoStore();
 
   const navigate = useNavigate();
 
   const handleEmailVerification = () => {
+    if (emailID.includes("@")){
+      alert("이메일을 수정해 주세요!!");
+      return;
+    }
     const email = `${emailID}@dankook.ac.kr`; // 완성된 이메일을 생성
     basicAxios
       .post("/auth/create-verification-code", {
@@ -90,6 +95,18 @@ function SignUp() {
       });
   };
 
+  // 이메일 입력에 대한 onChange 핸들러 수정
+  const handleEmailChange = (e) => {
+    const value = e.target.value;
+    setEmailID(value);
+
+    if (value.includes("@")) {
+      setEmailError("도메인 주소는 입력하지 말아주세요");
+    } else {
+      setEmailError("");
+    }
+  };
+
   useEffect(() => {
     if (isLoggedIn) {
       navigate("/");
@@ -112,11 +129,12 @@ function SignUp() {
             type="text"
             placeholder="학번 또는 설정한 ID"
             value={emailID}
-            onChange={(e) => setEmailID(e.target.value)}
+            onChange={handleEmailChange}
             style={styles.emailInput}
           />
           <span style={styles.emailDomain}>@dankook.ac.kr</span>
         </div>
+        {emailError && <div style={styles.errorMessage}>{emailError}</div>}
         <div style={styles.emailButtonContainer}>
           <button
             type="button"
