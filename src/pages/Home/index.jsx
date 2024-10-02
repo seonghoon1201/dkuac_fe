@@ -76,9 +76,11 @@ function FAQItem({ faq }) {
 }
 
 function Home() {
-  /* const handleButtonClick = () => {
-    window.open("https://naver.me/5ch4sm44","_blank");
-  }; */
+  const navigate = useNavigate(); // Initialize useNavigate
+
+  const handleLoginClick = () => {
+    navigate("/login"); // Redirect to login page when clicked
+  };
 
   return (
     <div style={{ overflowX: "hidden" }}>
@@ -91,9 +93,9 @@ function Home() {
             <h2 style={styles.h2}>
               DKUAC <span style={styles.since}>since 1975</span>
             </h2>
-            <Link to="/login" style={styles.button}>
+            <button onClick={handleLoginClick} style={styles.button}>
               로그인/회원가입
-            </Link>
+            </button>
           </div>
         </div>
       </div>
