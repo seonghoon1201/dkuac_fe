@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // useNavigate 임포트
 import teddyBear from "../../images/teddy_bear.png";
 import explain1 from "../../images/explain_1.png";
 import explain2 from "../../images/explain_2.png";
@@ -7,7 +8,6 @@ import activity2 from "../../images/activity2.png";
 import activity3 from "../../images/activity3.png";
 import faqImage from "../../images/faq.png";
 import styles from "./styles";
-import { Link } from "react-router-dom";
 import ReviewBox from "../../components/ReviewBox";
 
 const reviews = [
@@ -59,7 +59,7 @@ const faqs = [
 
 function FAQItem({ faq }) {
   const [isOpen, setIsOpen] = useState(false);
-  
+
   const toggleFAQ = () => {
     setIsOpen(!isOpen);
   };
@@ -76,17 +76,17 @@ function FAQItem({ faq }) {
 }
 
 function Home() {
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate(); // useNavigate 사용
 
   const handleLoginClick = () => {
-    navigate("/login"); // Redirect to login page when clicked
+    navigate("/login"); // 로그인 페이지로 이동
   };
 
   return (
     <div style={{ overflowX: "hidden" }}>
       <div style={styles.home}>
         <div style={styles.content}>
-          <img src={teddyBear} alt="Teddy Bear" style={styles.teddyBear} />
+          <img src={teddyBear} alt="곰인형" style={styles.teddyBear} />
           <div style={styles.textContainer}>
             <h1 style={styles.h1}>단국대학교</h1>
             <h1 style={styles.h1}>클라이밍 & 등산 동아리</h1>
@@ -102,8 +102,8 @@ function Home() {
       <div style={styles.explainSection}>
         <div style={styles.sectionTitle}>저희 동아리는요</div>
         <div style={styles.explainContainer}>
-          <img src={explain1} alt="Explain 1" style={styles.explainImage} />
-          <img src={explain2} alt="Explain 2" style={styles.explainImage} />
+          <img src={explain1} alt="설명 1" style={styles.explainImage} />
+          <img src={explain2} alt="설명 2" style={styles.explainImage} />
         </div>
       </div>
       <div className="reviewsSection" style={styles.reviewsSection}>
