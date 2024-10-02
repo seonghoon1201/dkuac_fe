@@ -91,7 +91,7 @@ const Equipment = () => {
       } catch (error) {
         console.error("대여 요청에 실패했습니다:", error);
         alert(error.response.data.message);
-        logoutUtil();
+        // logoutUtil();
       }
     } else {
       alert("사이즈를 선택해주세요.");
@@ -111,7 +111,7 @@ const Equipment = () => {
       } catch (error) {
         console.error("반납 요청에 실패했습니다:", error);
         alert("반납 요청에 실패했습니다. 다시 시도해주세요.");
-        logoutUtil();
+        // logoutUtil();
       }
     } else {
       alert("대여한 암벽화가 없습니다.");
