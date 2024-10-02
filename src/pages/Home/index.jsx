@@ -76,9 +76,9 @@ function FAQItem({ faq }) {
 }
 
 function Home() {
-  const handleButtonClick = () => {
+  /* const handleButtonClick = () => {
     window.open("https://naver.me/5ch4sm44","_blank");
-  };
+  }; */
 
   return (
     <div style={{ overflowX: "hidden" }}>
@@ -91,9 +91,9 @@ function Home() {
             <h2 style={styles.h2}>
               DKUAC <span style={styles.since}>since 1975</span>
             </h2>
-            <button style={styles.button} onClick={handleButtonClick}>
-              지원하기
-            </button>
+            <Link to="/login" style={styles.button}>
+              로그인/회원가입
+            </Link>
           </div>
         </div>
       </div>
