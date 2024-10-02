@@ -8,6 +8,7 @@ import activity2 from "../../images/activity2.png";
 import activity3 from "../../images/activity3.png";
 import faqImage from "../../images/faq.png";
 import styles from "./styles";
+import { Link } from "react-router-dom";
 import ReviewBox from "../../components/ReviewBox";
 
 const reviews = [
@@ -59,7 +60,7 @@ const faqs = [
 
 function FAQItem({ faq }) {
   const [isOpen, setIsOpen] = useState(false);
-
+  
   const toggleFAQ = () => {
     setIsOpen(!isOpen);
   };
@@ -79,21 +80,21 @@ function Home() {
   const navigate = useNavigate(); // useNavigate 사용
 
   const handleLoginClick = () => {
-    navigate("/login"); // 로그인 페이지로 이동
+    navigate("/login"); // ./Login/index.jsx로 이동
   };
 
   return (
     <div style={{ overflowX: "hidden" }}>
       <div style={styles.home}>
         <div style={styles.content}>
-          <img src={teddyBear} alt="곰인형" style={styles.teddyBear} />
+          <img src={teddyBear} alt="Teddy Bear" style={styles.teddyBear} />
           <div style={styles.textContainer}>
             <h1 style={styles.h1}>단국대학교</h1>
             <h1 style={styles.h1}>클라이밍 & 등산 동아리</h1>
             <h2 style={styles.h2}>
               DKUAC <span style={styles.since}>since 1975</span>
             </h2>
-            <button onClick={handleLoginClick} style={styles.button}>
+            <button style={styles.button} onClick={handleLoginClick}>
               로그인/회원가입
             </button>
           </div>
@@ -102,8 +103,8 @@ function Home() {
       <div style={styles.explainSection}>
         <div style={styles.sectionTitle}>저희 동아리는요</div>
         <div style={styles.explainContainer}>
-          <img src={explain1} alt="설명 1" style={styles.explainImage} />
-          <img src={explain2} alt="설명 2" style={styles.explainImage} />
+          <img src={explain1} alt="Explain 1" style={styles.explainImage} />
+          <img src={explain2} alt="Explain 2" style={styles.explainImage} />
         </div>
       </div>
       <div className="reviewsSection" style={styles.reviewsSection}>
