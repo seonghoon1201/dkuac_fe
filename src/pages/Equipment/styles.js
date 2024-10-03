@@ -34,6 +34,7 @@ const styles = {
         ? "yellow" // 남은 수량 1: 노란색
         : "#90ee90", // 남은 수량 2개 이상: 밝은 연두색
     color: rentable === 0 ? "white" : "black", // 배경색에 따른 텍스트 색상
+    border: "1px solid #000",
   }),
   button: {
     padding: "10px 20px",
