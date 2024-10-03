@@ -137,7 +137,7 @@ const Equipment = () => {
           <span style={styles.square("yellow")} /> = 남은 수량 1
         </div>
         <div>
-          <span style={styles.square("green")} /> = 남은 수량 2개 이상
+          <span style={styles.square("##00ff00")} /> = 남은 수량 2개 이상
         </div>
       </div>
       <table style={styles.table}>
@@ -153,8 +153,8 @@ const Equipment = () => {
           {sizes.map((item) => (
             <tr key={item.size}>
               <td style={styles.tableCell(item.rentable)}>{item.size}</td>
-              <td style={styles.tableCell(item.rentable)}>{item.count}</td>
-              <td style={styles.tableCell(item.rentable)}>
+              <td style={styles.tableCell}>{item.count}</td>
+              <td style={styles.tableCell}>
                 {item.count - item.rentable}
               </td>
               <td style={styles.tableCell(item.rentable)}>{item.rentable}</td>
