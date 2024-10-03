@@ -26,6 +26,17 @@ const styles = {
     border: "1px solid #ddd",
     padding: "8px",
   },
+  tableCell: (rentable) => ({
+    border: "1px solid #ddd",
+    padding: "8px",
+    backgroundColor:
+      rentable === 0
+        ? "red" // 남은 수량 0: 빨간색
+        : rentable === 1
+        ? "yellow" // 남은 수량 1: 노란색
+        : "green", // 남은 수량 2개 이상: 초록색
+    color: rentable === 0 ? "white" : "black", // 배경색에 따른 텍스트 색상
+  }),
   button: {
     padding: "10px 20px",
     fontSize: "16px",
@@ -130,6 +141,21 @@ const styles = {
     fontSize: "16px",
     color: "#3a5ba0",
   },
+  legend: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "10px",
+    marginTop: "20px",
+    fontSize: "14px",
+  },
+  square: (color) => ({
+    width: "20px",
+    height: "20px",
+    backgroundColor: color,
+    display: "inline-block",
+    marginRight: "5px",
+  }),
 };
 
 export default styles;
