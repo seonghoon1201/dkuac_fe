@@ -26,15 +26,13 @@ const styles = {
     border: "1px solid #ddd",
     padding: "8px",
   },
-  tableCell: (rentable) => ({
-    border: "1px solid #ddd",
-    padding: "8px",
+  sizeCell: (rentable) => ({
     backgroundColor:
       rentable === 0
         ? "red" // 남은 수량 0: 빨간색
         : rentable === 1
         ? "yellow" // 남은 수량 1: 노란색
-        : "green", // 남은 수량 2개 이상: 초록색
+        : "#90ee90", // 남은 수량 2개 이상: 밝은 연두색
     color: rentable === 0 ? "white" : "black", // 배경색에 따른 텍스트 색상
   }),
   button: {
