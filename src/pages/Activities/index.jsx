@@ -28,6 +28,7 @@ function Activities() {
   const activityRef = useRef(null);
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editedComment, setEditedComment] = useState("");
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // URL에서 학기 정보 가져오기
   const searchParams = new URLSearchParams(location.search);
@@ -86,8 +87,8 @@ function Activities() {
 
   // 입력 필드 값 변경 처리
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewActivity((prev) => ({ ...prev, [name]: value }));
+    const files = Array.from(e.target.files); // 여러 파일을 배열로 저장
+    setNewActivity((prev) => ({ ...prev, images: files }));
   };
 
   // 이미지 파일 선택 처리
@@ -95,36 +96,39 @@ function Activities() {
     setNewActivity((prev) => ({ ...prev, image: e.target.files[0] }));
   };
 
-  // 활동 제출 처리
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const formData = new FormData();
     formData.append("title", newActivity.title);
     formData.append("content", newActivity.content);
-    formData.append("images", newActivity.image);
-
+    
+    // 여러 이미지를 FormData에 추가
+    newActivity.images.forEach((image, index) => {
+      formData.append(`images[${index}]`, image);
+    });
+  
     const currentDate = new Date().toISOString().split("T")[0];
     formData.append("date", currentDate);
-
+  
     try {
       const response = await formDataAxios.post("/activity", formData);
-
+  
       if (response.status === 201) {
         alert("활동이 성공적으로 추가되었습니다.");
         setShowForm(false);
-        setNewActivity({ title: "", content: "", image: null });
+        setNewActivity({ title: "", content: "", images: [] });
         fetchActivities();
       } else {
         alert("활동 추가에 실패했습니다.");
       }
     } catch (error) {
       console.log(error);
-      console.error("활동 제출 중 오류가 발생했습니다:", error);
       alert("활동 추가 중 오류가 발생했습니다.");
       logoutUtil();
     }
   };
+  
 
   // 활동 클릭 처리
   const handleActivityClick = (activity) => {
@@ -258,6 +262,19 @@ function Activities() {
     }
   };
 
+  // 화살표 클릭 시 이미지 전환
+  const handleNextImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === selectedActivity.images.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+  
+  const handlePrevImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? selectedActivity.images.length - 1 : prevIndex - 1
+    );
+  };
+
   return (
     <div style={{ ...styles.home, overflowX: "hidden" }}>
       <Sidebar />
@@ -278,17 +295,17 @@ function Activities() {
             <div style={styles.activityContainer}>
               {activities.map((activity, index) => (
                 <div
-                  key={activity.id || index}
-                  style={styles.activityBox}
-                  onClick={() => handleActivityClick(activity)}
-                >
-                  <img
-                    src={activity.images}
-                    alt={activity.title}
-                    style={styles.activityImage}
-                  />
-                  <div style={styles.activityName}>{activity.title}</div>
-                </div>
+                key={activity.id || index}
+                style={styles.activityBox}
+                onClick={() => handleActivityClick(activity)}
+              >
+                <img
+                  src={activity.images[0]}  // 첫 번째 이미지 표시
+                  alt={activity.title}
+                  style={styles.activityImage}
+                />
+                <div style={styles.activityName}>{activity.title}</div>
+              </div>
               ))}
             </div>
           </div>
@@ -346,10 +363,17 @@ function Activities() {
             >
               <div style={styles.activityPopupImage}>
                 <img
-                  src={selectedActivity.images}
+                  src={selectedActivity.images[currentImageIndex]} // 현재 인덱스에 해당하는 이미지
                   alt={selectedActivity.title}
                   style={styles.activityPopupImageStyle}
                 />
+                {/* 화살표 버튼 추가 */}
+                {selectedActivity.images.length > 1 && (
+                  <>
+                    <button onClick={handlePrevImage} style={styles.arrowButton}>{"<"}</button>
+                    <button onClick={handleNextImage} style={styles.arrowButton}>{">"}</button>
+                  </>
+                )}
               </div>
               <div style={styles.activityPopupContent}>
                 <h2 style={styles.activityTitle}>{selectedActivity.title}</h2>
